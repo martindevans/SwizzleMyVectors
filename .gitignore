@@ -1,0 +1,7 @@
+*.cache
+
+*.suo
+
+_ReSharper.SwizzleMyVectors
+SwizzleMyVectors/obj
+SwizzleMyVectors/bin
