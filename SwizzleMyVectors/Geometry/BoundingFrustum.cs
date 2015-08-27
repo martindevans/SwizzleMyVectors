@@ -18,10 +18,10 @@ namespace SwizzleMyVectors.Geometry
         public const int PlaneCount = 6;
 
         private bool _cornersDirty;
-        private readonly Vector3[] _corners;
+        private Vector3[] _corners;
 
         private bool _planesDirty;
-        private readonly Plane[] _planes;
+        private Plane[] _planes;
 
         private Matrix4x4 _matrix;
         /// <summary>
@@ -103,8 +103,11 @@ namespace SwizzleMyVectors.Geometry
 
         private Plane[] CreatePlanes()
         {
-            if (_planesDirty)
+            if (_planesDirty || _planes == null)
             {
+                if (_planes == null)
+                    _planes = new Plane[PlaneCount];
+
                 _planes[0] = Plane.Normalize(new Plane(-_matrix.M13, -_matrix.M23, -_matrix.M33, -_matrix.M43));
                 _planes[1] = Plane.Normalize(new Plane(_matrix.M13 - _matrix.M14, _matrix.M23 - _matrix.M24, _matrix.M33 - _matrix.M34, _matrix.M43 - _matrix.M44));
                 _planes[2] = Plane.Normalize(new Plane(-_matrix.M14 - _matrix.M11, -_matrix.M24 - _matrix.M21, -_matrix.M34 - _matrix.M31, -_matrix.M44 - _matrix.M41));
@@ -122,8 +125,11 @@ namespace SwizzleMyVectors.Geometry
         {
             CreatePlanes();
 
-            if (_cornersDirty)
+            if (_cornersDirty || _corners == null)
             {
+                if (_corners == null)
+                    _corners = new Vector3[CornerCount];
+
                 IntersectionPoint(ref _planes[0], ref _planes[2], ref _planes[4], out _corners[0]);
                 IntersectionPoint(ref _planes[0], ref _planes[3], ref _planes[4], out _corners[1]);
                 IntersectionPoint(ref _planes[0], ref _planes[3], ref _planes[5], out _corners[2]);
