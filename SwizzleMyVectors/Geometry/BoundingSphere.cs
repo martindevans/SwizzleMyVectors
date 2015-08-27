@@ -270,23 +270,26 @@ namespace SwizzleMyVectors.Geometry
             result = box.Intersects(this);
         }
 
-        ///// <summary>
-        ///// Checks whether the current BoundingSphere intersects with a specified BoundingFrustum.
-        ///// </summary>
-        ///// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
-        //public bool Intersects(BoundingFrustum frustum)
-        //{
-        //    bool result;
-        //    Intersects(ref frustum, out result);
-        //    return result;
-        //}
+        /// <summary>
+        /// Checks whether the current BoundingSphere intersects with a specified BoundingFrustum.
+        /// </summary>
+        /// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
+        public bool Intersects(BoundingFrustum frustum)
+        {
+            bool result;
+            Intersects(ref frustum, out result);
+            return result;
+        }
 
-        ///// <summary>
-        ///// Checks whether the current BoundingSphere intersects with a specified BoundingFrustum.
-        ///// </summary>
-        ///// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
-        ///// <param name="result"></param>
-        //public void Intersects(ref BoundingFrustum frustum, out bool result);
+        /// <summary>
+        /// Checks whether the current BoundingSphere intersects with a specified BoundingFrustum.
+        /// </summary>
+        /// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
+        /// <param name="result"></param>
+        public void Intersects(ref BoundingFrustum frustum, out bool result)
+        {
+            frustum.Intersects(ref this, out result);
+        }
 
         /// <summary>
         /// Checks whether the current BoundingSphere intersects with a specified Plane.
