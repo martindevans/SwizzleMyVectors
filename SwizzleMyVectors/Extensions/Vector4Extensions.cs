@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace SwizzleMyVectors
+﻿namespace SwizzleMyVectors
 {
     public static class Vector4Extensions
     {
