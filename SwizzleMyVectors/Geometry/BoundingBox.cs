@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Numerics;
 
 namespace SwizzleMyVectors.Geometry
@@ -34,6 +35,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
         /// <param name="a">BoundingBox to compare.</param><param name="b">BoundingBox to compare.</param>
+        [Pure]
         public static bool operator ==(BoundingBox a, BoundingBox b)
         {
             return a.Equals(b);
@@ -43,6 +45,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of BoundingBox are not equal.
         /// </summary>
         /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
+        [Pure]
         public static bool operator !=(BoundingBox a, BoundingBox b)
         {
             return !a.Equals(b);
@@ -52,6 +55,7 @@ namespace SwizzleMyVectors.Geometry
         /// Gets an array of points that make up the corners of the BoundingBox.
         /// </summary>
         // ReSharper disable once ReturnTypeCanBeEnumerable.Global
+        [Pure]
         public Vector3[] GetCorners()
         {
             var arr = new Vector3[CornerCount];
@@ -75,6 +79,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
         /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
+        [Pure]
         public bool Equals(BoundingBox other)
         {
             return Min.Equals(other.Min) && Max.Equals(other.Max);
@@ -84,6 +89,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
         /// <param name="obj">The Object to compare with the current BoundingBox.</param>
+        [Pure]
         public override bool Equals(object obj)
         {
             return obj is BoundingBox && Equals((BoundingBox)obj);
@@ -92,6 +98,7 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Gets the hash code for this instance.
         /// </summary>
+        [Pure]
         public override int GetHashCode()
         {
 // This seems ugly, but it's inline with how MS designed their vector types!
@@ -108,6 +115,7 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Returns a String that represents the current BoundingBox.
         /// </summary>
+        [Pure]
         public override string ToString()
         {
             return string.Format("Min:{0},Max:{1}", Min, Max);
@@ -188,6 +196,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects another BoundingBox.
         /// </summary>
         /// <param name="box">The BoundingBox to check for intersection with.</param>
+        [Pure]
         public bool Intersects(BoundingBox box)
         {
             bool result;
@@ -210,6 +219,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects a BoundingFrustum.
         /// </summary>
         /// <param name="frustum">The BoundingFrustum to check for intersection with.</param>
+        [Pure]
         public bool Intersects(BoundingFrustum frustum)
         {
             bool result;
@@ -231,6 +241,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects a Plane.
         /// </summary>
         /// <param name="plane">The Plane to check for intersection with.</param>
+        [Pure]
         public PlaneIntersectionType Intersects(Plane plane)
         {
             PlaneIntersectionType result;
@@ -306,6 +317,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects a Ray.
         /// </summary>
         /// <param name="ray">The Ray to check for intersection with.</param>
+        [Pure]
         public float? Intersects(Ray ray)
         {
             float? result;
@@ -326,6 +338,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects a BoundingSphere.
         /// </summary>
         /// <param name="sphere">The BoundingSphere to check for intersection with.</param>
+        [Pure]
         public bool Intersects(BoundingSphere sphere)
         {
             bool result;
@@ -380,6 +393,7 @@ namespace SwizzleMyVectors.Geometry
         /// Tests whether the BoundingBox contains another BoundingBox.
         /// </summary>
         /// <param name="box">The BoundingBox to test for overlap.</param>
+        [Pure]
         public ContainmentType Contains(BoundingBox box)
         {
             ContainmentType result;
@@ -424,12 +438,14 @@ namespace SwizzleMyVectors.Geometry
         /// Tests whether the BoundingBox contains a BoundingFrustum.
         /// </summary>
         /// <param name="frustum">The BoundingFrustum to test for overlap.</param>
+        //[Pure]
         //public ContainmentType Contains(BoundingFrustum frustum);
 
         /// <summary>
         /// Tests whether the BoundingBox contains a point.
         /// </summary>
         /// <param name="point">The point to test for overlap.</param>
+        [Pure]
         public ContainmentType Contains(Vector3 point)
         {
             ContainmentType result;
@@ -472,6 +488,7 @@ namespace SwizzleMyVectors.Geometry
         /// Tests whether the BoundingBox contains a BoundingSphere.
         /// </summary>
         /// <param name="sphere">The BoundingSphere to test for overlap.</param>
+        [Pure]
         public ContainmentType Contains(BoundingSphere sphere)
         {
             ContainmentType result;
