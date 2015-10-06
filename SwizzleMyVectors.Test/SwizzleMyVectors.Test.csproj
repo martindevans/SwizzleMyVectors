@@ -53,6 +53,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Geometry\BoundingBoxTest.cs" />
+    <Compile Include="Geometry\BoundingRectangleTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

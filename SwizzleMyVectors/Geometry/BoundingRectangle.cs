@@ -169,6 +169,33 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
+        /// Calculate the intersection of this rectangle and another
+        /// </summary>
+        /// <param name="box"></param>
+        /// <returns></returns>
+        public BoundingRectangle? Intersection(BoundingRectangle box)
+        {
+            return Intersection(ref box);
+        }
+
+        /// <summary>
+        /// Calculate the intersection of this rectangle and another
+        /// </summary>
+        /// <param name="box"></param>
+        /// <returns></returns>
+        public BoundingRectangle? Intersection(ref BoundingRectangle box)
+        {
+            var min = Vector2.Max(Min, box.Min);
+            var max = Vector2.Min(Max, box.Max);
+
+            //Check if the min of the overlap is not the min, this means the overlap is inverted and not actually an overlap
+            if (Vector2.Min(min, max) != min)
+                return null;
+
+            return new BoundingRectangle(min, max);
+        }
+
+        /// <summary>
         /// Checks whether the current BoundingRectangle intersects another BoundingRectangle.
         /// </summary>
         /// <param name="box">The BoundingRectangle to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingRectangle instances intersect; false otherwise.</param>
