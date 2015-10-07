@@ -22,6 +22,15 @@ namespace SwizzleMyVectors.Geometry
         public Vector3 Max;
 
         /// <summary>
+        /// Creates an instance of BoundingBox around a BoundingSphere
+        /// </summary>
+        /// <param name="sphere">The sphere to constain within this box</param>
+        public BoundingBox(BoundingSphere sphere)
+            : this(sphere.Center - new Vector3(sphere.Radius), sphere.Center + new Vector3(sphere.Radius))
+        {
+        }
+
+        /// <summary>
         /// Creates an instance of BoundingBox.
         /// </summary>
         /// <param name="min">The minimum point the BoundingBox includes.</param><param name="max">The maximum point the BoundingBox includes.</param>
