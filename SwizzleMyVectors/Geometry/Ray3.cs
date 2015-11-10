@@ -84,6 +84,57 @@ namespace SwizzleMyVectors.Geometry
             return string.Format("Position:{0},Direction:{1}", Position, Direction);
         }
 
+        ///// <summary>
+        ///// Calculate the closest point on this ray to the given point
+        ///// </summary>
+        ///// <param name="point"></param>
+        ///// <returns></returns>
+        //public Vector3 ClosestPoint(Vector3 point)
+        //{
+        //    float t;
+        //    return ClosestPoint(ref point, out t);
+        //}
+
+        ///// <summary>
+        ///// Calculate the closest point on this ray to the given point
+        ///// </summary>
+        ///// <param name="point"></param>
+        ///// <param name="result">distance along the ray at which the closest point lies</param>
+        ///// <returns></returns>
+        //public Vector3 ClosestPoint(ref Vector2 point, out float result)
+        //{
+        //}
+
+        //public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
+        //{
+        //}
+
+        //public struct RayRayIntersection
+        //{
+        //    /// <summary>
+        //    /// The position where the two rays intersect
+        //    /// </summary>
+        //    public readonly Vector3 Position;
+
+        //    /// <summary>
+        //    /// The distance along ray A. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
+        //    /// </summary>
+        //    public readonly float DistanceAlongA;
+
+        //    /// <summary>
+        //    /// The distance along ray B. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
+        //    /// </summary>
+        //    public readonly float DistanceAlongB;
+
+        //    public RayRayIntersection(Vector3 position, float distanceAlongLineA, float distanceAlongLineB)
+        //    {
+        //        Position = position;
+        //        DistanceAlongA = distanceAlongLineA;
+        //        DistanceAlongB = distanceAlongLineB;
+        //    }
+        //}
+
+
         /// <summary>
         /// Checks whether the Ray intersects a specified BoundingBox.
         /// </summary>
