@@ -47,8 +47,10 @@
     <Compile Include="Geometry\BoundingRectangle.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
     <Compile Include="Geometry\ContainmentType.cs" />
+    <Compile Include="Geometry\LineSegment2.cs" />
     <Compile Include="Geometry\PlaneIntersectionType.cs" />
-    <Compile Include="Geometry\Ray.cs" />
+    <Compile Include="Geometry\Ray2.cs" />
+    <Compile Include="Geometry\Ray3.cs" />
     <Compile Include="Extensions\Matrix4x4Extensions.cs" />
     <Compile Include="Extensions\PlaneExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace SwizzleMyVectors.Geometry
 {
-    public struct Ray
+    public struct Ray3
     {
         /// <summary>
         /// Specifies the starting point of the Ray.
@@ -19,7 +19,7 @@ namespace SwizzleMyVectors.Geometry
         /// Creates a new instance of Ray.
         /// </summary>
         /// <param name="position">The starting point of the Ray.</param><param name="direction">Unit vector describing the direction of the Ray.</param>
-        public Ray(Vector3 position, Vector3 direction)
+        public Ray3(Vector3 position, Vector3 direction)
         {
             Position = position;
             Direction = direction;
@@ -29,7 +29,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of Ray are equal.
         /// </summary>
         /// <param name="a">The object to the left of the equality operator.</param><param name="b">The object to the right of the equality operator.</param>
-        public static bool operator ==(Ray a, Ray b)
+        public static bool operator ==(Ray3 a, Ray3 b)
         {
             return a.Equals(b);
         }
@@ -38,7 +38,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of Ray are not equal.
         /// </summary>
         /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
-        public static bool operator !=(Ray a, Ray b)
+        public static bool operator !=(Ray3 a, Ray3 b)
         {
             return !a.Equals(b);
         }
@@ -47,7 +47,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether the specified Ray is equal to the current Ray.
         /// </summary>
         /// <param name="other">The Ray to compare with the current Ray.</param>
-        public bool Equals(Ray other)
+        public bool Equals(Ray3 other)
         {
             return Position.Equals(other.Position) && Direction.Equals(other.Direction);
         }
@@ -58,7 +58,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="obj">The Object to compare with the current Ray.</param>
         public override bool Equals(object obj)
         {
-            return obj is Ray && Equals((Ray)obj);
+            return obj is Ray3 && Equals((Ray3)obj);
         }
 
         /// <summary>

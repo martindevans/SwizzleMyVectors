@@ -5,7 +5,7 @@
 *.ncrunchproject
 *.ncrunchsolution
 *.nupkg
-
+_ReSharper.Caches
 _ReSharper.SwizzleMyVectors
 
 SwizzleMyVectors/obj

@@ -334,7 +334,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="ray">The Ray to check for intersection with.</param>
         [Pure]
-        public float? Intersects(Ray ray)
+        public float? Intersects(Ray3 ray)
         {
             float? result;
             Intersects(ref ray, out result);
@@ -345,7 +345,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingBox intersects a Ray.
         /// </summary>
         /// <param name="ray">The Ray to check for intersection with.</param><param name="result">[OutAttribute] Distance at which the ray intersects the BoundingBox, or null if there is no intersection.</param>
-        public void Intersects(ref Ray ray, out float? result)
+        public void Intersects(ref Ray3 ray, out float? result)
         {
             result = ray.Intersects(this);
         }

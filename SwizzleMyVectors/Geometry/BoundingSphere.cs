@@ -322,7 +322,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere intersects with a specified Ray.
         /// </summary>
         /// <param name="ray">The Ray to check for intersection with the current BoundingSphere.</param>
-        public float? Intersects(Ray ray)
+        public float? Intersects(Ray3 ray)
         {
             return ray.Intersects(this);
         }
@@ -331,7 +331,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere intersects a Ray.
         /// </summary>
         /// <param name="ray">The Ray to check for intersection with.</param><param name="result">[OutAttribute] Distance at which the ray intersects the BoundingSphere or null if there is no intersection.</param>
-        public void Intersects(ref Ray ray, out float? result)
+        public void Intersects(ref Ray3 ray, out float? result)
         {
             ray.Intersects(ref this, out result);
         }
