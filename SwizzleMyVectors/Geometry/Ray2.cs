@@ -85,6 +85,93 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public Vector2 ClosestPoint(Vector2 point)
+        {
+            float t;
+            return ClosestPoint(ref point, out t);
+        }
+
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result">distance along the ray at which the closest point lies</param>
+        /// <returns></returns>
+        public Vector2 ClosestPoint(ref Vector2 point, out float result)
+        {
+            var direction = Direction;
+            var lengthSq = direction.LengthSquared();
+
+            //How far along the line the closest point is (in units of direction)
+            result = Vector2.Dot((point - Position), direction) / lengthSq;
+
+            return Position + Direction * result;
+        }
+
+        public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
+        {
+            //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+
+            var p = Position;
+            var r = Direction;
+
+            var q = ray.Position;
+            var s = ray.Direction;
+
+            // It isn't maths if the variable names make any sense
+            // ReSharper disable InconsistentNaming
+            var RxS = r.Cross(s);
+            var QmP = q - p;
+            // ReSharper restore InconsistentNaming
+
+            if (Math.Abs(RxS - 0) < 0.001)
+            {
+                // ReSharper disable InconsistentNaming
+                var QmPxR = QmP.Cross(r);
+                // ReSharper restore InconsistentNaming
+                parallelism = Math.Abs(QmPxR - 0) < 0.001 ? Parallelism.Collinear : Parallelism.Parallel;
+                return null;
+            }
+
+            var t = QmP.Cross(s) / RxS;
+            var u = QmP.Cross(r) / RxS;
+
+            var point = p + (t * r);
+
+            parallelism = Parallelism.None;
+            return new RayRayIntersection(point, t, u);
+        }
+
+        public struct RayRayIntersection
+        {
+            /// <summary>
+            /// The position where the two rays intersect
+            /// </summary>
+            public readonly Vector2 Position;
+
+            /// <summary>
+            /// The distance along ray A. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
+            /// </summary>
+            public readonly float DistanceAlongA;
+
+            /// <summary>
+            /// The distance along ray B. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
+            /// </summary>
+            public readonly float DistanceAlongB;
+
+            public RayRayIntersection(Vector2 position, float distanceAlongLineA, float distanceAlongLineB)
+            {
+                Position = position;
+                DistanceAlongA = distanceAlongLineA;
+                DistanceAlongB = distanceAlongLineB;
+            }
+        }
+
+        /// <summary>
         /// Checks whether the Ray intersects a specified BoundingRectangle.
         /// </summary>
         /// <param name="box">The BoundingRectangle to check for intersection with the Ray.</param>
@@ -174,7 +261,6 @@ namespace SwizzleMyVectors.Geometry
 
             result = tMin;
         }
-
 
         ///// <summary>
         ///// Checks whether the Ray intersects a specified BoundingSphere.
