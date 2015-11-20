@@ -112,6 +112,34 @@ namespace SwizzleMyVectors.Geometry
             return Position + Direction * result;
         }
 
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public static float ClosestPointDistanceAlongLine(Ray2 line, Vector2 point)
+        {
+            float dist;
+            ClosestPointDistanceAlongLine(ref line, ref point, out dist);
+            return dist;
+        }
+
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="point"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public static void ClosestPointDistanceAlongLine(ref Ray2 line, ref Vector2 point, out float distance)
+        {
+            var direction = line.Direction;
+            var lengthSq = direction.LengthSquared();
+
+            distance = Vector2.Dot((point - line.Position), direction) / lengthSq;
+        }
+
         public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
         {
             //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect

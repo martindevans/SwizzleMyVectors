@@ -101,7 +101,31 @@ namespace SwizzleMyVectors.Geometry
         ///// <param name="point"></param>
         ///// <param name="result">distance along the ray at which the closest point lies</param>
         ///// <returns></returns>
-        //public Vector3 ClosestPoint(ref Vector2 point, out float result)
+        //public Vector3 ClosestPoint(ref Vector3 point, out float result)
+        //{
+        //}
+
+        ///// <summary>
+        ///// Gets how far along this line the closest point is (in units of direction length)
+        ///// </summary>
+        ///// <param name="line"></param>
+        ///// <param name="point"></param>
+        ///// <returns></returns>
+        //public static float ClosestPointDistanceAlongLine(Ray3 line, Vector3 point)
+        //{
+        //    float dist;
+        //    ClosestPointDistanceAlongLine(ref line, ref point, out dist);
+        //    return dist;
+        //}
+
+        ///// <summary>
+        ///// Gets how far along this line the closest point is (in units of direction length)
+        ///// </summary>
+        ///// <param name="line"></param>
+        ///// <param name="point"></param>
+        ///// <param name="distance"></param>
+        ///// <returns></returns>
+        //public static void ClosestPointDistanceAlongLine(ref Ray3 line, ref Vector3 point, out float distance)
         //{
         //}
 
