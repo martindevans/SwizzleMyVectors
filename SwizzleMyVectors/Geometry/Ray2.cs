@@ -147,7 +147,7 @@ namespace SwizzleMyVectors.Geometry
 
         public void DistanceToPoint(ref Vector2 point, out float distance)
         {
-            distance = Direction.Cross(point - Position);
+            distance = Direction.Cross(point - Position) / Direction.Length();
         }
 
         public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
