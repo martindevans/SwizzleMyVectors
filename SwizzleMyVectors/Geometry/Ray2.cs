@@ -141,7 +141,7 @@ namespace SwizzleMyVectors.Geometry
         public float DistanceToPoint(Vector2 point)
         {
             float result;
-            DistanceToClosestPoint(ref point, out result);
+            DistanceToPoint(ref point, out result);
             return result;
         }
 

@@ -133,6 +133,9 @@ namespace SwizzleMyVectors.Geometry
 
         //public void DistanceToPoint(ref Vector3 point, out float distance)
         //{
+            //float result;
+            //DistanceToPoint(ref point, out result);
+            //return result;
         //}
 
         //public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
