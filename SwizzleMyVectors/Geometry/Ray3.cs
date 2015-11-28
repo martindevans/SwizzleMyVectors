@@ -127,11 +127,11 @@ namespace SwizzleMyVectors.Geometry
         //{
         //}
 
-        //public float DistanceToClosestPoint(Vector3 point)
+        //public float DistanceToPoint(Vector3 point)
         //{
         //}
 
-        //public void DistanceToClosestPoint(ref Vector3 point, out float distance)
+        //public void DistanceToPoint(ref Vector3 point, out float distance)
         //{
         //}
 

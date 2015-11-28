@@ -138,14 +138,14 @@ namespace SwizzleMyVectors.Geometry
             distance = Vector2.Dot((point - Position), direction) / lengthSq;
         }
 
-        public float DistanceToClosestPoint(Vector2 point)
+        public float DistanceToPoint(Vector2 point)
         {
             float result;
             DistanceToClosestPoint(ref point, out result);
             return result;
         }
 
-        public void DistanceToClosestPoint(ref Vector2 point, out float distance)
+        public void DistanceToPoint(ref Vector2 point, out float distance)
         {
             var ap = (Position - point);
             var apDotDir = Vector2.Dot(ap, Direction);
