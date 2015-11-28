@@ -138,6 +138,21 @@ namespace SwizzleMyVectors.Geometry
             distance = Vector2.Dot((point - Position), direction) / lengthSq;
         }
 
+        public float DistanceToClosestPoint(Vector2 point)
+        {
+            float result;
+            DistanceToClosestPoint(ref point, out result);
+            return result;
+        }
+
+        public void DistanceToClosestPoint(ref Vector2 point, out float distance)
+        {
+            var ap = (Position - point);
+            var apDotDir = Vector2.Dot(ap, Direction);
+
+            distance = (ap - apDotDir * Direction).Length();
+        }
+
         public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
         {
             //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
