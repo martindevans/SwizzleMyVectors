@@ -218,5 +218,13 @@ namespace SwizzleMyVectors.Geometry
             return Intersects(segment, out _);
         }
         #endregion
+
+        public LineSegment2 Transform(Matrix4x4 transform)
+        {
+            var s = Vector3.Transform(Start.X_Y(0), transform).XZ();
+            var e = Vector3.Transform(End.X_Y(0), transform).XZ();
+
+            return new LineSegment2(s, e);
+        }
     }
 }
