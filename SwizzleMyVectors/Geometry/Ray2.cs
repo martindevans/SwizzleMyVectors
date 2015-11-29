@@ -344,5 +344,32 @@ namespace SwizzleMyVectors.Geometry
         {
             return DistanceToPoint(point) > -epsilon;
         }
+
+        public Parallelism Parallism(Ray2 ray)
+        {
+            //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
+
+            var p = Position;
+            var r = Direction;
+
+            var q = ray.Position;
+            var s = ray.Direction;
+
+            // It isn't maths if the variable names make any sense
+            // ReSharper disable InconsistentNaming
+            var RxS = r.Cross(s);
+            var QmP = q - p;
+            // ReSharper restore InconsistentNaming
+
+            if (Math.Abs(RxS - 0) < 0.001)
+            {
+                // ReSharper disable InconsistentNaming
+                var QmPxR = QmP.Cross(r);
+                // ReSharper restore InconsistentNaming
+                return Math.Abs(QmPxR - 0) < 0.001 ? Parallelism.Collinear : Parallelism.Parallel;
+            }
+
+            return Parallelism.None;
+        }
     }
 }
