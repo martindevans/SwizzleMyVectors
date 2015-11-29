@@ -84,6 +84,7 @@ namespace SwizzleMyVectors.Geometry
             return string.Format("Position:{0},Direction:{1}", Position, Direction);
         }
 
+        #region closest point
         /// <summary>
         /// Calculate the closest point on this ray to the given point
         /// </summary>
@@ -149,8 +150,10 @@ namespace SwizzleMyVectors.Geometry
         {
             distance = Direction.Cross(point - Position) / Direction.Length();
         }
+        #endregion
 
-        public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
+        #region intersection
+        public LinesIntersection2? Intersects(Ray2 ray, out Parallelism parallelism)
         {
             //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 
@@ -181,32 +184,13 @@ namespace SwizzleMyVectors.Geometry
             var point = p + (t * r);
 
             parallelism = Parallelism.None;
-            return new RayRayIntersection(point, t, u);
+            return new LinesIntersection2(point, t, u);
         }
 
-        public struct RayRayIntersection
+        public LinesIntersection2? Intersects(Ray2 ray)
         {
-            /// <summary>
-            /// The position where the two rays intersect
-            /// </summary>
-            public readonly Vector2 Position;
-
-            /// <summary>
-            /// The distance along ray A. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
-            /// </summary>
-            public readonly float DistanceAlongA;
-
-            /// <summary>
-            /// The distance along ray B. Units are in ray lengths, so 0 indicates the start, 1 indicates the end.
-            /// </summary>
-            public readonly float DistanceAlongB;
-
-            public RayRayIntersection(Vector2 position, float distanceAlongLineA, float distanceAlongLineB)
-            {
-                Position = position;
-                DistanceAlongA = distanceAlongLineA;
-                DistanceAlongB = distanceAlongLineB;
-            }
+            Parallelism _;
+            return Intersects(ray, out _);
         }
 
         /// <summary>
@@ -348,5 +332,17 @@ namespace SwizzleMyVectors.Geometry
 
         //    result = (dist < 0) ? null : distanceAlongRay - (float?)Math.Sqrt(dist);
         //}
+        #endregion
+
+        /// <summary>
+        /// Checks if the given point is to the left of the line (from an observer standing at the start looking along the line)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="epsilon"></param>
+        /// <returns></returns>
+        public bool IsLeft(Vector2 point, float epsilon)
+        {
+            return DistanceToPoint(point) > -epsilon;
+        }
     }
 }

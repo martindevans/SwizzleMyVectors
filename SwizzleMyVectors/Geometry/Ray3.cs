@@ -138,7 +138,11 @@ namespace SwizzleMyVectors.Geometry
             //return result;
         //}
 
-        //public RayRayIntersection? Intersects(Ray2 ray, out Parallelism parallelism)
+        //public RayRayIntersection? Intersects(Ray3 ray, out Parallelism parallelism)
+        //{
+        //}
+
+        //public RayRayIntersection? Intersects(Ray3 ray)
         //{
         //}
 

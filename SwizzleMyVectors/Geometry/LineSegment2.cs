@@ -100,5 +100,123 @@ namespace SwizzleMyVectors.Geometry
         {
             return string.Format("Start:{0},End:{1}", Start, End);
         }
+
+        #region closest point
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public Vector2 ClosestPoint(Vector2 point)
+        {
+            float t;
+            return ClosestPoint(ref point, out t);
+        }
+
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result">distance along the ray at which the closest point lies</param>
+        /// <returns></returns>
+        public Vector2 ClosestPoint(ref Vector2 point, out float result)
+        {
+            var pos = LongLine.ClosestPoint(ref point, out result);
+
+            if (result > 1)
+            {
+                result = 1;
+                return End;
+            }
+
+            if (result < 0)
+            {
+                result = 0;
+                return Start;
+            }
+
+            return pos;
+        }
+
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public float ClosestPointDistanceAlongSegment(Vector2 point)
+        {
+            float dist;
+            ClosestPointDistanceAlongSegment(ref point, out dist);
+            return dist;
+        }
+
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public void ClosestPointDistanceAlongSegment(ref Vector2 point, out float distance)
+        {
+            LongLine.ClosestPointDistanceAlongLine(ref point, out distance);
+
+            distance = distance.Clamp(0, 1);
+        }
+
+        public float DistanceToPoint(Vector2 point)
+        {
+            float result;
+            DistanceToPoint(ref point, out result);
+            return result;
+        }
+
+        public void DistanceToPoint(ref Vector2 point, out float distance)
+        {
+            distance = (point - ClosestPoint(point)).Length();
+        }
+        #endregion
+
+        #region intersection
+        public LinesIntersection2? Intersects(Ray2 ray, out Parallelism parallelism)
+        {
+            var intersection = LongLine.Intersects(ray, out parallelism);
+
+            if (!intersection.HasValue)
+                return null;
+
+            if (intersection.Value.DistanceAlongA <= 0 || intersection.Value.DistanceAlongA >= 1)
+                return null;
+
+            return intersection;
+        }
+
+        public LinesIntersection2? Intersects(Ray2 ray)
+        {
+            Parallelism _;
+            return Intersects(ray, out _);
+        }
+
+        public LinesIntersection2? Intersects(LineSegment2 segment, out Parallelism parallelism)
+        {
+            var intersection = LongLine.Intersects(segment.LongLine, out parallelism);
+
+            if (!intersection.HasValue)
+                return null;
+
+            if (intersection.Value.DistanceAlongA <= 0 || intersection.Value.DistanceAlongA >= 1)
+                return null;
+
+            if (intersection.Value.DistanceAlongB <= 0 || intersection.Value.DistanceAlongB >= 1)
+                return null;
+
+            return intersection;
+        }
+
+        public LinesIntersection2? Intersects(LineSegment2 segment)
+        {
+            Parallelism _;
+            return Intersects(segment, out _);
+        }
+        #endregion
     }
 }
