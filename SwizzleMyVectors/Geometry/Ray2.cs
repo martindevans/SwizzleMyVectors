@@ -174,7 +174,7 @@ namespace SwizzleMyVectors.Geometry
                 // ReSharper disable InconsistentNaming
                 var QmPxR = QmP.Cross(r);
                 // ReSharper restore InconsistentNaming
-                parallelism = Math.Abs(QmPxR - 0) < 0.001 ? Parallelism.Collinear : Parallelism.Parallel;
+                parallelism = Math.Abs(QmPxR - 0) < 0.001 ? Geometry.Parallelism.Collinear : Geometry.Parallelism.Parallel;
                 return null;
             }
 
@@ -183,7 +183,7 @@ namespace SwizzleMyVectors.Geometry
 
             var point = p + (t * r);
 
-            parallelism = Parallelism.None;
+            parallelism = Geometry.Parallelism.None;
             return new LinesIntersection2(point, t, u);
         }
 
@@ -345,7 +345,7 @@ namespace SwizzleMyVectors.Geometry
             return DistanceToPoint(point) > -epsilon;
         }
 
-        public Parallelism Parallism(Ray2 ray)
+        public Parallelism Parallelism(Ray2 ray)
         {
             //http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
 
@@ -366,10 +366,10 @@ namespace SwizzleMyVectors.Geometry
                 // ReSharper disable InconsistentNaming
                 var QmPxR = QmP.Cross(r);
                 // ReSharper restore InconsistentNaming
-                return Math.Abs(QmPxR - 0) < 0.001 ? Parallelism.Collinear : Parallelism.Parallel;
+                return Math.Abs(QmPxR - 0) < 0.001 ? Geometry.Parallelism.Collinear : Geometry.Parallelism.Parallel;
             }
 
-            return Parallelism.None;
+            return Geometry.Parallelism.None;
         }
     }
 }
