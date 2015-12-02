@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Numerics;
 
 namespace SwizzleMyVectors.Geometry
@@ -30,91 +31,7 @@ namespace SwizzleMyVectors.Geometry
             Max = max;
         }
 
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="a">BoundingBox to compare.</param><param name="b">BoundingBox to compare.</param>
-        public static bool operator ==(BoundingRectangle a, BoundingRectangle b)
-        {
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are not equal.
-        /// </summary>
-        /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
-        public static bool operator !=(BoundingRectangle a, BoundingRectangle b)
-        {
-            return !a.Equals(b);
-        }
-
-        /// <summary>
-        /// Gets an array of points that make up the corners of the BoundingRectangle.
-        /// </summary>
-        public Vector2[] GetCorners()
-        {
-            var arr = new Vector2[CornerCount];
-            GetCorners(arr);
-            return arr;
-        }
-
-        /// <summary>
-        /// Gets the array of points that make up the corners of the BoundingRectangle.
-        /// </summary>
-        /// <param name="corners">An existing array of at least 4 Vector2 points where the corners of the BoundingRectangle are written.</param>
-        public void GetCorners(Vector2[] corners)
-        {
-            if (corners.Length < CornerCount)
-                throw new ArgumentException("Array too small", "corners");
-
-            corners[0] = Min;
-            corners[1] = new Vector2(Min.X, Max.Y);
-            corners[2] = Max;
-            corners[3] = new Vector2(Max.X, Min.Y);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
-        public bool Equals(BoundingRectangle other)
-        {
-            return Min.Equals(other.Min) && Max.Equals(other.Max);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="obj">The Object to compare with the current BoundingBox.</param>
-        public override bool Equals(object obj)
-        {
-            return obj is BoundingRectangle && Equals((BoundingRectangle)obj);
-        }
-
-        /// <summary>
-        /// Gets the hash code for this instance.
-        /// </summary>
-        public override int GetHashCode()
-        {
-// This seems ugly, but it's inline with how MS designed their vector types!
-// ReSharper disable NonReadonlyFieldInGetHashCode
-
-            int hash = 17;
-            hash = hash * 31 + Min.GetHashCode();
-            hash = hash * 31 + Max.GetHashCode();
-            return hash;
-
-// ReSharper restore NonReadonlyFieldInGetHashCode
-        }
-
-        /// <summary>
-        /// Returns a String that represents the current BoundingRectangle.
-        /// </summary>
-        public override string ToString()
-        {
-            return string.Format("Min:{0},Max:{1}", Min, Max);
-        }
-
+        #region static factories
         /// <summary>
         /// Creates the smallest BoundingRectangle that contains the two specified BoundingRectangle instances.
         /// </summary>
@@ -156,11 +73,117 @@ namespace SwizzleMyVectors.Geometry
             return new BoundingRectangle(min, max);
 
         }
+        #endregion
 
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="a">BoundingBox to compare.</param><param name="b">BoundingBox to compare.</param>
+        [Pure]
+        public static bool operator ==(BoundingRectangle a, BoundingRectangle b)
+        {
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are not equal.
+        /// </summary>
+        /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
+        [Pure]
+        public static bool operator !=(BoundingRectangle a, BoundingRectangle b)
+        {
+            return !a.Equals(b);
+        }
+
+        /// <summary>
+        /// Gets an array of points that make up the corners of the BoundingRectangle.
+        /// </summary>
+        [Pure]
+        public Vector2[] GetCorners()
+        {
+            var arr = new Vector2[CornerCount];
+            GetCorners(arr);
+            return arr;
+        }
+
+        /// <summary>
+        /// Gets the array of points that make up the corners of the BoundingRectangle.
+        /// </summary>
+        /// <param name="corners">An existing array of at least 4 Vector2 points where the corners of the BoundingRectangle are written.</param>
+        public void GetCorners(Vector2[] corners)
+        {
+            if (corners.Length < CornerCount)
+                throw new ArgumentException("Array too small", "corners");
+
+            corners[0] = Min;
+            corners[1] = new Vector2(Min.X, Max.Y);
+            corners[2] = Max;
+            corners[3] = new Vector2(Max.X, Min.Y);
+        }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
+        [Pure]
+        public bool Equals(BoundingRectangle other)
+        {
+            return Min.Equals(other.Min) && Max.Equals(other.Max);
+        }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="obj">The Object to compare with the current BoundingBox.</param>
+        [Pure]
+        public override bool Equals(object obj)
+        {
+            return obj is BoundingRectangle && Equals((BoundingRectangle)obj);
+        }
+
+        /// <summary>
+        /// Gets the hash code for this instance.
+        /// </summary>
+        [Pure]
+        public override int GetHashCode()
+        {
+// This seems ugly, but it's inline with how MS designed their vector types!
+// ReSharper disable NonReadonlyFieldInGetHashCode
+
+            int hash = 17;
+            hash = hash * 31 + Min.GetHashCode();
+            hash = hash * 31 + Max.GetHashCode();
+            return hash;
+
+// ReSharper restore NonReadonlyFieldInGetHashCode
+        }
+
+        /// <summary>
+        /// Returns a String that represents the current BoundingRectangle.
+        /// </summary>
+        [Pure]
+        public override string ToString()
+        {
+            return string.Format("Min:{0},Max:{1}", Min, Max);
+        }
+
+        /// <summary>
+        /// Calculate the area of this bounding rectangle
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        public float Area()
+        {
+            var sz = (Max - Min);
+            return sz.X * sz.Y;
+        }
+
+        #region intersection
         /// <summary>
         /// Checks whether the current BoundingRectangle intersects another BoundingRectangle.
         /// </summary>
         /// <param name="box">The BoundingBox to check for intersection with.</param>
+        [Pure]
         public bool Intersects(BoundingRectangle box)
         {
             bool result;
@@ -173,6 +196,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="box"></param>
         /// <returns></returns>
+        [Pure]
         public BoundingRectangle? Intersection(BoundingRectangle box)
         {
             return Intersection(ref box);
@@ -183,6 +207,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="box"></param>
         /// <returns></returns>
+        [Pure]
         public BoundingRectangle? Intersection(ref BoundingRectangle box)
         {
             var min = Vector2.Max(Min, box.Min);
@@ -204,13 +229,16 @@ namespace SwizzleMyVectors.Geometry
             result = box.Min.X < Max.X && box.Max.X > Min.X
                   && box.Min.Y < Max.Y && box.Max.Y > Min.Y;
         }
+        #endregion
 
+        #region containment
         /// <summary>
         /// Gets whether or not the provided coordinates lie within the bounds of this <see cref="BoundingRectangle"/>.
         /// </summary>
         /// <param name="x">The x coordinate of the point to check for containment.</param>
         /// <param name="y">The y coordinate of the point to check for containment.</param>
         /// <returns><c>true</c> if the provided coordinates lie inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
+        [Pure]
         public bool Contains(float x, float y)
         {
             return Contains(new Vector2(x, y));
@@ -221,6 +249,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="value">The coordinates to check for inclusion in this <see cref="BoundingRectangle"/>.</param>
         /// <returns><c>true</c> if the provided <see cref="Vector2"/> lies inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
+        [Pure]
         public bool Contains(Vector2 value)
         {
             bool result;
@@ -244,6 +273,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="value">The <see cref="BoundingRectangle"/> to check for inclusion in this <see cref="BoundingRectangle"/>.</param>
         /// <returns><c>true</c> if the provided <see cref="BoundingRectangle"/>'s bounds lie entirely inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
+        [Pure]
         public bool Contains(BoundingRectangle value)
         {
             bool result;
@@ -261,5 +291,6 @@ namespace SwizzleMyVectors.Geometry
             result = Vector2.Min(value.Min, Min) == Min
                   && Vector2.Max(value.Max, Max) == Max;
         }
+        #endregion
     }
 }

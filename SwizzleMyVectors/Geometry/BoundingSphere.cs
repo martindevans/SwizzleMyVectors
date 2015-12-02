@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Numerics;
 
 namespace SwizzleMyVectors.Geometry
@@ -250,6 +251,20 @@ namespace SwizzleMyVectors.Geometry
         public static BoundingSphere CreateFromFrustum(BoundingFrustum frustum)
         {
             return CreateFromPoints(frustum.GetCorners());
+        }
+
+        /// <summary>
+        /// Calculate the volume of this sphere
+        /// </summary>
+        /// <returns></returns>
+        [Pure]
+        public float Volume()
+        {
+            // (4 / 3 * pi) * r^3
+            // ^^^^^^^^^^^^
+            // This constant is precalculated
+
+            return 4.18879020479f * Radius * Radius * Radius;
         }
 
         /// <summary>

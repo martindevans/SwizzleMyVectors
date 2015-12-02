@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -39,6 +40,79 @@ namespace SwizzleMyVectors.Geometry
             Min = min;
             Max = max;
         }
+
+        #region static factories
+        /// <summary>
+        /// Creates the smallest BoundingBox that contains the two specified BoundingBox instances.
+        /// </summary>
+        /// <param name="original">One of the BoundingBoxs to contain.</param><param name="additional">One of the BoundingBoxs to contain.</param>
+        public static BoundingBox CreateMerged(BoundingBox original, BoundingBox additional)
+        {
+            BoundingBox result;
+            CreateMerged(ref original, ref additional, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates the smallest BoundingBox that contains the two specified BoundingBox instances.
+        /// </summary>
+        /// <param name="original">One of the BoundingBox instances to contain.</param><param name="additional">One of the BoundingBox instances to contain.</param><param name="result">[OutAttribute] The created BoundingBox.</param>
+        public static void CreateMerged(ref BoundingBox original, ref BoundingBox additional, out BoundingBox result)
+        {
+            result = new BoundingBox(
+                Vector3.Min(original.Min, additional.Min),
+                Vector3.Max(original.Max, additional.Max)
+            );
+        }
+
+        /// <summary>
+        /// Creates the smallest BoundingBox that will contain the specified BoundingSphere.
+        /// </summary>
+        /// <param name="sphere">The BoundingSphere to contain.</param>
+        public static BoundingBox CreateFromSphere(BoundingSphere sphere)
+        {
+            BoundingBox result;
+            CreateFromSphere(ref sphere, out result);
+            return result;
+        }
+
+        /// <summary>
+        /// Creates the smallest BoundingBox that will contain the specified BoundingSphere.
+        /// </summary>
+        /// <param name="sphere">The BoundingSphere to contain.</param><param name="result">[OutAttribute] The created BoundingBox.</param>
+        public static void CreateFromSphere(ref BoundingSphere sphere, out BoundingBox result)
+        {
+            var corner = new Vector3(sphere.Radius);
+            result.Min = sphere.Center - corner;
+            result.Max = sphere.Center + corner;
+        }
+
+        /// <summary>
+        /// Creates the smallest BoundingBox that will contain a group of points.
+        /// </summary>
+        /// <param name="points">A list of points the BoundingBox should contain.</param>
+        public static BoundingBox CreateFromPoints(IEnumerable<Vector3> points)
+        {
+            if (points == null)
+                throw new ArgumentNullException("points");
+
+            var empty = true;
+            var min = new Vector3(float.MaxValue);
+            var max = new Vector3(float.MinValue);
+            foreach (var point in points)
+            {
+                min = Vector3.Min(min, point);
+                max = Vector3.Max(max, point);
+
+                empty = false;
+            }
+
+            if (empty)
+                throw new ArgumentException("points");
+
+            return new BoundingBox(min, max);
+        }
+        #endregion
 
         /// <summary>
         /// Determines whether two instances of BoundingBox are equal.
@@ -138,76 +212,17 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
-        /// Creates the smallest BoundingBox that contains the two specified BoundingBox instances.
+        /// Calculate the volume of this bounding box
         /// </summary>
-        /// <param name="original">One of the BoundingBoxs to contain.</param><param name="additional">One of the BoundingBoxs to contain.</param>
-        public static BoundingBox CreateMerged(BoundingBox original, BoundingBox additional)
+        /// <returns></returns>
+        [Pure]
+        public float Volume()
         {
-            BoundingBox result;
-            CreateMerged(ref original, ref additional, out result);
-            return result;
+            var sz = Max - Min;
+            return sz.X * sz.Y * sz.Z;
         }
 
-        /// <summary>
-        /// Creates the smallest BoundingBox that contains the two specified BoundingBox instances.
-        /// </summary>
-        /// <param name="original">One of the BoundingBox instances to contain.</param><param name="additional">One of the BoundingBox instances to contain.</param><param name="result">[OutAttribute] The created BoundingBox.</param>
-        public static void CreateMerged(ref BoundingBox original, ref BoundingBox additional, out BoundingBox result)
-        {
-            result = new BoundingBox(
-                Vector3.Min(original.Min, additional.Min),
-                Vector3.Max(original.Max, additional.Max)
-            );
-        }
-
-        /// <summary>
-        /// Creates the smallest BoundingBox that will contain the specified BoundingSphere.
-        /// </summary>
-        /// <param name="sphere">The BoundingSphere to contain.</param>
-        public static BoundingBox CreateFromSphere(BoundingSphere sphere)
-        {
-            BoundingBox result;
-            CreateFromSphere(ref sphere, out result);
-            return result;
-        }
-
-        /// <summary>
-        /// Creates the smallest BoundingBox that will contain the specified BoundingSphere.
-        /// </summary>
-        /// <param name="sphere">The BoundingSphere to contain.</param><param name="result">[OutAttribute] The created BoundingBox.</param>
-        public static void CreateFromSphere(ref BoundingSphere sphere, out BoundingBox result)
-        {
-            var corner = new Vector3(sphere.Radius);
-            result.Min = sphere.Center - corner;
-            result.Max = sphere.Center + corner;
-        }
-
-        /// <summary>
-        /// Creates the smallest BoundingBox that will contain a group of points.
-        /// </summary>
-        /// <param name="points">A list of points the BoundingBox should contain.</param>
-        public static BoundingBox CreateFromPoints(IEnumerable<Vector3> points)
-        {
-            if (points == null)
-                throw new ArgumentNullException("points");
-
-            var empty = true;
-            var min = new Vector3(float.MaxValue);
-            var max = new Vector3(float.MinValue);
-            foreach (var point in points)
-            {
-                min = Vector3.Min(min, point);
-                max = Vector3.Max(max, point);
-
-                empty = false;
-            }
-
-            if (empty)
-                throw new ArgumentException("points");
-
-            return new BoundingBox(min, max);
-        }
-
+        #region intersection
         /// <summary>
         /// Checks whether the current BoundingBox intersects another BoundingBox.
         /// </summary>
@@ -404,7 +419,9 @@ namespace SwizzleMyVectors.Geometry
 
             result = false;
         }
+        #endregion
 
+        #region containment
         /// <summary>
         /// Tests whether the BoundingBox contains another BoundingBox.
         /// </summary>
@@ -611,5 +628,6 @@ namespace SwizzleMyVectors.Geometry
 
             result = ContainmentType.Disjoint;
         }
+        #endregion
     }
 }
