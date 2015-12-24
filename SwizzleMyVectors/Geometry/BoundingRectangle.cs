@@ -21,6 +21,11 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         public Vector2 Max;
 
+        public Vector2 Extent
+        {
+            get { return Max - Min; }
+        }
+
         /// <summary>
         /// Creates an instance of BoundingBox.
         /// </summary>
