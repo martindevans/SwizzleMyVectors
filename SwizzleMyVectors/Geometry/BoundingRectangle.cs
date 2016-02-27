@@ -101,6 +101,40 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
+        /// Expand bounding rectangle by distance / 2 at min and max (total of distance)
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        [Pure]
+        public BoundingRectangle Inflate(float distance)
+        {
+            var self = this;
+            Inflate(ref self, distance);
+            return self;
+        }
+
+        /// <summary>
+        /// Expand bounding rectangle by distance / 2 at min and max (total of distance)
+        /// </summary>
+        /// <param name="rectangle">The rectangle to mutate</param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public static void Inflate(ref BoundingRectangle rectangle, float distance)
+        {
+            var min = rectangle.Min - new Vector2(distance / 2);
+            var max = rectangle.Max + new Vector2(distance / 2);
+
+            if (distance < 0)
+            {
+                if (Vector2.Min(min, max) != min)
+                    throw new ArgumentOutOfRangeException("distance", "Distance specified to inflate rectangle is a negative value larger than the total diagonal size of the rectangle (doing this would invert the rectangle!");
+            }
+
+            rectangle.Min = min;
+            rectangle.Max = max;
+        }
+
+        /// <summary>
         /// Gets an array of points that make up the corners of the BoundingRectangle.
         /// </summary>
         [Pure]

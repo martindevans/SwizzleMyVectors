@@ -46,6 +46,34 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
+        /// Expand bounding sphere diameter by distance
+        /// </summary>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        [Pure]
+        public BoundingSphere Inflate(float distance)
+        {
+            var self = this;
+            Inflate(ref self, distance);
+            return self;
+        }
+
+        /// <summary>
+        /// Expand bounding sphere diameter by distance
+        /// </summary>
+        /// <param name="sphere">The sphere to mutate</param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public static void Inflate(ref BoundingSphere sphere, float distance)
+        {
+            var r = sphere.Radius + distance / 2;
+            if (r < 0)
+                throw new ArgumentOutOfRangeException("distance", "Distance specified to inflate sphere is a negative value larger than the total diameter (this would cause a negative radius!)");
+
+            sphere.Radius = r;
+        }
+
+        /// <summary>
         /// Determines whether the specified BoundingSphere is equal to the current BoundingSphere.
         /// </summary>
         /// <param name="other">The BoundingSphere to compare with the current BoundingSphere.</param>

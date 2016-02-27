@@ -98,5 +98,32 @@ namespace SwizzleMyVectors.Test.Geometry
             // ReSharper disable once PossibleInvalidOperationException
             Assert.IsFalse(a.Intersection(b).HasValue);
         }
+
+        [TestMethod]
+        public void AssertThat_Inflate_IncreasesSize()
+        {
+            BoundingRectangle s = new BoundingRectangle(new Vector2(0), new Vector2(10));
+
+            Assert.AreEqual(new Vector2(-5), s.Inflate(10).Min);
+            Assert.AreEqual(new Vector2(15), s.Inflate(10).Max);
+        }
+
+        [TestMethod]
+        public void AssertThat_Inflate_ByNegativeValue_DecreasesSize()
+        {
+            BoundingRectangle s = new BoundingRectangle(new Vector2(0), new Vector2(10));
+
+            Assert.AreEqual(new Vector2(3), s.Inflate(-6).Min);
+            Assert.AreEqual(new Vector2(7), s.Inflate(-6).Max);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void AssertThat_InflateSphere_ByNegativeValueLargerThanSize_Throws()
+        {
+            BoundingRectangle s = new BoundingRectangle(Vector2.Zero, new Vector2(10));
+
+            var result = s.Inflate(-50);
+        }
     }
 }
