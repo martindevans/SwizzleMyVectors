@@ -371,5 +371,15 @@ namespace SwizzleMyVectors.Geometry
 
             return Geometry.Parallelism.None;
         }
+
+        /// <summary>
+        /// Given a distance along the line (in units of line length) get the point this distance evaluates to
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public Vector2 PointAlongLine(float t)
+        {
+            return Position + Direction * t;
+        }
     }
 }

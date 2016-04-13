@@ -24,7 +24,7 @@ namespace SwizzleMyVectors.Geometry
         }
 
         /// <summary>
-        /// Return a new Ray2, pointing along this segment (with none normalized direction vector)
+        /// Return a new Ray2, pointing along this segment (with non normalized direction vector)
         /// </summary>
         /// <returns></returns>
         public Ray2 LongLine
