@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace SwizzleMyVectors
 {
@@ -17,14 +16,14 @@ namespace SwizzleMyVectors
         }
 
         /// <summary>
-        /// Returns the perpendicular distance from a point to a plane
+        /// Returns the perpendicular distance from a plane to a point
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <param name="plane">The place to check</param>
         /// <returns>The perpendicular distance from the point to the plane (signed)</returns>
-        public static float PerpendicularDistance(this Plane plane, Vector3 point)
+        public static float DistanceTo(this Plane plane, Vector3 point)
         {
-            return Vector3.Dot(plane.Normal, point) - plane.D;
+            return Vector3.Dot(plane.Normal, point) + plane.D;
         }
     }
 }
