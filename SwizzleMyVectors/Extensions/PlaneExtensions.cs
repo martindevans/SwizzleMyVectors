@@ -21,12 +21,10 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point">The point to check</param>
         /// <param name="plane">The place to check</param>
-        /// <returns>The perpendicular distance from the point to the plane</returns>
+        /// <returns>The perpendicular distance from the point to the plane (signed)</returns>
         public static float PerpendicularDistance(this Plane plane, Vector3 point)
         {
-            // dist = (ax + by + cz + d) / sqrt(a*a + b*b + c*c)
-            return (float)Math.Abs((plane.Normal.X * point.X + plane.Normal.Y * point.Y + plane.Normal.Z * point.Z)
-                                    / Math.Sqrt(plane.Normal.X * plane.Normal.X + plane.Normal.Y * plane.Normal.Y + plane.Normal.Z * plane.Normal.Z));
+            return Vector3.Dot(plane.Normal, point) - plane.D;
         }
     }
 }
