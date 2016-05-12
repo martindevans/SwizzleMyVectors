@@ -48,6 +48,7 @@
     <Compile Include="Geometry\BoundingRectangle.cs" />
     <Compile Include="Geometry\BoundingSphere.cs" />
     <Compile Include="Geometry\ContainmentType.cs" />
+    <Compile Include="Geometry\LineSegment3.cs" />
     <Compile Include="Geometry\LineSegment2.cs" />
     <Compile Include="Geometry\LinesIntersection2.cs" />
     <Compile Include="Geometry\Parallelism.cs" />

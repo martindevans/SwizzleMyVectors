@@ -81,7 +81,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         public override string ToString()
         {
-            return string.Format("Position:{0},Direction:{1}", Position, Direction);
+            return $"Position:{Position},Direction:{Direction}";
         }
 
         ///// <summary>
@@ -337,7 +337,7 @@ namespace SwizzleMyVectors.Geometry
                 return;
             }
 
-            result = (-plane.D - Vector3.Dot(plane.Normal, Position)) / den;
+            result = (plane.D - Vector3.Dot(plane.Normal, Position)) / den;
 
             if (result < 0.0f)
             {

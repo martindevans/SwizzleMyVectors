@@ -57,6 +57,7 @@
     <Compile Include="Geometry\BoundingSphereTest.cs" />
     <Compile Include="Geometry\Ray2Test.cs" />
     <Compile Include="Geometry\LineSegment2Test.cs" />
+    <Compile Include="Geometry\Ray3Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
