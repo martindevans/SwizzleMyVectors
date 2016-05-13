@@ -330,14 +330,14 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="plane">The Plane with which to calculate this Ray's intersection.</param><param name="result">[OutAttribute] The distance at which this Ray intersects the specified Plane, or null if there is no intersection.</param>
         public void Intersects(ref Plane plane, out float? result)
         {
-            var den = Vector3.Dot(Direction, plane.Normal);
+            var den = Vector3.Dot(Direction, -plane.Normal);
             if (Math.Abs(den) < 0.00001f)
             {
                 result = null;
                 return;
             }
 
-            result = (plane.D - Vector3.Dot(plane.Normal, Position)) / den;
+            result = (plane.D - Vector3.Dot(-plane.Normal, Position)) / den;
 
             if (result < 0.0f)
             {
