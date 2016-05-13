@@ -104,12 +104,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public Vector2 ClosestPoint(ref Vector2 point, out float result)
         {
-            var direction = Direction;
-            var lengthSq = direction.LengthSquared();
-
-            //How far along the line the closest point is (in units of direction)
-            result = Vector2.Dot((point - Position), direction) / lengthSq;
-
+            ClosestPointDistanceAlongLine(ref point, out result);
             return Position + Direction * result;
         }
 

@@ -84,48 +84,54 @@ namespace SwizzleMyVectors.Geometry
             return $"Position:{Position},Direction:{Direction}";
         }
 
-        ///// <summary>
-        ///// Calculate the closest point on this ray to the given point
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <returns></returns>
-        //public Vector3 ClosestPoint(Vector3 point)
-        //{
-        //    float t;
-        //    return ClosestPoint(ref point, out t);
-        //}
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public Vector3 ClosestPoint(Vector3 point)
+        {
+            float t;
+            return ClosestPoint(ref point, out t);
+        }
 
-        ///// <summary>
-        ///// Calculate the closest point on this ray to the given point
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <param name="result">distance along the ray at which the closest point lies</param>
-        ///// <returns></returns>
-        //public Vector3 ClosestPoint(ref Vector3 point, out float result)
-        //{
-        //}
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result">distance along the ray at which the closest point lies</param>
+        /// <returns></returns>
+        public Vector3 ClosestPoint(ref Vector3 point, out float result)
+        {
+            ClosestPointDistanceAlongLine(ref point, out result);
+            return Position + Direction * result;
+        }
 
-        ///// <summary>
-        ///// Gets how far along this line the closest point is (in units of direction length)
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <returns></returns>
-        //public float ClosestPointDistanceAlongLine(Vector3 point)
-        //{
-        //    float dist;
-        //    ClosestPointDistanceAlongLine(ref point, out dist);
-        //    return dist;
-        //}
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public float ClosestPointDistanceAlongLine(Vector3 point)
+        {
+            float dist;
+            ClosestPointDistanceAlongLine(ref point, out dist);
+            return dist;
+        }
 
-        ///// <summary>
-        ///// Gets how far along this line the closest point is (in units of direction length)
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <param name="distance"></param>
-        ///// <returns></returns>
-        //public static void ClosestPointDistanceAlongLine(ref Vector3 point, out float distance)
-        //{
-        //}
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public void ClosestPointDistanceAlongLine(ref Vector3 point, out float distance)
+        {
+            var direction = Direction;
+            var lengthSq = direction.LengthSquared();
+
+            distance = Vector3.Dot((point - Position), direction) / lengthSq;
+        }
 
         //public float DistanceToPoint(Vector3 point)
         //{
@@ -133,9 +139,9 @@ namespace SwizzleMyVectors.Geometry
 
         //public void DistanceToPoint(ref Vector3 point, out float distance)
         //{
-            //float result;
-            //DistanceToPoint(ref point, out result);
-            //return result;
+        //float result;
+        //DistanceToPoint(ref point, out result);
+        //return result;
         //}
 
         //public RayRayIntersection? Intersects(Ray3 ray, out Parallelism parallelism)
@@ -170,7 +176,6 @@ namespace SwizzleMyVectors.Geometry
         //        DistanceAlongB = distanceAlongLineB;
         //    }
         //}
-
 
         /// <summary>
         /// Checks whether the Ray intersects a specified BoundingBox.

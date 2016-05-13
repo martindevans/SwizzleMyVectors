@@ -96,78 +96,78 @@ namespace SwizzleMyVectors.Geometry
         }
 
         #region closest point
-        ///// <summary>
-        ///// Calculate the closest point on this ray to the given point
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <returns></returns>
-        //public Vector3 ClosestPoint(Vector3 point)
-        //{
-        //    float t;
-        //    return ClosestPoint(ref point, out t);
-        //}
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public Vector3 ClosestPoint(Vector3 point)
+        {
+            float t;
+            return ClosestPoint(ref point, out t);
+        }
 
-        ///// <summary>
-        ///// Calculate the closest point on this ray to the given point
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <param name="result">distance along the ray at which the closest point lies</param>
-        ///// <returns></returns>
-        //public Vector3 ClosestPoint(ref Vector3 point, out float result)
-        //{
-        //    var pos = LongLine.ClosestPoint(ref point, out result);
+        /// <summary>
+        /// Calculate the closest point on this ray to the given point
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="result">distance along the ray at which the closest point lies</param>
+        /// <returns></returns>
+        public Vector3 ClosestPoint(ref Vector3 point, out float result)
+        {
+            var pos = LongLine.ClosestPoint(ref point, out result);
 
-        //    if (result > 1)
-        //    {
-        //        result = 1;
-        //        return End;
-        //    }
+            if (result > 1)
+            {
+                result = 1;
+                return End;
+            }
 
-        //    if (result < 0)
-        //    {
-        //        result = 0;
-        //        return Start;
-        //    }
+            if (result < 0)
+            {
+                result = 0;
+                return Start;
+            }
 
-        //    return pos;
-        //}
+            return pos;
+        }
 
-        ///// <summary>
-        ///// Gets how far along this line the closest point is (in units of direction length)
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <returns></returns>
-        //public float ClosestPointDistanceAlongSegment(Vector3 point)
-        //{
-        //    float dist;
-        //    ClosestPointDistanceAlongSegment(ref point, out dist);
-        //    return dist;
-        //}
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        public float ClosestPointDistanceAlongSegment(Vector3 point)
+        {
+            float dist;
+            ClosestPointDistanceAlongSegment(ref point, out dist);
+            return dist;
+        }
 
-        ///// <summary>
-        ///// Gets how far along this line the closest point is (in units of direction length)
-        ///// </summary>
-        ///// <param name="point"></param>
-        ///// <param name="distance"></param>
-        ///// <returns></returns>
-        //public void ClosestPointDistanceAlongSegment(ref Vector3 point, out float distance)
-        //{
-        //    LongLine.ClosestPointDistanceAlongLine(ref point, out distance);
+        /// <summary>
+        /// Gets how far along this line the closest point is (in units of direction length)
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="distance"></param>
+        /// <returns></returns>
+        public void ClosestPointDistanceAlongSegment(ref Vector3 point, out float distance)
+        {
+            LongLine.ClosestPointDistanceAlongLine(ref point, out distance);
 
-        //    distance = distance.Clamp(0, 1);
-        //}
+            distance = distance.Clamp(0, 1);
+        }
 
-        //public float DistanceToPoint(Vector3 point)
-        //{
-        //    float result;
-        //    DistanceToPoint(ref point, out result);
-        //    return result;
-        //}
+        public float DistanceToPoint(Vector3 point)
+        {
+            float result;
+            DistanceToPoint(ref point, out result);
+            return result;
+        }
 
-        //public void DistanceToPoint(ref Vector3 point, out float distance)
-        //{
-        //    distance = (point - ClosestPoint(point)).Length();
-        //}
+        public void DistanceToPoint(ref Vector3 point, out float distance)
+        {
+            distance = (point - ClosestPoint(point)).Length();
+        }
         #endregion
 
         //#region intersection

@@ -160,5 +160,35 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.AreEqual(0, i);
         }
+
+        [TestMethod]
+        public void AssertThat_RayClosestPoint_IsOnLine()
+        {
+            var ray = new Ray3(new Vector3(0, 1, 0), new Vector3(0, 10, 0));
+            var point = new Vector3(5, 5, 5);
+            
+            var closest = ray.ClosestPoint(point);
+            Assert.AreEqual(new Vector3(0, 5, 0), closest);
+        }
+
+        [TestMethod]
+        public void AssertThat_RayClosestPoint_IsOnLine_BeforeStart()
+        {
+            var ray = new Ray3(new Vector3(0, 1, 0), new Vector3(0, 10, 0));
+            var point = new Vector3(5, 0, 5);
+
+            var closest = ray.ClosestPoint(point);
+            Assert.AreEqual(new Vector3(0, 0, 0), closest);
+        }
+
+        [TestMethod]
+        public void AssertThat_RayClosestPoint_IsOnLine_AfterOneLength()
+        {
+            var ray = new Ray3(new Vector3(0, 1, 0), new Vector3(0, 10, 0));
+            var point = new Vector3(5, 150, 5);
+
+            var closest = ray.ClosestPoint(point);
+            Assert.AreEqual(new Vector3(0, 150, 0), closest);
+        }
     }
 }
