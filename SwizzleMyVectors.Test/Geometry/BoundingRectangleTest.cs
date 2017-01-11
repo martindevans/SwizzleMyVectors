@@ -110,7 +110,7 @@ namespace SwizzleMyVectors.Test.Geometry
         }
 
         [TestMethod]
-        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect()
+        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect_OnTop()
         {
             var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
 
@@ -118,6 +118,39 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.IsNotNull(i);
             Assert.AreEqual(new Vector2(6, 10), i.Value.Position);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect_OnLeft()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(5, 5), new Vector2(-10, 8)));
+
+            Assert.IsNotNull(i);
+            Assert.AreEqual(new Vector2(0, 6), i.Value.Position);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect_OnRight()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(5, 5), new Vector2(20, 8)));
+
+            Assert.IsNotNull(i);
+            Assert.AreEqual(new Vector2(10, 6), i.Value.Position);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect_OnBot()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(5, 5), new Vector2(10, -20)));
+
+            Assert.IsNotNull(i);
+            Assert.AreEqual(new Vector2(6, 0), i.Value.Position);
         }
 
         [TestMethod]
