@@ -100,6 +100,38 @@ namespace SwizzleMyVectors.Test.Geometry
         }
 
         [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsNothing_WithNoIntersect()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(20, 20), new Vector2(30, 30)));
+
+            Assert.IsNull(i);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsIntersection_WithSingleIntersect()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(5, 5), new Vector2(10, 30)));
+
+            Assert.IsNotNull(i);
+            Assert.AreEqual(new Vector2(6, 10), i.Value.Position);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_ReturnsClosestIntersectionIntersection_WithMultipleIntersects()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            var i = a.Intersects(new LineSegment2(new Vector2(5, -5), new Vector2(12, 30)));
+
+            Assert.IsNotNull(i);
+            Assert.AreEqual(new Vector2(6, 0), i.Value.Position);
+        }
+
+        [TestMethod]
         public void AssertThat_Inflate_IncreasesSize()
         {
             BoundingRectangle s = new BoundingRectangle(new Vector2(0), new Vector2(10));
@@ -119,7 +151,7 @@ namespace SwizzleMyVectors.Test.Geometry
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void AssertThat_InflateSphere_ByNegativeValueLargerThanSize_Throws()
+        public void AssertThat_Inflate_ByNegativeValueLargerThanSize_Throws()
         {
             BoundingRectangle s = new BoundingRectangle(Vector2.Zero, new Vector2(10));
 

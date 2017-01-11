@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace SwizzleMyVectors
@@ -66,12 +67,12 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        public static float Area(this Vector2[] v)
+        public static float Area(this IReadOnlyList<Vector2> v)
         {
             var area = 0f;
 
-            int previous = v.Length - 1;
-            for (int i = 0; i < v.Length; i++)
+            int previous = v.Count - 1;
+            for (int i = 0; i < v.Count; i++)
             {
                 area += (v[i].X + v[previous].X) * (v[i].Y - v[previous].Y);
                 previous = i;
@@ -86,15 +87,15 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static bool IsConvex(this Vector2[] v, float epsilon = float.Epsilon)
+        public static bool IsConvex(this IReadOnlyList<Vector2> v, float epsilon = float.Epsilon)
         {
             int sign = 0;
             bool first = true;
-            for (int i = 0; i < v.Length; i++)
+            for (int i = 0; i < v.Count; i++)
             {
                 var p = v[i];
-                var p1 = v[(i + 1) % v.Length];
-                var p2 = v[(i + 2) % v.Length];
+                var p1 = v[(i + 1) % v.Count];
+                var p2 = v[(i + 2) % v.Count];
 
                 var d1 = p1 - p;
                 var d2 = p2 - p1;

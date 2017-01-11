@@ -152,12 +152,17 @@ namespace SwizzleMyVectors.Geometry
         public void GetCorners(Vector2[] corners)
         {
             if (corners.Length < CornerCount)
-                throw new ArgumentException("Array too small", "corners");
+                throw new ArgumentException("Array too small", nameof(corners));
 
-            corners[0] = Min;
-            corners[1] = new Vector2(Min.X, Max.Y);
-            corners[2] = Max;
-            corners[3] = new Vector2(Max.X, Min.Y);
+            GetCorners(out corners[0], out corners[1], out corners[2], out corners[3]);
+        }
+
+        public void GetCorners(out Vector2 a, out Vector2 b, out Vector2 c, out Vector2 d)
+        {
+            a = Min;
+            b = new Vector2(Min.X, Max.Y);
+            c = Max;
+            d = new Vector2(Max.X, Min.Y);
         }
 
         /// <summary>
@@ -267,6 +272,29 @@ namespace SwizzleMyVectors.Geometry
         {
             result = box.Min.X < Max.X && box.Max.X > Min.X
                   && box.Min.Y < Max.Y && box.Max.Y > Min.Y;
+        }
+
+        [Pure]
+        public LinesIntersection2? Intersects(LineSegment2 segment)
+        {
+            Vector2 a, b, c, d;
+            GetCorners(out a, out b, out c, out d);
+
+            var abi = segment.Intersects(new LineSegment2(a, b));
+            var bci = segment.Intersects(new LineSegment2(b, c));
+            var cdi = segment.Intersects(new LineSegment2(c, d));
+            var dai = segment.Intersects(new LineSegment2(d, a));
+
+            var min = abi;
+
+            if (bci.HasValue && (!min.HasValue || bci.Value.DistanceAlongA < min.Value.DistanceAlongA))
+                min = bci;
+            if (cdi.HasValue && (!min.HasValue || cdi.Value.DistanceAlongA < min.Value.DistanceAlongA))
+                min = cdi;
+            if (dai.HasValue && (!min.HasValue || dai.Value.DistanceAlongA < min.Value.DistanceAlongA))
+                min = dai;
+
+            return min;
         }
         #endregion
 
