@@ -7,6 +7,7 @@ namespace SwizzleMyVectors.Geometry
 {
     public struct BoundingRectangle
     {
+        #region fields and properties
         /// <summary>
         /// Specifies the total number of corners (4) in the BoundingRectangle.
         /// </summary>
@@ -25,6 +26,7 @@ namespace SwizzleMyVectors.Geometry
         {
             get { return Max - Min; }
         }
+        #endregion
 
         /// <summary>
         /// Creates an instance of BoundingBox.
@@ -220,6 +222,27 @@ namespace SwizzleMyVectors.Geometry
         {
             var sz = (Max - Min);
             return sz.X * sz.Y;
+        }
+
+        public Vector2 ClosestPoint(Vector2 point)
+        {
+            float x;
+            if (point.X < Min.X)
+                x = Min.X;
+            else if (point.X > Max.X)
+                x = Max.X;
+            else
+                x = point.X;
+
+            float y;
+            if (point.Y < Min.Y)
+                y = Min.Y;
+            else if (point.Y > Max.Y)
+                y = Max.Y;
+            else
+                y = point.Y;
+
+            return new Vector2(x, y);
         }
 
         #region intersection

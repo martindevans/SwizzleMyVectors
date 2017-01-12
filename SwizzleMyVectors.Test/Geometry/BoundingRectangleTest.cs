@@ -190,5 +190,37 @@ namespace SwizzleMyVectors.Test.Geometry
 
             var result = s.Inflate(-50);
         }
+
+        [TestMethod]
+        public void AssertThat_ClosestPointIsClosestPoint_OnLeft()
+        {
+            var b = new BoundingRectangle(new Vector2(0, 10), new Vector2(20, 30));
+
+            Assert.AreEqual(new Vector2(0, 25), b.ClosestPoint(new Vector2(-10, 25)));
+        }
+
+        [TestMethod]
+        public void AssertThat_ClosestPointIsClosestPoint_OnRight()
+        {
+            var b = new BoundingRectangle(new Vector2(0, 10), new Vector2(20, 30));
+
+            Assert.AreEqual(new Vector2(20, 25), b.ClosestPoint(new Vector2(25, 25)));
+        }
+
+        [TestMethod]
+        public void AssertThat_ClosestPointIsClosestPoint_OnTop()
+        {
+            var b = new BoundingRectangle(new Vector2(0, 10), new Vector2(20, 30));
+
+            Assert.AreEqual(new Vector2(10, 30), b.ClosestPoint(new Vector2(10, 35)));
+        }
+
+        [TestMethod]
+        public void AssertThat_ClosestPointIsClosestPoint_OnBot()
+        {
+            var b = new BoundingRectangle(new Vector2(0, 10), new Vector2(20, 30));
+
+            Assert.AreEqual(new Vector2(10, 10), b.ClosestPoint(new Vector2(10, 0)));
+        }
     }
 }
