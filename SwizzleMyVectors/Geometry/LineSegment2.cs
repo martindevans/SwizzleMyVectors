@@ -203,10 +203,10 @@ namespace SwizzleMyVectors.Geometry
             if (!intersection.HasValue)
                 return null;
 
-            if (intersection.Value.DistanceAlongA <= 0 || intersection.Value.DistanceAlongA >= 1)
+            if (intersection.Value.DistanceAlongA < 0 || intersection.Value.DistanceAlongA > 1)
                 return null;
 
-            if (intersection.Value.DistanceAlongB <= 0 || intersection.Value.DistanceAlongB >= 1)
+            if (intersection.Value.DistanceAlongB < 0 || intersection.Value.DistanceAlongB > 1)
                 return null;
 
             return intersection;
@@ -214,8 +214,7 @@ namespace SwizzleMyVectors.Geometry
 
         public LinesIntersection2? Intersects(LineSegment2 segment)
         {
-            Parallelism _;
-            return Intersects(segment, out _);
+            return Intersects(segment, out Parallelism _);
         }
         #endregion
 

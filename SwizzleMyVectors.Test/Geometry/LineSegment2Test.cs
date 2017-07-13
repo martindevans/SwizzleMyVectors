@@ -17,5 +17,29 @@ namespace SwizzleMyVectors.Test.Geometry
             Assert.AreEqual(0.5f, i.Value.DistanceAlongA);
             Assert.AreEqual(-5, i.Value.DistanceAlongB);
         }
+
+        [TestMethod]
+        public void AssertThat_LineSegment_FindsIntersectionAtZero()
+        {
+            var a = new LineSegment2(new Vector2(0, 0), new Vector2(0, 10));
+            var b = new LineSegment2(new Vector2(-10, -10), new Vector2(20, 20));
+
+            var i = a.Intersects(b);
+
+            Assert.IsTrue(i.HasValue);
+            Assert.AreEqual(0, i.Value.DistanceAlongA);
+        }
+
+        [TestMethod]
+        public void AssertThat_LineSegment_FindsIntersectionAtOne()
+        {
+            var a = new LineSegment2(new Vector2(10, 0), new Vector2(0, 0));
+            var b = new LineSegment2(new Vector2(-10, -10), new Vector2(20, 20));
+
+            var i = a.Intersects(b);
+
+            Assert.IsTrue(i.HasValue);
+            Assert.AreEqual(1, i.Value.DistanceAlongA);
+        }
     }
 }

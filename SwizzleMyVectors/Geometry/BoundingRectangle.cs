@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -22,10 +22,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         public Vector2 Max;
 
-        public Vector2 Extent
-        {
-            get { return Max - Min; }
-        }
+        public Vector2 Extent => Max - Min;
         #endregion
 
         /// <summary>
@@ -45,8 +42,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="original">One of the BoundingRectangles to contain.</param><param name="additional">One of the BoundingRectangles to contain.</param>
         public static BoundingRectangle CreateMerged(BoundingRectangle original, BoundingRectangle additional)
         {
-            BoundingRectangle result;
-            CreateMerged(ref original, ref additional, out result);
+            CreateMerged(ref original, ref additional, out BoundingRectangle result);
             return result;
         }
 
@@ -81,26 +77,6 @@ namespace SwizzleMyVectors.Geometry
 
         }
         #endregion
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="a">BoundingBox to compare.</param><param name="b">BoundingBox to compare.</param>
-        [Pure]
-        public static bool operator ==(BoundingRectangle a, BoundingRectangle b)
-        {
-            return a.Equals(b);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are not equal.
-        /// </summary>
-        /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
-        [Pure]
-        public static bool operator !=(BoundingRectangle a, BoundingRectangle b)
-        {
-            return !a.Equals(b);
-        }
 
         /// <summary>
         /// Expand bounding rectangle by distance / 2 at min and max (total of distance)
@@ -167,48 +143,69 @@ namespace SwizzleMyVectors.Geometry
             d = new Vector2(Max.X, Min.Y);
         }
 
+        #region equality
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="a">BoundingBox to compare.</param><param name="b">BoundingBox to compare.</param>
+        [Pure]
+        public static bool operator ==(BoundingRectangle a, BoundingRectangle b)
+        {
+            return a.Equals(b);
+        }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are not equal.
+        /// </summary>
+        /// <param name="a">The object to the left of the inequality operator.</param><param name="b">The object to the right of the inequality operator.</param>
+        [Pure]
+        public static bool operator !=(BoundingRectangle a, BoundingRectangle b)
+        {
+            return !a.Equals(b);
+        }
+
         /// <summary>
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
         /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
-        [Pure]
-        public bool Equals(BoundingRectangle other)
+        [Pure] public bool Equals(BoundingRectangle other)
         {
-            return Min.Equals(other.Min) && Max.Equals(other.Max);
+            return Min.Equals(other.Min)
+                && Max.Equals(other.Max);
         }
 
         /// <summary>
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
         /// <param name="obj">The Object to compare with the current BoundingBox.</param>
-        [Pure]
-        public override bool Equals(object obj)
+        [Pure] public override bool Equals([CanBeNull] object obj)
         {
-            return obj is BoundingRectangle && Equals((BoundingRectangle)obj);
+            if (ReferenceEquals(obj, null))
+                return false;
+
+            return obj is BoundingRectangle
+                && Equals((BoundingRectangle)obj);
         }
 
         /// <summary>
         /// Gets the hash code for this instance.
         /// </summary>
-        [Pure]
-        public override int GetHashCode()
+        [Pure] public override int GetHashCode()
         {
-// This seems ugly, but it's inline with how MS designed their vector types!
-// ReSharper disable NonReadonlyFieldInGetHashCode
-
-            int hash = 17;
-            hash = hash * 31 + Min.GetHashCode();
-            hash = hash * 31 + Max.GetHashCode();
+            // This seems ugly, but it's inline with how MS designed their vector types!
+            // ReSharper disable NonReadonlyFieldInGetHashCode
+            var hash = 17;
+            hash = (hash * 397) ^ Min.GetHashCode();
+            hash = (hash * 971) ^ Max.GetHashCode();
             return hash;
-
-// ReSharper restore NonReadonlyFieldInGetHashCode
+            // ReSharper restore NonReadonlyFieldInGetHashCode
         }
+        #endregion
 
         /// <summary>
         /// Returns a String that represents the current BoundingRectangle.
         /// </summary>
-        [Pure]
-        public override string ToString()
+        [Pure] public override string ToString()
         {
             return string.Format("Min:{0},Max:{1}", Min, Max);
         }
@@ -217,8 +214,7 @@ namespace SwizzleMyVectors.Geometry
         /// Calculate the area of this bounding rectangle
         /// </summary>
         /// <returns></returns>
-        [Pure]
-        public float Area()
+        [Pure] public float Area()
         {
             var sz = (Max - Min);
             return sz.X * sz.Y;
@@ -226,45 +222,19 @@ namespace SwizzleMyVectors.Geometry
 
         public Vector2 ClosestPoint(Vector2 point)
         {
-            float x;
-            if (point.X < Min.X)
-                x = Min.X;
-            else if (point.X > Max.X)
-                x = Max.X;
-            else
-                x = point.X;
-
-            float y;
-            if (point.Y < Min.Y)
-                y = Min.Y;
-            else if (point.Y > Max.Y)
-                y = Max.Y;
-            else
-                y = point.Y;
-
-            return new Vector2(x, y);
+            return new Vector2(
+                point.X.Clamp(Min.X, Max.X),
+                point.Y.Clamp(Min.Y, Max.Y)
+            );
         }
 
         #region intersection
-        /// <summary>
-        /// Checks whether the current BoundingRectangle intersects another BoundingRectangle.
-        /// </summary>
-        /// <param name="box">The BoundingBox to check for intersection with.</param>
-        [Pure]
-        public bool Intersects(BoundingRectangle box)
-        {
-            bool result;
-            Intersects(ref box, out result);
-            return result;
-        }
-
         /// <summary>
         /// Calculate the intersection of this rectangle and another
         /// </summary>
         /// <param name="box"></param>
         /// <returns></returns>
-        [Pure]
-        public BoundingRectangle? Intersection(BoundingRectangle box)
+        [Pure] public BoundingRectangle? Intersection(BoundingRectangle box)
         {
             return Intersection(ref box);
         }
@@ -274,8 +244,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="box"></param>
         /// <returns></returns>
-        [Pure]
-        public BoundingRectangle? Intersection(ref BoundingRectangle box)
+        [Pure] public BoundingRectangle? Intersection(ref BoundingRectangle box)
         {
             var min = Vector2.Max(Min, box.Min);
             var max = Vector2.Min(Max, box.Max);
@@ -290,6 +259,16 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Checks whether the current BoundingRectangle intersects another BoundingRectangle.
         /// </summary>
+        /// <param name="box">The BoundingBox to check for intersection with.</param>
+        [Pure] public bool Intersects(BoundingRectangle box)
+        {
+            Intersects(ref box, out bool result);
+            return result;
+        }
+
+        /// <summary>
+        /// Checks whether the current BoundingRectangle intersects another BoundingRectangle.
+        /// </summary>
         /// <param name="box">The BoundingRectangle to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingRectangle instances intersect; false otherwise.</param>
         public void Intersects(ref BoundingRectangle box, out bool result)
         {
@@ -297,11 +276,9 @@ namespace SwizzleMyVectors.Geometry
                   && box.Min.Y < Max.Y && box.Max.Y > Min.Y;
         }
 
-        [Pure]
-        public LinesIntersection2? Intersects(LineSegment2 segment)
+        [Pure] public LinesIntersection2? Intersects(LineSegment2 segment)
         {
-            Vector2 a, b, c, d;
-            GetCorners(out a, out b, out c, out d);
+            GetCorners(out Vector2 a, out Vector2 b, out Vector2 c, out Vector2 d);
 
             var abi = segment.Intersects(new LineSegment2(a, b));
             var bci = segment.Intersects(new LineSegment2(b, c));
@@ -328,8 +305,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="x">The x coordinate of the point to check for containment.</param>
         /// <param name="y">The y coordinate of the point to check for containment.</param>
         /// <returns><c>true</c> if the provided coordinates lie inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
-        [Pure]
-        public bool Contains(float x, float y)
+        [Pure] public bool Contains(float x, float y)
         {
             return Contains(new Vector2(x, y));
         }
@@ -339,11 +315,9 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="value">The coordinates to check for inclusion in this <see cref="BoundingRectangle"/>.</param>
         /// <returns><c>true</c> if the provided <see cref="Vector2"/> lies inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
-        [Pure]
-        public bool Contains(Vector2 value)
+        [Pure] public bool Contains(Vector2 value)
         {
-            bool result;
-            Contains(ref value, out result);
+            Contains(ref value, out bool result);
             return result;
         }
 
@@ -363,11 +337,9 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="value">The <see cref="BoundingRectangle"/> to check for inclusion in this <see cref="BoundingRectangle"/>.</param>
         /// <returns><c>true</c> if the provided <see cref="BoundingRectangle"/>'s bounds lie entirely inside this <see cref="BoundingRectangle"/>; <c>false</c> otherwise.</returns>
-        [Pure]
-        public bool Contains(BoundingRectangle value)
+        [Pure] public bool Contains(BoundingRectangle value)
         {
-            bool result;
-            Contains(ref value, out result);
+            Contains(ref value, out bool result);
             return result;
         }
 

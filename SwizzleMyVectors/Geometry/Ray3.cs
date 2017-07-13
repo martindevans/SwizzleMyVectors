@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -56,7 +57,7 @@ namespace SwizzleMyVectors.Geometry
         /// Determines whether two instances of Ray are equal.
         /// </summary>
         /// <param name="obj">The Object to compare with the current Ray.</param>
-        public override bool Equals(object obj)
+        public override bool Equals([CanBeNull] object obj)
         {
             return obj is Ray3 && Equals((Ray3)obj);
         }

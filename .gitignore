@@ -1,12 +1,13 @@
 *.cache
-
 *.suo
 *.user
 *.ncrunchproject
 *.ncrunchsolution
 *.nupkg
+
 _ReSharper.Caches
 _ReSharper.SwizzleMyVectors
+packages
 
 SwizzleMyVectors/obj
 SwizzleMyVectors/bin

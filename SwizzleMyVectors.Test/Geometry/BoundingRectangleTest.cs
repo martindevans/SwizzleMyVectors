@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
@@ -32,8 +29,45 @@ namespace SwizzleMyVectors.Test.Geometry
         {
             var rect = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
 
-            Vector2[] arr = new Vector2[2];
+            var arr = new Vector2[2];
             rect.GetCorners(arr);
+        }
+
+        #region intersection
+        [TestMethod]
+        public void AssertThat_Intersects_ReturnsTrueForContainedRectangle()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(1, 1), new Vector2(2, 2));
+
+            Assert.IsTrue(outer.Intersects(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_Intersects_ReturnsTrueForEdgeRectangle()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(0, 0), new Vector2(2, 2));
+
+            Assert.IsTrue(outer.Intersects(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_Intersects_ReturnsTrueForOverhangingRectangle()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(-1, -1), new Vector2(2, 2));
+
+            Assert.IsTrue(outer.Intersects(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_Intersects_ReturnsFalseForExternalRectangle()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var other = new BoundingRectangle(new Vector2(10, 10), new Vector2(20, 20));
+
+            Assert.IsFalse(outer.Intersects(other));
         }
 
         [TestMethod]
@@ -162,6 +196,226 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.IsNotNull(i);
             Assert.AreEqual(new Vector2(6, 0), i.Value.Position);
+        }
+
+        [TestMethod]
+        public void AssertThat_IntersectionWithSegment_IntersectsDiagonalSegment()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var l = new LineSegment2(new Vector2(-10, -10), new Vector2(20, 20));
+
+            Assert.IsTrue(r.Intersects(l).HasValue);
+        }
+        #endregion
+
+        #region containment
+        [TestMethod]
+        public void AssertThat_ContainsXY_ContainsInternalPoint()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            Assert.IsTrue(r.Contains(5, 5));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsXY_ContainsEdgePoint()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            Assert.IsTrue(r.Contains(10, 10));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsXY_DoesNotContainExternalPoint()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            Assert.IsFalse(r.Contains(15, 5));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsVector_ContainsPoint()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            Assert.IsTrue(r.Contains(new Vector2(5, 5)));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsVector_DoesNotContainPoint()
+        {
+            var r = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            Assert.IsFalse(r.Contains(new Vector2(15, 5)));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsRect_ContainsInternalRect()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(1, 1), new Vector2(2, 2));
+
+            Assert.IsTrue(outer.Contains(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsRect_ContainsEdgeRect()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(0, 0), new Vector2(2, 2));
+
+            Assert.IsTrue(outer.Contains(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsRect_DoesNotContainOverhangingRect()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(-1, -1), new Vector2(2, 2));
+
+            Assert.IsFalse(outer.Contains(inner));
+        }
+
+        [TestMethod]
+        public void AssertThat_ContainsRect_DoesNotContainDisjointRect()
+        {
+            var outer = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var inner = new BoundingRectangle(new Vector2(20, 20), new Vector2(30, 30));
+
+            Assert.IsFalse(outer.Contains(inner));
+        }
+        #endregion
+
+        #region equality
+        [TestMethod]
+        public void AssertThat_HashCode_IsIdenticalForIdenticalBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
+        }
+
+        [TestMethod]
+        public void AssertThat_HashCode_IsDifferentForDifferentBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(11, 10));
+
+            Assert.AreNotEqual(a.GetHashCode(), b.GetHashCode());
+        }
+
+        [TestMethod]
+        public void AssertThat_Equals_IsTrueForIdenticalBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            Assert.AreEqual(a, b);
+        }
+
+        [TestMethod]
+        public void AssertThat_Equals_IsFalseForDifferentBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(11, 10));
+
+            Assert.AreNotEqual(a, b);
+        }
+
+        [TestMethod]
+        public void AssertThat_Equals_IsFalseForNull()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            Assert.IsFalse(a.Equals(null));
+        }
+
+        [TestMethod]
+        public void AssertThat_Eq_IsTrueForIdenticalBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            Assert.IsTrue(a == b);
+        }
+
+        [TestMethod]
+        public void AssertThat_Eq_IsFalseForDifferentBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(11, 10));
+
+            Assert.IsFalse(a == b);
+        }
+
+        [TestMethod]
+        public void AssertThat_NEq_IsFalseForIdenticalBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+
+            Assert.IsFalse(a != b);
+        }
+
+        [TestMethod]
+        public void AssertThat_NEq_IsTrueForDifferentBounds()
+        {
+            var a = new BoundingRectangle(new Vector2(0, 0), new Vector2(10, 10));
+            var b = new BoundingRectangle(new Vector2(0, 0), new Vector2(11, 10));
+
+            Assert.IsTrue(a != b);
+        }
+        #endregion
+
+        #region creation
+        [TestMethod]
+        public void CreateFromPoints_UsesOutermostPoints()
+        {
+            var r = BoundingRectangle.CreateFromPoints(new[] {
+                new Vector2(10, 10),
+                new Vector2(12, 5),
+                new Vector2(11, 7),
+                new Vector2(15, 8),
+            });
+
+            var e = new BoundingRectangle(new Vector2(10, 5), new Vector2(15, 10));
+
+            Assert.AreEqual(e, r);
+        }
+
+        [TestMethod]
+        public void CreateMerged_UsesOutermostPoints()
+        {
+            var m = BoundingRectangle.CreateMerged(
+                new BoundingRectangle(new Vector2(10, 10), new Vector2(15, 15)),
+                new BoundingRectangle(new Vector2(12, 8), new Vector2(13, 19))
+            );
+
+            var e = new BoundingRectangle(new Vector2(10, 8), new Vector2(15, 19));
+
+            Assert.AreEqual(e, m);
+        }
+        #endregion
+
+        [TestMethod]
+        public void AssertThat_ToString_ContainsMinAndMax()
+        {
+            var r = new BoundingRectangle(new Vector2(10, 5), new Vector2(15, 10));
+            var s = r.ToString();
+
+            Assert.IsTrue(s.Contains(r.Min.ToString()));
+            Assert.IsTrue(s.Contains(r.Max.ToString()));
+        }
+
+        [TestMethod]
+        public void AssertThat_Extent_IsExtent()
+        {
+            var r = new BoundingRectangle(new Vector2(10, 10), new Vector2(20, 30));
+
+            Assert.AreEqual(new Vector2(10, 20), r.Extent);
+        }
+
+        [TestMethod]
+        public void AssertThat_Area_ReturnsArea()
+        {
+            var r = new BoundingRectangle(new Vector2(10, 10), new Vector2(20, 20));
+            Assert.AreEqual(100, r.Area());
         }
 
         [TestMethod]
