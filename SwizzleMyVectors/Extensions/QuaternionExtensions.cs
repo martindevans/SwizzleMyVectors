@@ -18,7 +18,7 @@ namespace SwizzleMyVectors
         }
 
         /// <summary>
-        /// Normalizing lerp from a to b, shortest path/non constant velocity
+        /// Normalizing lerp from a to b, shortest path/non-constant velocity
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -26,8 +26,7 @@ namespace SwizzleMyVectors
         /// <returns></returns>
         public static Quaternion Nlerp(this Quaternion a, Quaternion b, float t)
         {
-            Quaternion q;
-            Nlerp(a, ref b, t, out q);
+            Nlerp(a, ref b, t, out var q);
             return q;
         }
 

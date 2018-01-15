@@ -53,6 +53,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Extensions\PlaneExtensions.cs" />
+    <Compile Include="Extensions\QuaternionExtensionsTests.cs" />
+    <Compile Include="Extensions\Vector4ExtensionsTests.cs" />
+    <Compile Include="Extensions\Vector3ExtensionsTests.cs" />
+    <Compile Include="Extensions\Vector2ExtensionsTests.cs" />
     <Compile Include="Geometry\BoundingBoxTest.cs" />
     <Compile Include="Geometry\BoundingRectangleTest.cs" />
     <Compile Include="Geometry\BoundingSphereTest.cs" />

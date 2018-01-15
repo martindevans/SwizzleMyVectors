@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors
 {
@@ -26,9 +27,19 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        public static Vector2 Perpendicular(this Vector2 v)
+        public static Vector2 PerpendicularRight(this Vector2 v)
         {
             return new Vector2(v.Y, -v.X);
+        }
+
+        /// <summary>
+        /// Creates a vector perpendicular to this vector.
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vector2 PerpendicularLeft(this Vector2 v)
+        {
+            return new Vector2(-v.Y, v.X);
         }
 
         /// <summary>
@@ -67,7 +78,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
-        public static float Area(this IReadOnlyList<Vector2> v)
+        public static float Area([NotNull] this IReadOnlyList<Vector2> v)
         {
             var area = 0f;
 
@@ -87,7 +98,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="epsilon"></param>
         /// <returns></returns>
-        public static bool IsConvex(this IReadOnlyList<Vector2> v, float epsilon = float.Epsilon)
+        public static bool IsConvex([NotNull] this IReadOnlyList<Vector2> v, float epsilon = float.Epsilon)
         {
             int sign = 0;
             bool first = true;

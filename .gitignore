@@ -5,6 +5,7 @@
 *.ncrunchsolution
 *.nupkg
 
+.vs
 _ReSharper.Caches
 _ReSharper.SwizzleMyVectors
 packages
