@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SwizzleMyVectors
 {
@@ -15,6 +16,7 @@ namespace SwizzleMyVectors
         /// <returns>
         /// 	<c>true</c> if either X or Y or Z are NaN; otherwise, <c>false</c>.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(this Vector3 v)
         {
             return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);
@@ -25,6 +27,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ManhattanLength(this Vector3 v)
         {
             return Math.Abs(v.X) + Math.Abs(v.Y) + Math.Abs(v.Z);
@@ -35,6 +38,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float LargestElement(this Vector3 v)
         {
             return Math.Max(Math.Max(v.X, v.Y), v.Z);
@@ -46,6 +50,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 XX(this Vector3 point)
         {
             return new Vector2(point.X, point.X);
@@ -56,6 +61,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 XY(this Vector3 point)
         {
             return new Vector2(point.X, point.Y);
@@ -66,6 +72,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 XZ(this Vector3 point)
         {
             return new Vector2(point.X, point.Z);
@@ -76,6 +83,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 YX(this Vector3 point)
         {
             return new Vector2(point.Y, point.X);
@@ -86,6 +94,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 YY(this Vector3 point)
         {
             return new Vector2(point.Y, point.Y);
@@ -96,6 +105,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 YZ(this Vector3 point)
         {
             return new Vector2(point.Y, point.Z);
@@ -106,6 +116,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ZX(this Vector3 point)
         {
             return new Vector2(point.Z, point.X);
@@ -116,6 +127,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ZY(this Vector3 point)
         {
             return new Vector2(point.Z, point.Y);
@@ -126,6 +138,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 ZZ(this Vector3 point)
         {
             return new Vector2(point.Z, point.Z);
@@ -138,6 +151,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XXX(this Vector3 point)
         {
             return new Vector3(point.X, point.X, point.X);
@@ -148,6 +162,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XXY(this Vector3 point)
         {
             return new Vector3(point.X, point.X, point.Y);
@@ -158,6 +173,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XXZ(this Vector3 point)
         {
             return new Vector3(point.X, point.X, point.Z);
@@ -168,6 +184,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XYX(this Vector3 point)
         {
             return new Vector3(point.X, point.Y, point.X);
@@ -178,6 +195,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XYY(this Vector3 point)
         {
             return new Vector3(point.X, point.Y, point.Y);
@@ -188,6 +206,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XYZ(this Vector3 point)
         {
             return new Vector3(point.X, point.Y, point.Z);
@@ -198,6 +217,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XZX(this Vector3 point)
         {
             return new Vector3(point.X, point.Z, point.X);
@@ -208,6 +228,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XZY(this Vector3 point)
         {
             return new Vector3(point.X, point.Z, point.Y);
@@ -218,6 +239,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XZZ(this Vector3 point)
         {
             return new Vector3(point.X, point.Z, point.Z);
@@ -228,6 +250,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YXX(this Vector3 point)
         {
             return new Vector3(point.Y, point.X, point.X);
@@ -238,6 +261,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YXY(this Vector3 point)
         {
             return new Vector3(point.Y, point.X, point.Y);
@@ -248,6 +272,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YXZ(this Vector3 point)
         {
             return new Vector3(point.Y, point.X, point.Z);
@@ -258,6 +283,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YYX(this Vector3 point)
         {
             return new Vector3(point.Y, point.Y, point.X);
@@ -268,6 +294,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YYY(this Vector3 point)
         {
             return new Vector3(point.Y, point.Y, point.Y);
@@ -278,6 +305,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YYZ(this Vector3 point)
         {
             return new Vector3(point.Y, point.Y, point.Z);
@@ -288,6 +316,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YZX(this Vector3 point)
         {
             return new Vector3(point.Y, point.Z, point.X);
@@ -298,6 +327,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YZY(this Vector3 point)
         {
             return new Vector3(point.Y, point.Z, point.Y);
@@ -308,6 +338,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YZZ(this Vector3 point)
         {
             return new Vector3(point.Y, point.Z, point.Z);
@@ -318,6 +349,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZXX(this Vector3 point)
         {
             return new Vector3(point.Z, point.X, point.X);
@@ -328,6 +360,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZXY(this Vector3 point)
         {
             return new Vector3(point.Z, point.X, point.Y);
@@ -338,6 +371,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZXZ(this Vector3 point)
         {
             return new Vector3(point.Z, point.X, point.Z);
@@ -348,6 +382,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZYX(this Vector3 point)
         {
             return new Vector3(point.Z, point.Y, point.X);
@@ -358,6 +393,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZYY(this Vector3 point)
         {
             return new Vector3(point.Z, point.Y, point.Y);
@@ -368,6 +404,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZYZ(this Vector3 point)
         {
             return new Vector3(point.Z, point.Y, point.Z);
@@ -378,6 +415,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZZX(this Vector3 point)
         {
             return new Vector3(point.Z, point.Z, point.X);
@@ -388,6 +426,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZZY(this Vector3 point)
         {
             return new Vector3(point.Z, point.Z, point.Y);
@@ -398,6 +437,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZZZ(this Vector3 point)
         {
             return new Vector3(point.Z, point.Z, point.Z);
@@ -411,6 +451,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XX_(this Vector3 point, float z)
         {
             return new Vector3(point.X, point.X, z);
@@ -422,6 +463,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XY_(this Vector3 point, float z)
         {
             return new Vector3(point.X, point.Y, z);
@@ -433,6 +475,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XZ_(this Vector3 point, float z)
         {
             return new Vector3(point.X, point.Z, z);
@@ -444,6 +487,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YX_(this Vector3 point, float z)
         {
             return new Vector3(point.Y, point.X, z);
@@ -455,6 +499,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YY_(this Vector3 point, float z)
         {
             return new Vector3(point.Y, point.Y, z);
@@ -466,6 +511,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YZ_(this Vector3 point, float z)
         {
             return new Vector3(point.Y, point.Z, z);
@@ -477,6 +523,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZX_(this Vector3 point, float z)
         {
             return new Vector3(point.Z, point.X, z);
@@ -488,6 +535,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZY_(this Vector3 point, float z)
         {
             return new Vector3(point.Z, point.Y, z);
@@ -499,6 +547,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 ZZ_(this Vector3 point, float z)
         {
             return new Vector3(point.Z, point.Z, z);
@@ -512,6 +561,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 X_X(this Vector3 point, float z)
         {
             return new Vector3(point.X, z, point.X);
@@ -523,6 +573,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 X_Y(this Vector3 point, float y)
         {
             return new Vector3(point.X, y, point.Y);
@@ -534,6 +585,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 X_Z(this Vector3 point, float y)
         {
             return new Vector3(point.X, y, point.Z);
@@ -545,6 +597,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Y_X(this Vector3 point, float y)
         {
             return new Vector3(point.Y, y, point.X);
@@ -556,6 +609,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Y_Y(this Vector3 point, float y)
         {
             return new Vector3(point.Y, y, point.Y);
@@ -567,6 +621,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Y_Z(this Vector3 point, float y)
         {
             return new Vector3(point.Y, y, point.Z);
@@ -578,6 +633,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Z_X(this Vector3 point, float y)
         {
             return new Vector3(point.Z, y, point.X);
@@ -589,6 +645,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Z_Y(this Vector3 point, float y)
         {
             return new Vector3(point.Z, y, point.Y);
@@ -600,6 +657,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Z_Z(this Vector3 point, float y)
         {
             return new Vector3(point.Z, y, point.Z);
@@ -613,6 +671,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _XX(this Vector3 point, float x)
         {
             return new Vector3(x, point.X, point.X);
@@ -624,6 +683,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _XY(this Vector3 point, float x)
         {
             return new Vector3(x, point.X, point.Y);
@@ -635,6 +695,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _XZ(this Vector3 point, float x)
         {
             return new Vector3(x, point.X, point.Z);
@@ -646,6 +707,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _YX(this Vector3 point, float x)
         {
             return new Vector3(x, point.Y, point.X);
@@ -657,6 +719,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _YY(this Vector3 point, float x)
         {
             return new Vector3(x, point.Y, point.Y);
@@ -668,6 +731,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _YZ(this Vector3 point, float x)
         {
             return new Vector3(x, point.Y, point.Z);
@@ -679,6 +743,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _ZX(this Vector3 point, float x)
         {
             return new Vector3(x, point.Z, point.X);
@@ -690,6 +755,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _ZY(this Vector3 point, float x)
         {
             return new Vector3(x, point.Z, point.Y);
@@ -701,6 +767,7 @@ namespace SwizzleMyVectors
         /// <param name="point"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _ZZ(this Vector3 point, float x)
         {
             return new Vector3(x, point.Z, point.Z);

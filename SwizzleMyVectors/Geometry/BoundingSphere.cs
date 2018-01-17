@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -68,7 +68,7 @@ namespace SwizzleMyVectors.Geometry
         {
             var r = sphere.Radius + distance / 2;
             if (r < 0)
-                throw new ArgumentOutOfRangeException("distance", "Distance specified to inflate sphere is a negative value larger than the total diameter (this would cause a negative radius!)");
+                throw new ArgumentOutOfRangeException(nameof(distance), "Distance specified to inflate sphere is a negative value larger than the total diameter (this would cause a negative radius!)");
 
             sphere.Radius = r;
         }
@@ -99,7 +99,7 @@ namespace SwizzleMyVectors.Geometry
 // Ugly, but it's how MS do it in their vector types
 // ReSharper disable NonReadonlyFieldInGetHashCode
 
-            int hash = 17;
+            var hash = 17;
             hash = hash * 31 + Center.GetHashCode();
             hash = hash * 31 + Radius.GetHashCode();
             return hash;
@@ -121,8 +121,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="original">BoundingSphere to be merged.</param><param name="additional">BoundingSphere to be merged.</param>
         public static BoundingSphere CreateMerged(BoundingSphere original, BoundingSphere additional)
         {
-            BoundingSphere result;
-            CreateMerged(ref original, ref additional, out result);
+            CreateMerged(ref original, ref additional, out var result);
             return result;
         }
 
@@ -132,8 +131,8 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="original">BoundingSphere to be merged.</param><param name="additional">BoundingSphere to be merged.</param><param name="result">[OutAttribute] The created BoundingSphere.</param>
         public static void CreateMerged(ref BoundingSphere original, ref BoundingSphere additional, out BoundingSphere result)
         {
-            Vector3 ocenterToaCenter = Vector3.Subtract(additional.Center, original.Center);
-            float distance = ocenterToaCenter.Length();
+            var ocenterToaCenter = Vector3.Subtract(additional.Center, original.Center);
+            var distance = ocenterToaCenter.Length();
             if (distance <= original.Radius + additional.Radius)//intersect
             {
                 if (distance <= original.Radius - additional.Radius)//original contain additional
@@ -148,8 +147,8 @@ namespace SwizzleMyVectors.Geometry
                 }
             }
             //else find center of new sphere and radius
-            float leftRadius = Math.Max(original.Radius - distance, additional.Radius);
-            float rightradius = Math.Max(original.Radius + distance, additional.Radius);
+            var leftRadius = Math.Max(original.Radius - distance, additional.Radius);
+            var rightradius = Math.Max(original.Radius + distance, additional.Radius);
             ocenterToaCenter = ocenterToaCenter + (((leftRadius - rightradius) / (2 * ocenterToaCenter.Length())) * ocenterToaCenter);//oCenterToResultCenter
 
             result = new BoundingSphere
@@ -165,8 +164,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to create the BoundingSphere from.</param>
         public static BoundingSphere CreateFromBoundingBox(BoundingBox box)
         {
-            BoundingSphere result;
-            CreateFromBoundingBox(ref box, out result);
+            CreateFromBoundingBox(ref box, out var result);
             return result;
         }
 
@@ -177,12 +175,12 @@ namespace SwizzleMyVectors.Geometry
         public static void CreateFromBoundingBox(ref BoundingBox box, out BoundingSphere result)
         {
             // Find the center of the box.
-            Vector3 center = new Vector3((box.Min.X + box.Max.X) / 2.0f,
-                                         (box.Min.Y + box.Max.Y) / 2.0f,
-                                         (box.Min.Z + box.Max.Z) / 2.0f);
+            var center = new Vector3((box.Min.X + box.Max.X) / 2.0f,
+                                     (box.Min.Y + box.Max.Y) / 2.0f,
+                                     (box.Min.Z + box.Max.Z) / 2.0f);
 
             // Find the distance between the center and one of the corners of the box.
-            float radius = Vector3.Distance(center, box.Max);
+            var radius = Vector3.Distance(center, box.Max);
 
             result = new BoundingSphere(center, radius);
         }
@@ -191,10 +189,10 @@ namespace SwizzleMyVectors.Geometry
         /// Creates a BoundingSphere that can contain a specified list of points.
         /// </summary>
         /// <param name="points">List of points the BoundingSphere must contain.</param>
-        public static BoundingSphere CreateFromPoints(IEnumerable<Vector3> points)
+        public static BoundingSphere CreateFromPoints([NotNull] IEnumerable<Vector3> points)
         {
             if (points == null)
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
 
             // From "Real-Time Collision Detection" (Page 89)
 
@@ -253,16 +251,16 @@ namespace SwizzleMyVectors.Geometry
             // The current bounding sphere is just a good approximation and may not enclose all points.            
             // From: Mathematics for 3D Game Programming and Computer Graphics, Eric Lengyel, Third Edition.
             // Page 218
-            float sqRadius = radius * radius;
+            var sqRadius = radius * radius;
             foreach (var pt in points)
             {
-                Vector3 diff = (pt - center);
-                float sqDist = diff.LengthSquared();
+                var diff = (pt - center);
+                var sqDist = diff.LengthSquared();
                 if (sqDist > sqRadius)
                 {
-                    float distance = (float)Math.Sqrt(sqDist); // equal to diff.Length();
-                    Vector3 direction = diff / distance;
-                    Vector3 g = center - radius * direction;
+                    var distance = (float)Math.Sqrt(sqDist); // equal to diff.Length();
+                    var direction = diff / distance;
+                    var g = center - radius * direction;
                     center = (g + pt) / 2;
                     radius = Vector3.Distance(pt, center);
                     sqRadius = radius * radius;
@@ -319,8 +317,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
         public bool Intersects(BoundingFrustum frustum)
         {
-            bool result;
-            Intersects(ref frustum, out result);
+            Intersects(ref frustum, out var result);
             return result;
         }
 
@@ -340,8 +337,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="plane">The Plane to check for intersection with the current BoundingSphere.</param>
         public PlaneIntersectionType Intersects(Plane plane)
         {
-            PlaneIntersectionType result;
-            Intersects(ref plane, out result);
+            Intersects(ref plane, out var result);
             return result;
         }
 
@@ -351,7 +347,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="plane">The Plane to check for intersection with.</param><param name="result">[OutAttribute] An enumeration indicating whether the BoundingSphere intersects the Plane.</param>
         public void Intersects(ref Plane plane, out PlaneIntersectionType result)
         {
-            float distance = Vector3.Dot(plane.Normal, Center) + plane.D;
+            var distance = Vector3.Dot(plane.Normal, Center) + plane.D;
 
             if (distance > Radius)
                 result = PlaneIntersectionType.Front;
@@ -385,8 +381,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with the current BoundingSphere.</param>
         public bool Intersects(BoundingSphere sphere)
         {
-            bool result;
-            Intersects(ref sphere, out result);
+            Intersects(ref sphere, out var result);
             return result;
         }
 
@@ -396,7 +391,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingSphere instances intersect; false otherwise.</param>
         public void Intersects(ref BoundingSphere sphere, out bool result)
         {
-            float sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
+            var sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
 
             var totalRadius = sphere.Radius + Radius;
             result = sqDistance < totalRadius * totalRadius;
@@ -408,8 +403,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check against the current BoundingSphere.</param>
         public ContainmentType Contains(BoundingBox box)
         {
-            ContainmentType result;
-            Contains(ref box, out result);
+            Contains(ref box, out var result);
             return result;
         }
 
@@ -420,8 +414,8 @@ namespace SwizzleMyVectors.Geometry
         public void Contains(ref BoundingBox box, out ContainmentType result)
         {
             //check if all corner is in sphere
-            bool inside = true;
-            foreach (Vector3 corner in box.GetCorners())
+            var inside = true;
+            foreach (var corner in box.GetCorners())
             {
                 if (Contains(corner) == ContainmentType.Disjoint)
                 {
@@ -494,8 +488,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="point">The point to check against the current BoundingSphere.</param>
         public ContainmentType Contains(Vector3 point)
         {
-            ContainmentType result;
-            Contains(ref point, out result);
+            Contains(ref point, out var result);
             return result;
         }
 
@@ -505,8 +498,8 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="point">The point to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref Vector3 point, out ContainmentType result)
         {
-            float sqRadius = Radius * Radius;
-            float sqDistance = Vector3.DistanceSquared(point, Center);
+            var sqRadius = Radius * Radius;
+            var sqDistance = Vector3.DistanceSquared(point, Center);
 
             if (sqDistance > sqRadius)
                 result = ContainmentType.Disjoint;
@@ -524,8 +517,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check against the current BoundingSphere.</param>
         public ContainmentType Contains(BoundingSphere sphere)
         {
-            ContainmentType result;
-            Contains(ref sphere, out result);
+            Contains(ref sphere, out var result);
             return result;
         }
 
@@ -535,7 +527,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingSphere sphere, out ContainmentType result)
         {
-            float sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
+            var sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
 
             if (sqDistance > (sphere.Radius + Radius) * (sphere.Radius + Radius))
                 result = ContainmentType.Disjoint;
@@ -553,8 +545,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="matrix">A transformation matrix that might include translation, rotation, or uniform scaling. Note that BoundingSphere.Transform will not return correct results if there are non-uniform scaling, shears, or other unusual transforms in this transformation matrix. This is because there is no way to shear or non-uniformly scale a sphere. Such an operation would cause the sphere to lose its shape as a sphere.</param>
         public BoundingSphere Transform(Matrix4x4 matrix)
         {
-            BoundingSphere result;
-            Transform(ref matrix, out result);
+            Transform(ref matrix, out var result);
             return result;
         }
 

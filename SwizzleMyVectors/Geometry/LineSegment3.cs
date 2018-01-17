@@ -103,8 +103,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public Vector3 ClosestPoint(Vector3 point)
         {
-            float t;
-            return ClosestPoint(ref point, out t);
+            return ClosestPoint(ref point, out var t);
         }
 
         /// <summary>
@@ -139,8 +138,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public float ClosestPointDistanceAlongSegment(Vector3 point)
         {
-            float dist;
-            ClosestPointDistanceAlongSegment(ref point, out dist);
+            ClosestPointDistanceAlongSegment(ref point, out var dist);
             return dist;
         }
 
@@ -159,8 +157,7 @@ namespace SwizzleMyVectors.Geometry
 
         public float DistanceToPoint(Vector3 point)
         {
-            float result;
-            DistanceToPoint(ref point, out result);
+            DistanceToPoint(ref point, out var result);
             return result;
         }
 

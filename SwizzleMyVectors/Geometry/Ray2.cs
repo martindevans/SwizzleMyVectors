@@ -68,7 +68,7 @@ namespace SwizzleMyVectors.Geometry
         {
 // ReSharper disable NonReadonlyFieldInGetHashCode
 
-            int hash = 17;
+            var hash = 17;
             hash = hash * 31 + Position.GetHashCode();
             hash = hash * 31 + Direction.GetHashCode();
             return hash;
@@ -92,8 +92,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public Vector2 ClosestPoint(Vector2 point)
         {
-            float t;
-            return ClosestPoint(ref point, out t);
+            return ClosestPoint(ref point, out var _);
         }
 
         /// <summary>
@@ -115,8 +114,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public float ClosestPointDistanceAlongLine(Vector2 point)
         {
-            float dist;
-            ClosestPointDistanceAlongLine(ref point, out dist);
+            ClosestPointDistanceAlongLine(ref point, out var dist);
             return dist;
         }
 
@@ -136,8 +134,7 @@ namespace SwizzleMyVectors.Geometry
 
         public float DistanceToPoint(Vector2 point)
         {
-            float result;
-            DistanceToPoint(ref point, out result);
+            DistanceToPoint(ref point, out var result);
             return result;
         }
 
@@ -184,8 +181,7 @@ namespace SwizzleMyVectors.Geometry
 
         public LinesIntersection2? Intersects(Ray2 ray)
         {
-            Parallelism _;
-            return Intersects(ray, out _);
+            return Intersects(ray, out var _);
         }
 
         /// <summary>
@@ -194,8 +190,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingRectangle to check for intersection with the Ray.</param>
         public float? Intersects(BoundingRectangle box)
         {
-            float? result;
-            Intersects(ref box, out result);
+            Intersects(ref box, out var result);
             return result;
         }
 
@@ -205,11 +200,11 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingRectangle to check for intersection with.</param><param name="result">[OutAttribute] Distance at which the ray intersects the BoundingBox or null if there is no intersection.</param>
         public void Intersects(ref BoundingRectangle box, out float? result)
         {
-            const float EPSILON = 1e-6f;
+            const float epsilon = 1e-6f;
 
             float? tMin = null, tMax = null;
 
-            if (Math.Abs(Direction.X) < EPSILON)
+            if (Math.Abs(Direction.X) < epsilon)
             {
                 if (Position.X < box.Min.X || Position.X > box.Max.X)
                 {
@@ -230,7 +225,7 @@ namespace SwizzleMyVectors.Geometry
                 }
             }
 
-            if (Math.Abs(Direction.Y) < EPSILON)
+            if (Math.Abs(Direction.Y) < epsilon)
             {
                 if (Position.Y < box.Min.Y || Position.Y > box.Max.Y)
                 {

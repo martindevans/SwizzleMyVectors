@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace SwizzleMyVectors
@@ -17,6 +18,7 @@ namespace SwizzleMyVectors
         /// <returns>
         /// 	<c>true</c> if either X or Y are NaN; otherwise, <c>false</c>.
         /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(this Vector2 v)
         {
             return float.IsNaN(v.X) || float.IsNaN(v.Y);
@@ -27,6 +29,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 PerpendicularRight(this Vector2 v)
         {
             return new Vector2(v.Y, -v.X);
@@ -37,6 +40,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 PerpendicularLeft(this Vector2 v)
         {
             return new Vector2(-v.Y, v.X);
@@ -48,6 +52,7 @@ namespace SwizzleMyVectors
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float Cross(this Vector2 a, Vector2 b)
         {
             return a.X * b.Y - a.Y * b.X;
@@ -58,6 +63,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float ManhattanLength(this Vector2 v)
         {
             return Math.Abs(v.X) + Math.Abs(v.Y);
@@ -68,6 +74,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float LargestElement(this Vector2 v)
         {
             return Math.Max(v.X, v.Y);
@@ -82,8 +89,8 @@ namespace SwizzleMyVectors
         {
             var area = 0f;
 
-            int previous = v.Count - 1;
-            for (int i = 0; i < v.Count; i++)
+            var previous = v.Count - 1;
+            for (var i = 0; i < v.Count; i++)
             {
                 area += (v[i].X + v[previous].X) * (v[i].Y - v[previous].Y);
                 previous = i;
@@ -100,9 +107,9 @@ namespace SwizzleMyVectors
         /// <returns></returns>
         public static bool IsConvex([NotNull] this IReadOnlyList<Vector2> v, float epsilon = float.Epsilon)
         {
-            int sign = 0;
-            bool first = true;
-            for (int i = 0; i < v.Count; i++)
+            var sign = 0;
+            var first = true;
+            for (var i = 0; i < v.Count; i++)
             {
                 var p = v[i];
                 var p1 = v[(i + 1) % v.Count];
@@ -112,7 +119,7 @@ namespace SwizzleMyVectors
                 var d2 = p2 - p1;
 
                 var crossProduct = d1.X * d2.Y - d1.Y * d2.X;
-                int crossProductSign = crossProduct > epsilon ? 1 : crossProduct < -epsilon ? -1 : 0;
+                var crossProductSign = crossProduct > epsilon ? 1 : crossProduct < -epsilon ? -1 : 0;
 
                 if (crossProductSign == 0)
                     continue;
@@ -134,6 +141,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 XX(this Vector2 v)
         {
             return new Vector2(v.X, v.X);
@@ -144,6 +152,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 XY(this Vector2 v)
         {
             return new Vector2(v.X, v.Y);
@@ -154,6 +163,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 YX(this Vector2 v)
         {
             return new Vector2(v.Y, v.X);
@@ -164,6 +174,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector2 YY(this Vector2 v)
         {
             return new Vector2(v.Y, v.Y);
@@ -175,6 +186,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _XY(this Vector2 v, float x)
         {
             return new Vector3(x, v.X, v.Y);
@@ -186,6 +198,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 X_Y(this Vector2 v, float y)
         {
             return new Vector3(v.X, y, v.Y);
@@ -197,6 +210,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XY_(this Vector2 v, float z)
         {
             return new Vector3(v.X, v.Y, z);
@@ -208,6 +222,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _XX(this Vector2 v, float x)
         {
             return new Vector3(x, v.X, v.X);
@@ -219,6 +234,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 X_X(this Vector2 v, float y)
         {
             return new Vector3(v.X, y, v.X);
@@ -230,6 +246,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 XX_(this Vector2 v, float z)
         {
             return new Vector3(v.X, v.X, z);
@@ -241,6 +258,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="x"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 _YY(this Vector2 v, float x)
         {
             return new Vector3(x, v.Y, v.Y);
@@ -252,6 +270,7 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="y"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 Y_Y(this Vector2 v, float y)
         {
             return new Vector3(v.Y, y, v.Y);
@@ -263,9 +282,98 @@ namespace SwizzleMyVectors
         /// <param name="v"></param>
         /// <param name="z"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 YY_(this Vector2 v, float z)
         {
             return new Vector3(v.Y, v.Y, z);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 XXX(this Vector2 v)
+        {
+            return new Vector3(v.X, v.X, v.X);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 XXY(this Vector2 v)
+        {
+            return new Vector3(v.X, v.X, v.Y);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 XYX(this Vector2 v)
+        {
+            return new Vector3(v.X, v.Y, v.X);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 XYY(this Vector2 v)
+        {
+            return new Vector3(v.X, v.Y, v.Y);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 YXX(this Vector2 v)
+        {
+            return new Vector3(v.Y, v.X, v.X);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 YXY(this Vector2 v)
+        {
+            return new Vector3(v.Y, v.X, v.Y);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 YYX(this Vector2 v)
+        {
+            return new Vector3(v.Y, v.Y, v.X);
+        }
+
+        /// <summary>
+        /// Create a new vector3
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 YYY(this Vector2 v)
+        {
+            return new Vector3(v.Y, v.Y, v.Y);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -12,19 +12,18 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         // ReSharper disable once InconsistentNaming
         public const int CornerCount = 8;
+
         /// <summary>
         /// The minimum point the BoundingBox contains.
         /// </summary>
         public Vector3 Min;
+
         /// <summary>
         /// The maximum point the BoundingBox contains.
         /// </summary>
         public Vector3 Max;
 
-        public Vector3 Extent
-        {
-            get { return Max - Min; }
-        }
+        public Vector3 Extent => Max - Min;
 
         /// <summary>
         /// Creates an instance of BoundingBox around a BoundingSphere
@@ -52,8 +51,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="original">One of the BoundingBoxs to contain.</param><param name="additional">One of the BoundingBoxs to contain.</param>
         public static BoundingBox CreateMerged(BoundingBox original, BoundingBox additional)
         {
-            BoundingBox result;
-            CreateMerged(ref original, ref additional, out result);
+            CreateMerged(ref original, ref additional, out var result);
             return result;
         }
 
@@ -75,8 +73,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to contain.</param>
         public static BoundingBox CreateFromSphere(BoundingSphere sphere)
         {
-            BoundingBox result;
-            CreateFromSphere(ref sphere, out result);
+            CreateFromSphere(ref sphere, out BoundingBox result);
             return result;
         }
 
@@ -95,10 +92,10 @@ namespace SwizzleMyVectors.Geometry
         /// Creates the smallest BoundingBox that will contain a group of points.
         /// </summary>
         /// <param name="points">A list of points the BoundingBox should contain.</param>
-        public static BoundingBox CreateFromPoints(IEnumerable<Vector3> points)
+        public static BoundingBox CreateFromPoints([NotNull] IEnumerable<Vector3> points)
         {
             if (points == null)
-                throw new ArgumentNullException("points");
+                throw new ArgumentNullException(nameof(points));
 
             var empty = true;
             var min = new Vector3(float.MaxValue);
@@ -175,8 +172,8 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Gets an array of points that make up the corners of the BoundingBox.
         /// </summary>
+        [Pure, NotNull]
         // ReSharper disable once ReturnTypeCanBeEnumerable.Global
-        [Pure]
         public Vector3[] GetCorners()
         {
             var arr = new Vector3[CornerCount];
@@ -188,10 +185,10 @@ namespace SwizzleMyVectors.Geometry
         /// Gets the array of points that make up the corners of the BoundingBox.
         /// </summary>
         /// <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingBox are written.</param>
-        public void GetCorners(Vector3[] corners)
+        public void GetCorners([NotNull] Vector3[] corners)
         {
             if (corners.Length < CornerCount)
-                throw new ArgumentException("Array too small", "corners");
+                throw new ArgumentException("Array too small", nameof(corners));
 
             corners[0] = new Vector3(Min.X, Max.Y, Max.Z);
             corners[1] = new Vector3(Max.X, Max.Y, Max.Z);
@@ -232,7 +229,7 @@ namespace SwizzleMyVectors.Geometry
 // This seems ugly, but it's inline with how MS designed their vector types!
 // ReSharper disable NonReadonlyFieldInGetHashCode
 
-            int hash = 17;
+            var hash = 17;
             hash = hash * 31 + Min.GetHashCode();
             hash = hash * 31 + Max.GetHashCode();
             return hash;
@@ -246,7 +243,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public override string ToString()
         {
-            return string.Format("Min:{0},Max:{1}", Min, Max);
+            return $"Min:{Min},Max:{Max}";
         }
 
         /// <summary>
@@ -268,8 +265,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public bool Intersects(BoundingBox box)
         {
-            bool result;
-            Intersects(ref box, out result);
+            Intersects(ref box, out var result);
             return result;
         }
 
@@ -291,8 +287,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public bool Intersects(BoundingFrustum frustum)
         {
-            bool result;
-            Intersects(ref frustum, out result);
+            Intersects(ref frustum, out bool result);
             return result;
         }
 
@@ -313,8 +308,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public PlaneIntersectionType Intersects(Plane plane)
         {
-            PlaneIntersectionType result;
-            Intersects(ref plane, out result);
+            Intersects(ref plane, out PlaneIntersectionType result);
             return result;
         }
 
@@ -389,8 +383,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public float? Intersects(Ray3 ray)
         {
-            float? result;
-            Intersects(ref ray, out result);
+            Intersects(ref ray, out float? result);
             return result;
         }
 
@@ -410,8 +403,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public bool Intersects(BoundingSphere sphere)
         {
-            bool result;
-            Intersects(ref sphere, out result);
+            Intersects(ref sphere, out bool result);
             return result;
         }
 
@@ -467,8 +459,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(BoundingBox box)
         {
-            ContainmentType result;
-            Contains(ref box, out result);
+            Contains(ref box, out ContainmentType result);
             return result;
         }
 
@@ -519,8 +510,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(Vector3 point)
         {
-            ContainmentType result;
-            Contains(ref point, out result);
+            Contains(ref point, out ContainmentType result);
             return result;
         }
 
@@ -562,8 +552,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(BoundingSphere sphere)
         {
-            ContainmentType result;
-            Contains(ref sphere, out result);
+            Contains(ref sphere, out ContainmentType result);
             return result;
         }
 

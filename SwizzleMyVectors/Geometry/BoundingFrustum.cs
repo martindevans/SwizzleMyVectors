@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -29,7 +30,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         public Matrix4x4 Matrix
         {
-            get { return _matrix; }
+            get => _matrix;
             set
             {
                 _matrix = value;
@@ -41,50 +42,32 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Gets the near plane of the frustum.
         /// </summary>
-        public Plane Near
-        {
-            get { return CreatePlanes()[0]; }
-        }
+        public Plane Near => GetOrCreatePlanesCache()[0];
 
         /// <summary>
         /// Gets the far plane of the frustum.
         /// </summary>
-        public Plane Far
-        {
-            get { return CreatePlanes()[1]; }
-        }
+        public Plane Far => GetOrCreatePlanesCache()[1];
 
         /// <summary>
         /// Gets the left plane of the frustum.
         /// </summary>
-        public Plane Left
-        {
-            get { return CreatePlanes()[2]; }
-        }
+        public Plane Left => GetOrCreatePlanesCache()[2];
 
         /// <summary>
         /// Gets the right plane of the frustum.
         /// </summary>
-        public Plane Right
-        {
-            get { return CreatePlanes()[3]; }
-        }
+        public Plane Right => GetOrCreatePlanesCache()[3];
 
         /// <summary>
         /// Gets the top plane of the frustum.
         /// </summary>
-        public Plane Top
-        {
-            get { return CreatePlanes()[4]; }
-        }
+        public Plane Top => GetOrCreatePlanesCache()[4];
 
         /// <summary>
         /// Gets the bottom plane of the frustum.
         /// </summary>
-        public Plane Bottom
-        {
-            get { return CreatePlanes()[5]; }
-        }
+        public Plane Bottom => GetOrCreatePlanesCache()[5];
 
         /// <summary>
         /// Creates a new instance of BoundingFrustum.
@@ -101,7 +84,8 @@ namespace SwizzleMyVectors.Geometry
             _matrix = value;
         }
 
-        private Plane[] CreatePlanes()
+        [NotNull]
+        private Plane[] GetOrCreatePlanesCache()
         {
             if (_planesDirty || _planes == null)
             {
@@ -121,9 +105,10 @@ namespace SwizzleMyVectors.Geometry
             return _planes;
         }
 
+        [NotNull]
         private Vector3[] CreateCorners()
         {
-            CreatePlanes();
+            GetOrCreatePlanesCache();
 
             if (_cornersDirty || _corners == null)
             {
@@ -189,6 +174,7 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Gets an array of points that make up the corners of the BoundingFrustum.
         /// </summary>
+        [NotNull]
         // ReSharper disable once ReturnTypeCanBeEnumerable.Global
         public Vector3[] GetCorners()
         {
@@ -199,10 +185,10 @@ namespace SwizzleMyVectors.Geometry
         /// Gets an array of points that make up the corners of the BoundingFrustum.
         /// </summary>
         /// <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingFrustum are written.</param>
-        public void GetCorners(Vector3[] corners)
+        public void GetCorners([NotNull] Vector3[] corners)
         {
-            if (corners == null) throw new ArgumentNullException("corners");
-            if (corners.Length < CornerCount) throw new ArgumentOutOfRangeException("corners");
+            if (corners == null) throw new ArgumentNullException(nameof(corners));
+            if (corners.Length < CornerCount) throw new ArgumentOutOfRangeException(nameof(corners));
 
             CreateCorners().CopyTo(corners, 0);
         }
@@ -249,8 +235,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check for intersection.</param>
         public bool Intersects(BoundingBox box)
         {
-            bool result;
-            Intersects(ref box, out result);
+            Intersects(ref box, out bool result);
             return result;
         }
 
@@ -260,8 +245,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingFrustum and BoundingBox intersect; false otherwise.</param>
         public void Intersects(ref BoundingBox box, out bool result)
         {
-            ContainmentType containment;
-            Contains(ref box, out containment);
+            Contains(ref box, out ContainmentType containment);
             result = containment != ContainmentType.Disjoint;
         }
 
@@ -297,8 +281,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection.</param>
         public bool Intersects(BoundingSphere sphere)
         {
-            bool result;
-            Intersects(ref sphere, out result);
+            Intersects(ref sphere, out bool result);
             return result;
         }
 
@@ -308,8 +291,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingFrustum and BoundingSphere intersect; false otherwise.</param>
         public void Intersects(ref BoundingSphere sphere, out bool result)
         {
-            ContainmentType containment;
-            Contains(ref sphere, out containment);
+            Contains(ref sphere, out ContainmentType containment);
             result = containment != ContainmentType.Disjoint;
         }
 
@@ -319,8 +301,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(BoundingBox box)
         {
-            ContainmentType result;
-            Contains(ref box, out result);
+            Contains(ref box, out ContainmentType result);
             return result;
         }
 
@@ -330,13 +311,12 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingBox box, out ContainmentType result)
         {
-            CreatePlanes();
+            GetOrCreatePlanesCache();
 
             var intersects = false;
             for (var i = 0; i < PlaneCount; ++i)
             {
-                PlaneIntersectionType planeIntersectionType;
-                box.Intersects(ref _planes[i], out planeIntersectionType);
+                box.Intersects(ref _planes[i], out PlaneIntersectionType planeIntersectionType);
                 switch (planeIntersectionType)
                 {
                     case PlaneIntersectionType.Front:
@@ -362,8 +342,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="point">The point to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(Vector3 point)
         {
-            ContainmentType result;
-            Contains(ref point, out result);
+            Contains(ref point, out ContainmentType result);
             return result;
         }
 
@@ -373,7 +352,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="point">The point to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref Vector3 point, out ContainmentType result)
         {
-            CreatePlanes();
+            GetOrCreatePlanesCache();
 
             for (var i = 0; i < PlaneCount; ++i)
             {
@@ -392,8 +371,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check against the current BoundingFrustum.</param>
         public ContainmentType Contains(BoundingSphere sphere)
         {
-            ContainmentType result;
-            Contains(ref sphere, out result);
+            Contains(ref sphere, out ContainmentType result);
             return result;
         }
 
@@ -403,13 +381,12 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingSphere sphere, out ContainmentType result)
         {
-            CreatePlanes();
+            GetOrCreatePlanesCache();
 
             var intersects = false;
             for (var i = 0; i < PlaneCount; ++i)
             {
-                PlaneIntersectionType planeIntersectionType;
-                sphere.Intersects(ref _planes[i], out planeIntersectionType);
+                sphere.Intersects(ref _planes[i], out PlaneIntersectionType planeIntersectionType);
 
                 switch (planeIntersectionType)
                 {
