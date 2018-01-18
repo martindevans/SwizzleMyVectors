@@ -115,7 +115,7 @@ namespace SwizzleMyVectors.Geometry
         /// <summary>
         /// Gets an array of points that make up the corners of the BoundingRectangle.
         /// </summary>
-        [Pure]
+        [Pure, NotNull]
         public Vector2[] GetCorners()
         {
             var arr = new Vector2[CornerCount];
@@ -127,7 +127,7 @@ namespace SwizzleMyVectors.Geometry
         /// Gets the array of points that make up the corners of the BoundingRectangle.
         /// </summary>
         /// <param name="corners">An existing array of at least 4 Vector2 points where the corners of the BoundingRectangle are written.</param>
-        public void GetCorners(Vector2[] corners)
+        public void GetCorners([NotNull] Vector2[] corners)
         {
             if (corners.Length < CornerCount)
                 throw new ArgumentException("Array too small", nameof(corners));

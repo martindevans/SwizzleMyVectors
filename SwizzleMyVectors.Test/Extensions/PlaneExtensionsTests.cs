@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace SwizzleMyVectors.Test.Extensions
 {
     [TestClass]
-    public class PlaneExtensions
+    public class PlaneExtensionsTests
     {
         [TestMethod]
         public void AssertThat_SignedDistanceIsCorrect_WithPointAbovePlane()

@@ -25,6 +25,7 @@ namespace SwizzleMyVectors.Geometry
 
         public Vector3 Extent => Max - Min;
 
+        #region constructors
         /// <summary>
         /// Creates an instance of BoundingBox around a BoundingSphere
         /// </summary>
@@ -43,6 +44,7 @@ namespace SwizzleMyVectors.Geometry
             Min = min;
             Max = max;
         }
+        #endregion
 
         #region static factories
         /// <summary>
@@ -73,7 +75,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to contain.</param>
         public static BoundingBox CreateFromSphere(BoundingSphere sphere)
         {
-            CreateFromSphere(ref sphere, out BoundingBox result);
+            CreateFromSphere(ref sphere, out var result);
             return result;
         }
 
@@ -83,9 +85,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to contain.</param><param name="result">[OutAttribute] The created BoundingBox.</param>
         public static void CreateFromSphere(ref BoundingSphere sphere, out BoundingBox result)
         {
-            var corner = new Vector3(sphere.Radius);
-            result.Min = sphere.Center - corner;
-            result.Max = sphere.Center + corner;
+            result = new BoundingBox(sphere);
         }
 
         /// <summary>
@@ -287,7 +287,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public bool Intersects(BoundingFrustum frustum)
         {
-            Intersects(ref frustum, out bool result);
+            Intersects(ref frustum, out var result);
             return result;
         }
 
@@ -308,7 +308,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public PlaneIntersectionType Intersects(Plane plane)
         {
-            Intersects(ref plane, out PlaneIntersectionType result);
+            Intersects(ref plane, out var result);
             return result;
         }
 
@@ -383,7 +383,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public float? Intersects(Ray3 ray)
         {
-            Intersects(ref ray, out float? result);
+            Intersects(ref ray, out var result);
             return result;
         }
 
@@ -403,7 +403,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public bool Intersects(BoundingSphere sphere)
         {
-            Intersects(ref sphere, out bool result);
+            Intersects(ref sphere, out var result);
             return result;
         }
 
@@ -459,7 +459,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(BoundingBox box)
         {
-            Contains(ref box, out ContainmentType result);
+            Contains(ref box, out var result);
             return result;
         }
 
@@ -510,7 +510,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(Vector3 point)
         {
-            Contains(ref point, out ContainmentType result);
+            Contains(ref point, out var result);
             return result;
         }
 
@@ -552,7 +552,7 @@ namespace SwizzleMyVectors.Geometry
         [Pure]
         public ContainmentType Contains(BoundingSphere sphere)
         {
-            Contains(ref sphere, out ContainmentType result);
+            Contains(ref sphere, out var result);
             return result;
         }
 

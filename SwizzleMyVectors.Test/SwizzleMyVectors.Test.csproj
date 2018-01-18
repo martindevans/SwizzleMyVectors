@@ -56,7 +56,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Extensions\Matrix4x4ExtensionsTests.cs" />
-    <Compile Include="Extensions\PlaneExtensions.cs" />
+    <Compile Include="Extensions\PlaneExtensionsTests.cs" />
     <Compile Include="Extensions\QuaternionExtensionsTests.cs" />
     <Compile Include="Extensions\Vector4ExtensionsTests.cs" />
     <Compile Include="Extensions\Vector3ExtensionsTests.cs" />
