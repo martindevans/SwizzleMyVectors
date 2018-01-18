@@ -20,5 +20,15 @@ namespace SwizzleMyVectors.Test.Extensions
         {
             Assert.IsFalse(new Quaternion(0, 1, 2, 3).IsNaN());
         }
+
+        [TestMethod]
+        public void NLerp_Interpolates()
+        {
+            var a = new Quaternion(1, 1, 1, 0);
+            var b = new Quaternion(1, 0, 1, 1);
+            var c = Quaternion.Normalize(new Quaternion(1, 0.75f, 1, 0.25f));
+
+            Assert.AreEqual(c, a.Nlerp(b, 0.25f));
+        }
     }
 }

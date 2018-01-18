@@ -16,7 +16,6 @@ namespace SwizzleMyVectors
         /// <returns>
         /// 	<c>true</c> if either X or Y or Z are NaN; otherwise, <c>false</c>.
         /// </returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(this Vector3 v)
         {
             return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z);

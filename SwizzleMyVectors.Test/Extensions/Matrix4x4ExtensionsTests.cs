@@ -50,57 +50,5 @@ namespace SwizzleMyVectors.Test.Extensions
                 Assert.IsFalse(m.IsNaN());
             }
         }
-
-        [TestMethod]
-        public void ManhattanLength_IsSumOfElements()
-        {
-            Assert.AreEqual(10, new Vector2(8, 2).ManhattanLength());
-            Assert.AreEqual(10, new Vector2(8, -2).ManhattanLength());
-            Assert.AreEqual(10, new Vector2(-8, 2).ManhattanLength());
-            Assert.AreEqual(10, new Vector2(-8, -2).ManhattanLength());
-        }
-
-        [TestMethod]
-        public void LargestElement_IsLargestElement()
-        {
-            Assert.AreEqual(8, new Vector2(8, 2).LargestElement());
-            Assert.AreEqual(8, new Vector2(8, -2).LargestElement());
-            Assert.AreEqual(2, new Vector2(-8, 2).LargestElement());
-            Assert.AreEqual(-2, new Vector2(-8, -2).LargestElement());
-        }
-
-        [TestMethod]
-        public void Swizzle2()
-        {
-            Assert.AreEqual(new Vector2(1, 1), new Vector2(1, 2).XX());
-            Assert.AreEqual(new Vector2(1, 2), new Vector2(1, 2).XY());
-            Assert.AreEqual(new Vector2(2, 1), new Vector2(1, 2).YX());
-            Assert.AreEqual(new Vector2(2, 2), new Vector2(1, 2).YY());
-        }
-
-        [TestMethod]
-        public void Swizzle3()
-        {
-            Assert.AreEqual(new Vector3(3, 1, 2), new Vector2(1, 2)._XY(3));
-            Assert.AreEqual(new Vector3(1, 3, 2), new Vector2(1, 2).X_Y(3));
-            Assert.AreEqual(new Vector3(1, 2, 3), new Vector2(1, 2).XY_(3));
-
-            Assert.AreEqual(new Vector3(3, 1, 1), new Vector2(1, 2)._XX(3));
-            Assert.AreEqual(new Vector3(1, 3, 1), new Vector2(1, 2).X_X(3));
-            Assert.AreEqual(new Vector3(1, 1, 3), new Vector2(1, 2).XX_(3));
-
-            Assert.AreEqual(new Vector3(3, 2, 2), new Vector2(1, 2)._YY(3));
-            Assert.AreEqual(new Vector3(2, 3, 2), new Vector2(1, 2).Y_Y(3));
-            Assert.AreEqual(new Vector3(2, 2, 3), new Vector2(1, 2).YY_(3));
-
-            Assert.AreEqual(new Vector3(1, 1, 1), new Vector2(1, 2).XXX());
-            Assert.AreEqual(new Vector3(1, 1, 2), new Vector2(1, 2).XXY());
-            Assert.AreEqual(new Vector3(1, 2, 1), new Vector2(1, 2).XYX());
-            Assert.AreEqual(new Vector3(1, 2, 2), new Vector2(1, 2).XYY());
-            Assert.AreEqual(new Vector3(2, 1, 1), new Vector2(1, 2).YXX());
-            Assert.AreEqual(new Vector3(2, 1, 2), new Vector2(1, 2).YXY());
-            Assert.AreEqual(new Vector3(2, 2, 1), new Vector2(1, 2).YYX());
-            Assert.AreEqual(new Vector3(2, 2, 2), new Vector2(1, 2).YYY());
-        }
     }
 }

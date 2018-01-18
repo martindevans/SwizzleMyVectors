@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace SwizzleMyVectors
 {
@@ -24,6 +25,7 @@ namespace SwizzleMyVectors
         /// <param name="b"></param>
         /// <param name="t"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Quaternion Nlerp(this Quaternion a, Quaternion b, float t)
         {
             Nlerp(a, ref b, t, out var q);
@@ -38,6 +40,7 @@ namespace SwizzleMyVectors
         /// <param name="t"></param>
         /// <param name="result"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void Nlerp(this Quaternion a, ref Quaternion b, float t, out Quaternion result)
         {
             result = Quaternion.Normalize(Quaternion.Lerp(a, b, t));
