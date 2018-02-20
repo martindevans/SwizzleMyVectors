@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SwizzleMyVectors.Test.Extensions
@@ -80,6 +81,31 @@ namespace SwizzleMyVectors.Test.Extensions
             var s = p.Side(new Vector3(0, -20, 0));
 
             Assert.IsTrue(s < 0);
+        }
+
+        [TestMethod]
+        public void IsNaN_TrueWithNaNElement()
+        {
+            Assert.IsTrue(new Plane(new Vector4(float.NaN, 0, 1, 2)).IsNaN());
+            Assert.IsTrue(new Plane(new Vector4(0, float.NaN, 1, 2)).IsNaN());
+            Assert.IsTrue(new Plane(new Vector4(0, 1, float.NaN, 2)).IsNaN());
+            Assert.IsTrue(new Plane(new Vector4(0, 1, 2, float.NaN)).IsNaN());
+        }
+
+        [TestMethod]
+        public void IsNaN_FalseWithoutNaN()
+        {
+            var r = new Random(234987);
+
+            for (var i = 0; i < 1024; i++)
+            {
+                Assert.IsFalse(new Plane(new Vector4(
+                    (float)((r.NextDouble() - 0.5) * int.MaxValue),
+                    (float)((r.NextDouble() - 0.5) * int.MaxValue),
+                    (float)((r.NextDouble() - 0.5) * int.MaxValue),
+                    (float)((r.NextDouble() - 0.5) * int.MaxValue)
+                )).IsNaN());
+            }
         }
     }
 }

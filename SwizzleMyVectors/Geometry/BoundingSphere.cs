@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
@@ -133,29 +134,36 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="original">BoundingSphere to be merged.</param><param name="additional">BoundingSphere to be merged.</param><param name="result">[OutAttribute] The created BoundingSphere.</param>
         public static void CreateMerged(ref BoundingSphere original, ref BoundingSphere additional, out BoundingSphere result)
         {
-            var ocenterToaCenter = Vector3.Subtract(additional.Center, original.Center);
-            var distance = ocenterToaCenter.Length();
-            if (distance <= original.Radius + additional.Radius)//intersect
+            var origToAdditionalCenter = Vector3.Subtract(additional.Center, original.Center);
+            var centersDistSq = origToAdditionalCenter.LengthSquared();
+            var centersDist = (float)Math.Sqrt(centersDistSq);
+
+            //Check if the spheres overlap, if they do there's the possibility one of the spheres completely contains the other already
+            if (centersDist < original.Radius + additional.Radius)
             {
-                if (distance <= original.Radius - additional.Radius)//original contain additional
+                //Check if original contains additional
+                if (Contains(original.Radius, additional.Radius, centersDistSq) == ContainmentType.Contains)
                 {
                     result = original;
                     return;
                 }
-                if (distance <= additional.Radius - original.Radius)//additional contain original
+
+                //Check if additional contains original
+                if (Contains(additional.Radius, original.Radius, centersDistSq) == ContainmentType.Contains)
                 {
                     result = additional;
                     return;
                 }
             }
+
             //else find center of new sphere and radius
-            var leftRadius = Math.Max(original.Radius - distance, additional.Radius);
-            var rightradius = Math.Max(original.Radius + distance, additional.Radius);
-            ocenterToaCenter = ocenterToaCenter + (((leftRadius - rightradius) / (2 * ocenterToaCenter.Length())) * ocenterToaCenter);//oCenterToResultCenter
+            var leftRadius = Math.Max(original.Radius - centersDist, additional.Radius);
+            var rightradius = Math.Max(original.Radius + centersDist, additional.Radius);
+            origToAdditionalCenter = origToAdditionalCenter + (((leftRadius - rightradius) / (2 * origToAdditionalCenter.Length())) * origToAdditionalCenter);
 
             result = new BoundingSphere
             {
-                Center = original.Center + ocenterToaCenter,
+                Center = original.Center + origToAdditionalCenter,
                 Radius = (leftRadius + rightradius) / 2
             };
         }
@@ -500,21 +508,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="point">The point to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref Vector3 point, out ContainmentType result)
         {
-            var sqRadius = Radius * Radius;
-            var sqDistance = Vector3.DistanceSquared(point, Center);
-
-            if (sqDistance > sqRadius)
-            {
-                result = ContainmentType.Disjoint;
-            }
-            else if (sqDistance < sqRadius)
-            {
-                result = ContainmentType.Contains;
-            }
-            else
-            {
-                result = ContainmentType.Intersects;
-            }
+            result = Contains(Radius, 0, Vector3.DistanceSquared(point, Center));
         }
 
         /// <summary>
@@ -533,20 +527,26 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingSphere sphere, out ContainmentType result)
         {
-            var sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
+            result = Contains(Radius, sphere.Radius, Vector3.DistanceSquared(sphere.Center, Center));
+        }
 
-            if (sqDistance > (sphere.Radius + Radius) * (sphere.Radius + Radius))
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static ContainmentType Contains(float outerRadius, float innerRadius, float squareDistanceBetweenCenters)
+        {
+            var sqDistance = squareDistanceBetweenCenters;
+
+            var radSum = innerRadius + outerRadius;
+            if (sqDistance > radSum * radSum)
+                return ContainmentType.Disjoint;
+
+            if (outerRadius > innerRadius)
             {
-                result = ContainmentType.Disjoint;
+                var radDif = outerRadius - innerRadius;
+                if (sqDistance <= radDif * radDif)
+                    return ContainmentType.Contains;
             }
-            else if (sqDistance <= (Radius - sphere.Radius) * (Radius - sphere.Radius))
-            {
-                result = ContainmentType.Contains;
-            }
-            else
-            {
-                result = ContainmentType.Intersects;
-            }
+
+            return ContainmentType.Intersects;
         }
 
         /// <summary>

@@ -118,5 +118,89 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.AreEqual(ContainmentType.Disjoint, a.Contains(b));
         }
+
+        [TestMethod]
+        public void ContainsPoint_Fuzz()
+        {
+            var r = new Random(2436544);
+
+            for (var i = 0; i < 1024; i++)
+            {
+                var s = new BoundingSphere(new Vector3((float)r.NextDouble() * 100, (float)r.NextDouble() * 100, (float)r.NextDouble() * 100), (float)r.NextDouble() * 100);
+                var p = new Vector3((float)r.NextDouble() * 100, (float)r.NextDouble() * 100, (float)r.NextDouble() * 100);
+                var d = Vector3.Distance(s.Center, p);
+
+                if (d > s.Radius)
+                    Assert.AreEqual(ContainmentType.Disjoint, s.Contains(p));
+                else if (d < s.Radius)
+                    Assert.AreEqual(ContainmentType.Contains, s.Contains(p));
+                else
+                    Assert.AreEqual(ContainmentType.Intersects, s.Contains(p));
+            }
+        }
+
+        [TestMethod]
+        public void CreateMerged_Disjoint()
+        {
+            var a = new BoundingSphere(Vector3.Zero, 5);
+            var b = new BoundingSphere(new Vector3(20), 5);
+            var m = BoundingSphere.CreateMerged(a, b);
+
+            Assert.AreEqual(ContainmentType.Contains, m.Contains(a));
+            Assert.AreEqual(ContainmentType.Contains, m.Contains(b));
+        }
+
+        [TestMethod]
+        public void CreateMerged_Intersect()
+        {
+            var a = new BoundingSphere(Vector3.Zero, 5);
+            var b = new BoundingSphere(new Vector3(6, 0, 0), 5);
+            var m = BoundingSphere.CreateMerged(a, b);
+
+            Assert.AreEqual(ContainmentType.Contains, m.Contains(a));
+            Assert.AreEqual(ContainmentType.Contains, m.Contains(b));
+        }
+
+        [TestMethod]
+        public void CreateMerged_Contains()
+        {
+            var a = new BoundingSphere(Vector3.Zero, 5);
+            var b = new BoundingSphere(new Vector3(1, 0, 0), 2);
+            var m = BoundingSphere.CreateMerged(a, b);
+
+            Assert.AreEqual(a, m);
+        }
+
+        [TestMethod]
+        public void CreateMerged_Contains2()
+        {
+            var a = new BoundingSphere(new Vector3(1, 0, 0), 2);
+            var b = new BoundingSphere(Vector3.Zero, 5);
+            var m = BoundingSphere.CreateMerged(a, b);
+
+            Assert.AreEqual(ContainmentType.Contains, b.Contains(a));
+            Assert.AreEqual(ContainmentType.Intersects, a.Contains(b));
+            Assert.AreEqual(b, m);
+        }
+
+        [TestMethod]
+        public void CreateMerged_Fuzz()
+        {
+            var r = new Random(2436544);
+
+            for (var i = 0; i < 1024; i++)
+            {
+                var a = new BoundingSphere(new Vector3((float)r.NextDouble() * 100, (float)r.NextDouble() * 100, (float)r.NextDouble() * 100), (float)r.NextDouble() * 100);
+                var b = new BoundingSphere(new Vector3((float)r.NextDouble() * 100, (float)r.NextDouble() * 100, (float)r.NextDouble() * 100), (float)r.NextDouble() * 100);
+                var m = BoundingSphere.CreateMerged(a, b);
+
+                if (a.Contains(b) == ContainmentType.Contains)
+                    Assert.AreEqual(a, m, $"a={a} b={b}");
+                else if (b.Contains(a) == ContainmentType.Contains)
+                    Assert.AreEqual(b, m);
+                else
+                    Assert.IsTrue(m.Contains(a) != ContainmentType.Disjoint && m.Contains(b) != ContainmentType.Disjoint);
+            }
+        }
     }
 }

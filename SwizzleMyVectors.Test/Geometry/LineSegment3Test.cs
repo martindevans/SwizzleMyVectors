@@ -10,7 +10,7 @@ using SwizzleMyVectors.Geometry;
 namespace SwizzleMyVectors.Test.Geometry
 {
     [TestClass]
-    public class LineSegment3Tests
+    public class LineSegment3Test
     {
         [TestMethod]
         public void Equals_TrueForEqual()

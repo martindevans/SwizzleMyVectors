@@ -201,7 +201,7 @@ namespace SwizzleMyVectors.Geometry
             if (distance < 0)
             {
                 if (Vector3.Min(min, max) != min)
-                    throw new ArgumentOutOfRangeException("distance", "Distance specified to inflate rectangle is a negative value larger than the total diagonal size of the rectangle (doing this would invert the rectangle!");
+                    throw new ArgumentOutOfRangeException(nameof(distance), "Distance specified to inflate rectangle is a negative value larger than the total diagonal size of the rectangle (doing this would invert the rectangle!");
             }
 
             box.Min = min;

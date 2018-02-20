@@ -291,5 +291,101 @@ namespace SwizzleMyVectors.Test.Geometry
             TestPlaneInDirection(-Vector3.UnitY, true);
             TestPlaneInDirection(-Vector3.UnitZ, true);
         }
+
+        [TestMethod]
+        public void ContainsPoint_Contains()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+            var p = new Vector3(2, 3, 4);
+
+            Assert.AreEqual(ContainmentType.Contains, b.Contains(p));
+        }
+
+        [TestMethod]
+        public void ContainsPoint_Intersects()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+
+            //Touching min axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(1, 3, 4)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(2, 2, 4)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(2, 3, 3)));
+
+            //Touching max axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(4, 3, 4)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(2, 5, 4)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new Vector3(2, 3, 6)));
+        }
+
+        [TestMethod]
+        public void ContainsPoint_Disjoint()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+
+            //Below min axes
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(0, 3, 4)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(2, 1, 4)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(2, 3, 2)));
+
+            //Above max axes
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(5, 3, 4)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(2, 6, 4)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new Vector3(2, 3, 7)));
+        }
+
+        [TestMethod]
+        public void ContainsSphere_Contains()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(6, 7, 8));
+            var s = new BoundingSphere(new Vector3(3, 4, 5), 1);
+
+            Assert.AreEqual(ContainmentType.Contains, b.Contains(s));
+        }
+
+        [TestMethod]
+        public void ContainsSphere_Intersects()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(6, 7, 8));
+
+            //on min axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(1, 4, 5), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(3, 2, 5), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(3, 4, 3), 1)));
+
+            //on max axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(6, 4, 5), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(3, 7, 5), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(3, 4, 8), 1)));
+
+            //touching min axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(0, 4, 5), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(1, 1, 3), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(1, 2, 2), 1)));
+
+            //touching max axes
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(7, 7, 8), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(6, 8, 8), 1)));
+            Assert.AreEqual(ContainmentType.Intersects, b.Contains(new BoundingSphere(new Vector3(6, 7, 9), 1)));
+        }
+
+        [TestMethod]
+        public void ContainsSphere_Disjoint()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(6, 7, 8));
+
+            //below min axes
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(-1, 4, 5), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(3, 0, 5), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(3, 4, 1), 1)));
+
+            //above max axes
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(8, 4, 5), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(6, 9, 5), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(6, 7, 10), 1)));
+
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(1, 2, 0), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(1, 0, 3), 1)));
+            Assert.AreEqual(ContainmentType.Disjoint, b.Contains(new BoundingSphere(new Vector3(-1, 2, 3), 1)));
+        }
     }
 }
