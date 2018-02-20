@@ -27,6 +27,7 @@ namespace SwizzleMyVectors.Geometry
             Radius = radius;
         }
 
+        #region equality
         /// <summary>
         /// Determines whether two instances of BoundingSphere are equal.
         /// </summary>
@@ -44,6 +45,41 @@ namespace SwizzleMyVectors.Geometry
         {
             return !a.Equals(b);
         }
+
+        /// <summary>
+        /// Determines whether the specified BoundingSphere is equal to the current BoundingSphere.
+        /// </summary>
+        /// <param name="other">The BoundingSphere to compare with the current BoundingSphere.</param>
+        public bool Equals(BoundingSphere other)
+        {
+            return Radius.Equals(other.Radius) && Center.Equals(other.Center);
+        }
+
+        /// <summary>
+        /// Determines whether the specified Object is equal to the BoundingSphere.
+        /// </summary>
+        /// <param name="obj">The Object to compare with the current BoundingSphere.</param>
+        public override bool Equals(object obj)
+        {
+            return (obj is BoundingSphere sphere) && Equals(sphere);
+        }
+
+        /// <summary>
+        /// Gets the hash code for this instance.
+        /// </summary>
+        public override int GetHashCode()
+        {
+            // Ugly, but it's how MS do it in their vector types
+            // ReSharper disable NonReadonlyFieldInGetHashCode
+
+            var hash = 17;
+            hash = hash * 31 + Center.GetHashCode();
+            hash = hash * 31 + Radius.GetHashCode();
+            return hash;
+
+            // ReSharper restore NonReadonlyFieldInGetHashCode
+        }
+        #endregion
 
         /// <summary>
         /// Expand bounding sphere diameter by distance
@@ -71,40 +107,6 @@ namespace SwizzleMyVectors.Geometry
                 throw new ArgumentOutOfRangeException(nameof(distance), "Distance specified to inflate sphere is a negative value larger than the total diameter (this would cause a negative radius!)");
 
             sphere.Radius = r;
-        }
-
-        /// <summary>
-        /// Determines whether the specified BoundingSphere is equal to the current BoundingSphere.
-        /// </summary>
-        /// <param name="other">The BoundingSphere to compare with the current BoundingSphere.</param>
-        public bool Equals(BoundingSphere other)
-        {
-            return Radius.Equals(other.Radius) && Center.Equals(other.Center);
-        }
-
-        /// <summary>
-        /// Determines whether the specified Object is equal to the BoundingSphere.
-        /// </summary>
-        /// <param name="obj">The Object to compare with the current BoundingSphere.</param>
-        public override bool Equals(object obj)
-        {
-            return obj is BoundingSphere && Equals((BoundingSphere)obj);
-        }
-
-        /// <summary>
-        /// Gets the hash code for this instance.
-        /// </summary>
-        public override int GetHashCode()
-        {
-// Ugly, but it's how MS do it in their vector types
-// ReSharper disable NonReadonlyFieldInGetHashCode
-
-            var hash = 17;
-            hash = hash * 31 + Center.GetHashCode();
-            hash = hash * 31 + Radius.GetHashCode();
-            return hash;
-
-// ReSharper restore NonReadonlyFieldInGetHashCode
         }
 
         /// <summary>
@@ -502,13 +504,17 @@ namespace SwizzleMyVectors.Geometry
             var sqDistance = Vector3.DistanceSquared(point, Center);
 
             if (sqDistance > sqRadius)
+            {
                 result = ContainmentType.Disjoint;
-
+            }
             else if (sqDistance < sqRadius)
+            {
                 result = ContainmentType.Contains;
-
+            }
             else
+            {
                 result = ContainmentType.Intersects;
+            }
         }
 
         /// <summary>
@@ -530,13 +536,17 @@ namespace SwizzleMyVectors.Geometry
             var sqDistance = Vector3.DistanceSquared(sphere.Center, Center);
 
             if (sqDistance > (sphere.Radius + Radius) * (sphere.Radius + Radius))
+            {
                 result = ContainmentType.Disjoint;
-
+            }
             else if (sqDistance <= (Radius - sphere.Radius) * (Radius - sphere.Radius))
+            {
                 result = ContainmentType.Contains;
-
+            }
             else
+            {
                 result = ContainmentType.Intersects;
+            }
         }
 
         /// <summary>

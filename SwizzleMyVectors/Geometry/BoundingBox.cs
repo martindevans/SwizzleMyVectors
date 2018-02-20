@@ -115,6 +115,7 @@ namespace SwizzleMyVectors.Geometry
         }
         #endregion
 
+        #region equality
         /// <summary>
         /// Determines whether two instances of BoundingBox are equal.
         /// </summary>
@@ -134,6 +135,44 @@ namespace SwizzleMyVectors.Geometry
         {
             return !a.Equals(b);
         }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
+        [Pure]
+        public bool Equals(BoundingBox other)
+        {
+            return Min.Equals(other.Min) && Max.Equals(other.Max);
+        }
+
+        /// <summary>
+        /// Determines whether two instances of BoundingBox are equal.
+        /// </summary>
+        /// <param name="obj">The Object to compare with the current BoundingBox.</param>
+        [Pure]
+        public override bool Equals(object obj)
+        {
+            return (obj is BoundingBox box) && Equals(box);
+        }
+
+        /// <summary>
+        /// Gets the hash code for this instance.
+        /// </summary>
+        [Pure]
+        public override int GetHashCode()
+        {
+            // This seems ugly, but it's inline with how MS designed their vector types!
+            // ReSharper disable NonReadonlyFieldInGetHashCode
+
+            var hash = 17;
+            hash = hash * 31 + Min.GetHashCode();
+            hash = hash * 31 + Max.GetHashCode();
+            return hash;
+
+            // ReSharper restore NonReadonlyFieldInGetHashCode
+        }
+        #endregion
 
         /// <summary>
         /// Expand bounding box by distance / 2 at min and max (total of distance)
@@ -187,6 +226,8 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="corners">An existing array of at least 8 Vector3 points where the corners of the BoundingBox are written.</param>
         public void GetCorners([NotNull] Vector3[] corners)
         {
+            if (corners == null)
+                throw new ArgumentNullException(nameof(corners));
             if (corners.Length < CornerCount)
                 throw new ArgumentException("Array too small", nameof(corners));
 
@@ -198,43 +239,6 @@ namespace SwizzleMyVectors.Geometry
             corners[5] = new Vector3(Max.X, Max.Y, Min.Z);
             corners[6] = new Vector3(Max.X, Min.Y, Min.Z);
             corners[7] = new Vector3(Min.X, Min.Y, Min.Z);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="other">The BoundingBox to compare with the current BoundingBox.</param>
-        [Pure]
-        public bool Equals(BoundingBox other)
-        {
-            return Min.Equals(other.Min) && Max.Equals(other.Max);
-        }
-
-        /// <summary>
-        /// Determines whether two instances of BoundingBox are equal.
-        /// </summary>
-        /// <param name="obj">The Object to compare with the current BoundingBox.</param>
-        [Pure]
-        public override bool Equals(object obj)
-        {
-            return obj is BoundingBox && Equals((BoundingBox)obj);
-        }
-
-        /// <summary>
-        /// Gets the hash code for this instance.
-        /// </summary>
-        [Pure]
-        public override int GetHashCode()
-        {
-// This seems ugly, but it's inline with how MS designed their vector types!
-// ReSharper disable NonReadonlyFieldInGetHashCode
-
-            var hash = 17;
-            hash = hash * 31 + Min.GetHashCode();
-            hash = hash * 31 + Max.GetHashCode();
-            return hash;
-
-// ReSharper restore NonReadonlyFieldInGetHashCode
         }
 
         /// <summary>

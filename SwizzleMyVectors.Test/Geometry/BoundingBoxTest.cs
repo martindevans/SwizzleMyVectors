@@ -200,5 +200,96 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.AreEqual(27, a.Volume());
         }
+
+        [TestMethod]
+        public void GetCorners_GetsAllEightCorners()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+            var c = b.GetCorners();
+
+            Assert.AreEqual(8, c.Length);
+
+            Assert.IsTrue(c.Contains(new Vector3(1, 2, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 2, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 5, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 5, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 2, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 2, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 5, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 5, 6)));
+        }
+
+        [TestMethod]
+        public void GetCorners_GetsAllEightCorners_WithInputArray()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+            var c = new Vector3[8];
+            b.GetCorners(c);
+
+            Assert.AreEqual(8, c.Length);
+
+            Assert.IsTrue(c.Contains(new Vector3(1, 2, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 2, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 5, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(1, 5, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 2, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 2, 6)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 5, 3)));
+            Assert.IsTrue(c.Contains(new Vector3(4, 5, 6)));
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void GetCorners_ThrowsWithSmallArray()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+            var c = new Vector3[7];
+            b.GetCorners(c);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void GetCorners_ThrowsWithNullArray()
+        {
+            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
+
+            // ReSharper disable once AssignNullToNotNullAttribute
+            b.GetCorners(null);
+        }
+
+        [TestMethod]
+        public void ToString_ContainsMinMax()
+        {
+            var min = new Vector3(1, 2, 3);
+            var max = new Vector3(4, 5, 6);
+            var b = new BoundingBox(min, max);
+
+            Assert.IsTrue(b.ToString().Contains(min.ToString()));
+            Assert.IsTrue(b.ToString().Contains(max.ToString()));
+        }
+
+        private static void TestPlaneInDirection(Vector3 dir, bool inv = false)
+        {
+            var b = new BoundingBox(new Vector3(10), new Vector3(20));
+
+            var p1 = new Plane(dir, -15 * (inv ? -1 : 1));
+            Assert.AreEqual(PlaneIntersectionType.Intersecting, b.Intersects(p1));
+
+            var p2 = new Plane(dir, -5);
+            Assert.AreEqual(inv ? PlaneIntersectionType.Back : PlaneIntersectionType.Front, b.Intersects(p2));
+
+            var p3 = new Plane(dir, -35);
+            Assert.AreEqual(PlaneIntersectionType.Back, b.Intersects(p3));
+        }
+
+        [TestMethod]
+        public void PlaneIntersections()
+        {
+            TestPlaneInDirection(Vector3.UnitX);
+            TestPlaneInDirection(Vector3.UnitY);
+            TestPlaneInDirection(Vector3.UnitZ);
+
+            TestPlaneInDirection(-Vector3.UnitX, true);
+            TestPlaneInDirection(-Vector3.UnitY, true);
+            TestPlaneInDirection(-Vector3.UnitZ, true);
+        }
     }
 }

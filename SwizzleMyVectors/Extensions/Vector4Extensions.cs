@@ -15,5 +15,12 @@ namespace SwizzleMyVectors
         {
             return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z) || float.IsNaN(v.W);
         }
+
+        //todo: reorder to v2
+        //todo: reorder to v3
+        //todo: reorder to v4 sub x
+        //todo: reorder to v4 sub y
+        //todo: reorder to v4 sub z
+        //todo: reorder to v4 sub w
     }
 }

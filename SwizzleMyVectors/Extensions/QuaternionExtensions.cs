@@ -13,6 +13,7 @@ namespace SwizzleMyVectors
         /// </summary>
         /// <param name="v"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(this Quaternion v)
         {
             return float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z) || float.IsNaN(v.W);

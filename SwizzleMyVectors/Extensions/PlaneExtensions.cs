@@ -6,6 +6,17 @@ namespace SwizzleMyVectors
     public static class PlaneExtensions
     {
         /// <summary>
+        /// Check if any of the elements of this plane are NaN
+        /// </summary>
+        /// <param name="plane"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNaN(this Plane plane)
+        {
+            return plane.Normal.IsNaN() || plane.D.IsNaN();
+        }
+
+        /// <summary>
         /// Returns a value indicating what side (positive/negative) of a plane a point is
         /// </summary>
         /// <param name="point">The point to check with</param>

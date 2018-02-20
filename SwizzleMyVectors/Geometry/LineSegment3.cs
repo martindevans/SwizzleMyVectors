@@ -36,6 +36,7 @@ namespace SwizzleMyVectors.Geometry
             End = end;
         }
 
+        #region equality
         /// <summary>
         /// Determines whether two instances of LineSegment3 are equal.
         /// </summary>
@@ -86,6 +87,7 @@ namespace SwizzleMyVectors.Geometry
 
 // ReSharper restore NonReadonlyFieldInGetHashCode
         }
+        #endregion
 
         /// <summary>
         /// Returns a String that represents the current Ray.

@@ -41,5 +41,54 @@ namespace SwizzleMyVectors.Test.Geometry
             Assert.IsTrue(i.HasValue);
             Assert.AreEqual(1, i.Value.DistanceAlongA);
         }
+
+        [TestMethod]
+        public void Equals_TrueForEqual()
+        {
+            var a = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+            var b = a;
+
+            Assert.IsTrue(a.Equals(b));
+            Assert.IsTrue(a.Equals((object)b));
+            Assert.IsTrue(a == b);
+        }
+
+        [TestMethod]
+        public void Equals_FalseForNotEqual()
+        {
+            var a = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+            var b = new LineSegment2(new Vector2(5, 6), new Vector2(7, 8));
+
+            Assert.IsFalse(a.Equals(b));
+            Assert.IsFalse(a.Equals((object)b));
+            Assert.IsFalse(a == b);
+        }
+
+        [TestMethod]
+        public void NotEquals_FalseForEqual()
+        {
+            var a = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+            var b = a;
+
+            Assert.IsFalse(a != b);
+        }
+
+        [TestMethod]
+        public void NotEquals_TrueForNotEqual()
+        {
+            var a = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+            var b = new LineSegment2(new Vector2(6, 2), new Vector2(3, 4));
+
+            Assert.IsTrue(a != b);
+        }
+
+        [TestMethod]
+        public void GetHashCode_SameForEqual()
+        {
+            var a = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+            var b = new LineSegment2(new Vector2(1, 2), new Vector2(3, 4));
+
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
+        }
     }
 }

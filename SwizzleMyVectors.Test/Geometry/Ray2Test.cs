@@ -57,11 +57,59 @@ namespace SwizzleMyVectors.Test.Geometry
         [TestMethod]
         public void AssertThat_RayRayIntersection_FindsParallelLines()
         {
-            Parallelism para;
-            var i = new Ray2(new Vector2(0, 10), new Vector2(0, 1)).Intersects(new Ray2(new Vector2(20, 5), new Vector2(0, 1)), out para);
+            var i = new Ray2(new Vector2(0, 10), new Vector2(0, 1)).Intersects(new Ray2(new Vector2(20, 5), new Vector2(0, 1)), out var para);
 
             Assert.AreEqual(Parallelism.Parallel, para);
             Assert.IsFalse(i.HasValue);
+        }
+
+        [TestMethod]
+        public void Equals_TrueForEqual()
+        {
+            var a = new Ray2(new Vector2(1, 2), Vector2.UnitY);
+            var b = a;
+
+            Assert.IsTrue(a.Equals(b));
+            Assert.IsTrue(a.Equals((object)b));
+            Assert.IsTrue(a == b);
+        }
+
+        [TestMethod]
+        public void Equals_FalseForNotEqual()
+        {
+            var a = new Ray2(new Vector2(1, 2), Vector2.UnitY);
+            var b = new Ray2(new Vector2(1, 2), Vector2.UnitX);
+
+            Assert.IsFalse(a.Equals(b));
+            Assert.IsFalse(a.Equals((object)b));
+            Assert.IsFalse(a == b);
+        }
+
+        [TestMethod]
+        public void NotEquals_FalseForEqual()
+        {
+            var a = new Ray2(new Vector2(1, 2), Vector2.UnitX);
+            var b = a;
+
+            Assert.IsFalse(a != b);
+        }
+
+        [TestMethod]
+        public void NotEquals_TrueForNotEqual()
+        {
+            var a = new Ray2(new Vector2(1, 2), Vector2.UnitX);
+            var b = new Ray2(new Vector2(1, 2), Vector2.UnitY);
+
+            Assert.IsTrue(a != b);
+        }
+
+        [TestMethod]
+        public void GetHashCode_SameForEqual()
+        {
+            var a = new Ray2(new Vector2(1, 2), Vector2.UnitY);
+            var b = new Ray2(new Vector2(1, 2), Vector2.UnitY);
+
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
         }
     }
 }

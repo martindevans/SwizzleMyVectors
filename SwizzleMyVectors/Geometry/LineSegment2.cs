@@ -27,10 +27,7 @@ namespace SwizzleMyVectors.Geometry
         /// Return a new Ray2, pointing along this segment (with non normalized direction vector)
         /// </summary>
         /// <returns></returns>
-        public Ray2 LongLine
-        {
-            get { return new Ray2(Start, End - Start); }
-        }
+        public Ray2 LongLine => new Ray2(Start, End - Start);
 
         /// <summary>
         /// Creates a new instance of LineSegment2.
@@ -42,6 +39,7 @@ namespace SwizzleMyVectors.Geometry
             End = end;
         }
 
+        #region equality
         /// <summary>
         /// Determines whether two instances of LineSegment2 are equal.
         /// </summary>
@@ -75,7 +73,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="obj">The Object to compare with the current Ray.</param>
         public override bool Equals(object obj)
         {
-            return obj is LineSegment2 && Equals((LineSegment2)obj);
+            return obj is LineSegment2 segment2 && Equals(segment2);
         }
 
         /// <summary>
@@ -85,13 +83,14 @@ namespace SwizzleMyVectors.Geometry
         {
 // ReSharper disable NonReadonlyFieldInGetHashCode
 
-            int hash = 17;
+            var hash = 17;
             hash = hash * 31 + Start.GetHashCode();
             hash = hash * 31 + End.GetHashCode();
             return hash;
 
 // ReSharper restore NonReadonlyFieldInGetHashCode
         }
+        #endregion
 
         /// <summary>
         /// Returns a String that represents the current Ray.
@@ -109,7 +108,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public Vector2 ClosestPoint(Vector2 point)
         {
-            return ClosestPoint(ref point, out float t);
+            return ClosestPoint(ref point, out var t);
         }
 
         /// <summary>
@@ -144,7 +143,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public float ClosestPointDistanceAlongSegment(Vector2 point)
         {
-            ClosestPointDistanceAlongSegment(ref point, out float dist);
+            ClosestPointDistanceAlongSegment(ref point, out var dist);
             return dist;
         }
 
@@ -163,7 +162,7 @@ namespace SwizzleMyVectors.Geometry
 
         public float DistanceToPoint(Vector2 point)
         {
-            DistanceToPoint(ref point, out float result);
+            DistanceToPoint(ref point, out var result);
             return result;
         }
 

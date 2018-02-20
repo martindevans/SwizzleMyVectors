@@ -25,6 +25,7 @@ namespace SwizzleMyVectors.Geometry
             Direction = direction;
         }
 
+        #region equality
         /// <summary>
         /// Determines whether two instances of Ray are equal.
         /// </summary>
@@ -58,7 +59,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="obj">The Object to compare with the current Ray.</param>
         public override bool Equals(object obj)
         {
-            return obj is Ray2 && Equals((Ray2)obj);
+            return obj is Ray2 ray2 && Equals(ray2);
         }
 
         /// <summary>
@@ -75,6 +76,7 @@ namespace SwizzleMyVectors.Geometry
 
 // ReSharper restore NonReadonlyFieldInGetHashCode
         }
+        #endregion
 
         /// <summary>
         /// Returns a String that represents the current Ray.

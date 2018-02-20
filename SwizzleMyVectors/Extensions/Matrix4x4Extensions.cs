@@ -6,6 +6,11 @@ namespace SwizzleMyVectors
     // ReSharper disable once InconsistentNaming
     public static class Matrix4x4Extensions
     {
+        /// <summary>
+        /// Determine is any element of this matrix is NaN
+        /// </summary>
+        /// <param name="matrix"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNaN(this Matrix4x4 matrix)
         {

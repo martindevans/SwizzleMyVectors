@@ -190,5 +190,54 @@ namespace SwizzleMyVectors.Test.Geometry
             var closest = ray.ClosestPoint(point);
             Assert.AreEqual(new Vector3(0, 150, 0), closest);
         }
+
+        [TestMethod]
+        public void Equals_TrueForEqual()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = a;
+
+            Assert.IsTrue(a.Equals(b));
+            Assert.IsTrue(a.Equals((object)b));
+            Assert.IsTrue(a == b);
+        }
+
+        [TestMethod]
+        public void Equals_FalseForNotEqual()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = new Ray3(new Vector3(1, 2, 3), Vector3.UnitX);
+
+            Assert.IsFalse(a.Equals(b));
+            Assert.IsFalse(a.Equals((object)b));
+            Assert.IsFalse(a == b);
+        }
+
+        [TestMethod]
+        public void NotEquals_FalseForEqual()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = a;
+
+            Assert.IsFalse(a != b);
+        }
+
+        [TestMethod]
+        public void NotEquals_TrueForNotEqual()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = new Ray3(new Vector3(1, 2, 3), Vector3.UnitZ);
+
+            Assert.IsTrue(a != b);
+        }
+
+        [TestMethod]
+        public void GetHashCode_SameForEqual()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+
+            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
+        }
     }
 }
