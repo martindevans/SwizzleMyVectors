@@ -4,26 +4,18 @@ using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
-namespace SwizzleMyVectors.Test.Geometry
+namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
 {
     [TestClass]
     public class BoundingBoxTest
     {
-        readonly BoundingBox _a = new BoundingBox(new Vector3(0), new Vector3(10));
-        readonly BoundingBox _b = new BoundingBox(new Vector3(5), new Vector3(15));
-        readonly BoundingBox _c = new BoundingBox(new Vector3(3), new Vector3(5));
-        readonly BoundingBox _d = new BoundingBox(new Vector3(100), new Vector3(110));
+        private readonly BoundingBox _a = new BoundingBox(new Vector3(0), new Vector3(10));
+        private readonly BoundingBox _b = new BoundingBox(new Vector3(5), new Vector3(15));
+        private readonly BoundingBox _c = new BoundingBox(new Vector3(3), new Vector3(5));
+        private readonly BoundingBox _d = new BoundingBox(new Vector3(100), new Vector3(110));
 
         [TestMethod]
-        public void Intersects()
-        {
-            Assert.IsTrue(_a.Intersects(_b));
-            Assert.IsTrue(_a.Intersects(_c));
-            Assert.IsFalse(_a.Intersects(_d));
-        }
-
-        [TestMethod]
-        public void Contains()
+        public void Contains_BoundingBox()
         {
 
             Assert.IsFalse(_a.Contains(_b) == ContainmentType.Contains);
@@ -266,32 +258,7 @@ namespace SwizzleMyVectors.Test.Geometry
             Assert.IsTrue(b.ToString().Contains(max.ToString()));
         }
 
-        private static void TestPlaneInDirection(Vector3 dir, bool inv = false)
-        {
-            var b = new BoundingBox(new Vector3(10), new Vector3(20));
-
-            var p1 = new Plane(dir, -15 * (inv ? -1 : 1));
-            Assert.AreEqual(PlaneIntersectionType.Intersecting, b.Intersects(p1));
-
-            var p2 = new Plane(dir, -5);
-            Assert.AreEqual(inv ? PlaneIntersectionType.Back : PlaneIntersectionType.Front, b.Intersects(p2));
-
-            var p3 = new Plane(dir, -35);
-            Assert.AreEqual(PlaneIntersectionType.Back, b.Intersects(p3));
-        }
-
-        [TestMethod]
-        public void PlaneIntersections()
-        {
-            TestPlaneInDirection(Vector3.UnitX);
-            TestPlaneInDirection(Vector3.UnitY);
-            TestPlaneInDirection(Vector3.UnitZ);
-
-            TestPlaneInDirection(-Vector3.UnitX, true);
-            TestPlaneInDirection(-Vector3.UnitY, true);
-            TestPlaneInDirection(-Vector3.UnitZ, true);
-        }
-
+        
         [TestMethod]
         public void ContainsPoint_Contains()
         {

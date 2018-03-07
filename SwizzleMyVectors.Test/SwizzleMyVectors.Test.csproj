@@ -61,7 +61,8 @@
     <Compile Include="Extensions\Vector4ExtensionsTests.cs" />
     <Compile Include="Extensions\Vector3ExtensionsTests.cs" />
     <Compile Include="Extensions\Vector2ExtensionsTests.cs" />
-    <Compile Include="Geometry\BoundingBoxTest.cs" />
+    <Compile Include="Geometry\BoundingBoxClass\BoundingBoxTest.cs" />
+    <Compile Include="Geometry\BoundingBoxClass\IntersectsTests.cs" />
     <Compile Include="Geometry\BoundingRectangleTest.cs" />
     <Compile Include="Geometry\BoundingSphereTest.cs" />
     <Compile Include="Geometry\LineSegment3Test.cs" />

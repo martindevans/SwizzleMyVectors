@@ -417,41 +417,38 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingBox and BoundingSphere intersect; false otherwise.</param>
         public void Intersects(ref BoundingSphere sphere, out bool result)
         {
-            if (sphere.Center.X - Min.X > sphere.Radius
-                && sphere.Center.Y - Min.Y > sphere.Radius
-                && sphere.Center.Z - Min.Z > sphere.Radius
-                && Max.X - sphere.Center.X > sphere.Radius
-                && Max.Y - sphere.Center.Y > sphere.Radius
-                && Max.Z - sphere.Center.Z > sphere.Radius)
+            float Sqr(float a) => a * a;
+
+            var rSqr = Sqr(sphere.Radius);
+
+            if (sphere.Center.X < Min.X)
+                rSqr -= Sqr(sphere.Center.X - Min.X);
+            else if (sphere.Center.X > Max.X)
+                rSqr -= Sqr(sphere.Center.X - Max.X);
+
+            if (rSqr <= 0)
             {
-                result = true;
+                result = false;
                 return;
             }
 
-            double dmin = 0;
+            if (sphere.Center.Y < Min.Y)
+                rSqr -= Sqr(sphere.Center.Y - Min.Y);
+            else if (sphere.Center.Y > Max.Y)
+                rSqr -= Sqr(sphere.Center.Y - Max.Y);
 
-            if (sphere.Center.X - Min.X <= sphere.Radius)
-                dmin += (sphere.Center.X - Min.X) * (sphere.Center.X - Min.X);
-            else if (Max.X - sphere.Center.X <= sphere.Radius)
-                dmin += (sphere.Center.X - Max.X) * (sphere.Center.X - Max.X);
-
-            if (sphere.Center.Y - Min.Y <= sphere.Radius)
-                dmin += (sphere.Center.Y - Min.Y) * (sphere.Center.Y - Min.Y);
-            else if (Max.Y - sphere.Center.Y <= sphere.Radius)
-                dmin += (sphere.Center.Y - Max.Y) * (sphere.Center.Y - Max.Y);
-
-            if (sphere.Center.Z - Min.Z <= sphere.Radius)
-                dmin += (sphere.Center.Z - Min.Z) * (sphere.Center.Z - Min.Z);
-            else if (Max.Z - sphere.Center.Z <= sphere.Radius)
-                dmin += (sphere.Center.Z - Max.Z) * (sphere.Center.Z - Max.Z);
-
-            if (dmin <= sphere.Radius * sphere.Radius)
+            if (rSqr <= 0)
             {
-                result = true;
+                result = false;
                 return;
             }
 
-            result = false;
+            if (sphere.Center.Z < Min.Z)
+                rSqr -= Sqr(sphere.Center.Z - Min.Z);
+            else if (sphere.Center.Z > Max.Z)
+                rSqr -= Sqr(sphere.Center.Z - Max.Z);
+
+            result = rSqr > 0;
         }
         #endregion
 
@@ -500,10 +497,10 @@ namespace SwizzleMyVectors.Geometry
             result = ContainmentType.Intersects;
         }
 
-        /// <summary>
-        /// Tests whether the BoundingBox contains a BoundingFrustum.
-        /// </summary>
-        /// <param name="frustum">The BoundingFrustum to test for overlap.</param>
+        ///// <summary>
+        ///// Tests whether the BoundingBox contains a BoundingFrustum.
+        ///// </summary>
+        ///// <param name="frustum">The BoundingFrustum to test for overlap.</param>
         //[Pure]
         //public ContainmentType Contains(BoundingFrustum frustum);
 
