@@ -423,52 +423,17 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
         public void Contains(ref BoundingBox box, out ContainmentType result)
         {
-            //check if all corner is in sphere
-            var inside = true;
-            foreach (var corner in box.GetCorners())
-            {
-                if (Contains(corner) == ContainmentType.Disjoint)
-                {
-                    inside = false;
-                    break;
-                }
-            }
-
-            if (inside)
+            //check if all corners are inside the sphere
+            box.GetCorners(out var a, out var b, out var c, out var d, out var e, out var f, out var g, out var h);
+            if (Contains(a) && Contains(b) && Contains(c) && Contains(d) && Contains(e) && Contains(f) && Contains(g) && Contains(h))
             {
                 result = ContainmentType.Contains;
                 return;
             }
 
-            //check if the distance from sphere center to cube face < radius
-            double dmin = 0;
+            box.Contains(ref this, out var boxContain);
 
-            if (Center.X < box.Min.X)
-                dmin += (Center.X - box.Min.X) * (Center.X - box.Min.X);
-
-            else if (Center.X > box.Max.X)
-                dmin += (Center.X - box.Max.X) * (Center.X - box.Max.X);
-
-            if (Center.Y < box.Min.Y)
-                dmin += (Center.Y - box.Min.Y) * (Center.Y - box.Min.Y);
-
-            else if (Center.Y > box.Max.Y)
-                dmin += (Center.Y - box.Max.Y) * (Center.Y - box.Max.Y);
-
-            if (Center.Z < box.Min.Z)
-                dmin += (Center.Z - box.Min.Z) * (Center.Z - box.Min.Z);
-
-            else if (Center.Z > box.Max.Z)
-                dmin += (Center.Z - box.Max.Z) * (Center.Z - box.Max.Z);
-
-            if (dmin <= Radius * Radius)
-            {
-                result = ContainmentType.Intersects;
-                return;
-            }
-
-            //else disjoint
-            result = ContainmentType.Disjoint;
+            result = boxContain == ContainmentType.Disjoint ? ContainmentType.Disjoint : ContainmentType.Intersects;
         }
 
         ///// <summary>
@@ -496,7 +461,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere contains the specified point.
         /// </summary>
         /// <param name="point">The point to check against the current BoundingSphere.</param>
-        public ContainmentType Contains(Vector3 point)
+        public bool Contains(Vector3 point)
         {
             Contains(ref point, out var result);
             return result;
@@ -506,9 +471,9 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere contains the specified point.
         /// </summary>
         /// <param name="point">The point to test for overlap.</param><param name="result">[OutAttribute] Enumeration indicating the extent of overlap.</param>
-        public void Contains(ref Vector3 point, out ContainmentType result)
+        public void Contains(ref Vector3 point, out bool result)
         {
-            result = Contains(Radius, 0, Vector3.DistanceSquared(point, Center));
+            result = Contains(Radius, 0, Vector3.DistanceSquared(point, Center)) != ContainmentType.Disjoint;
         }
 
         /// <summary>

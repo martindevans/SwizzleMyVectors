@@ -15,6 +15,12 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         private readonly BoundingBox _d = new BoundingBox(new Vector3(100), new Vector3(110));
 
         [TestMethod]
+        public void ExtentIsMaxMinusMin()
+        {
+            Assert.AreEqual(_a.Max - _a.Min, _a.Extent);
+        }
+
+        [TestMethod]
         public void Contains_BoundingBox()
         {
 

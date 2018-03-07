@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
@@ -231,14 +232,29 @@ namespace SwizzleMyVectors.Geometry
             if (corners.Length < CornerCount)
                 throw new ArgumentException("Array too small", nameof(corners));
 
-            corners[0] = new Vector3(Min.X, Max.Y, Max.Z);
-            corners[1] = new Vector3(Max.X, Max.Y, Max.Z);
-            corners[2] = new Vector3(Max.X, Min.Y, Max.Z);
-            corners[3] = new Vector3(Min.X, Min.Y, Max.Z);
-            corners[4] = new Vector3(Min.X, Max.Y, Min.Z);
-            corners[5] = new Vector3(Max.X, Max.Y, Min.Z);
-            corners[6] = new Vector3(Max.X, Min.Y, Min.Z);
-            corners[7] = new Vector3(Min.X, Min.Y, Min.Z);
+            GetCorners(
+                out corners[0],
+                out corners[1],
+                out corners[2],
+                out corners[3],
+                out corners[4],
+                out corners[5],
+                out corners[6],
+                out corners[7]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void GetCorners(out Vector3 a, out Vector3 b, out Vector3 c, out Vector3 d, out Vector3 e, out Vector3 f, out Vector3 g, out Vector3 h)
+        {
+            a = new Vector3(Min.X, Max.Y, Max.Z);
+            b = new Vector3(Max.X, Max.Y, Max.Z);
+            c = new Vector3(Max.X, Min.Y, Max.Z);
+            d = new Vector3(Min.X, Min.Y, Max.Z);
+            e = new Vector3(Min.X, Max.Y, Min.Z);
+            f = new Vector3(Max.X, Max.Y, Min.Z);
+            g = new Vector3(Max.X, Min.Y, Min.Z);
+            h = new Vector3(Min.X, Min.Y, Min.Z);
         }
 
         /// <summary>
@@ -284,26 +300,26 @@ namespace SwizzleMyVectors.Geometry
                    && box.Min.Z < Max.Z && box.Max.Z > Min.Z;
         }
 
-        /// <summary>
-        /// Checks whether the current BoundingBox intersects a BoundingFrustum.
-        /// </summary>
-        /// <param name="frustum">The BoundingFrustum to check for intersection with.</param>
-        [Pure]
-        public bool Intersects(BoundingFrustum frustum)
-        {
-            Intersects(ref frustum, out var result);
-            return result;
-        }
+        ///// <summary>
+        ///// Checks whether the current BoundingBox intersects a BoundingFrustum.
+        ///// </summary>
+        ///// <param name="frustum">The BoundingFrustum to check for intersection with.</param>
+        //[Pure]
+        //public bool Intersects(BoundingFrustum frustum)
+        //{
+        //    Intersects(ref frustum, out var result);
+        //    return result;
+        //}
 
-        /// <summary>
-        /// Checks whether the current BoundingBox intersects a BoundingFrustum.
-        /// </summary>
-        /// <param name="frustum">The BoundingFrustum to check for intersection with.</param>
-        /// <param name="result">[OutAttribute] A boolean indicating whether the BoundingBox intersects the BoundingFrustum.</param>
-        public void Intersects(ref BoundingFrustum frustum, out bool result)
-        {
-            result = frustum.Intersects(this);
-        }
+        ///// <summary>
+        ///// Checks whether the current BoundingBox intersects a BoundingFrustum.
+        ///// </summary>
+        ///// <param name="frustum">The BoundingFrustum to check for intersection with.</param>
+        ///// <param name="result">[OutAttribute] A boolean indicating whether the BoundingBox intersects the BoundingFrustum.</param>
+        //public void Intersects(ref BoundingFrustum frustum, out bool result)
+        //{
+        //    result = frustum.Intersects(this);
+        //}
 
         /// <summary>
         /// Checks whether the current BoundingBox intersects a Plane.
@@ -417,38 +433,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingBox and BoundingSphere intersect; false otherwise.</param>
         public void Intersects(ref BoundingSphere sphere, out bool result)
         {
-            float Sqr(float a) => a * a;
-
-            var rSqr = Sqr(sphere.Radius);
-
-            if (sphere.Center.X < Min.X)
-                rSqr -= Sqr(sphere.Center.X - Min.X);
-            else if (sphere.Center.X > Max.X)
-                rSqr -= Sqr(sphere.Center.X - Max.X);
-
-            if (rSqr <= 0)
-            {
-                result = false;
-                return;
-            }
-
-            if (sphere.Center.Y < Min.Y)
-                rSqr -= Sqr(sphere.Center.Y - Min.Y);
-            else if (sphere.Center.Y > Max.Y)
-                rSqr -= Sqr(sphere.Center.Y - Max.Y);
-
-            if (rSqr <= 0)
-            {
-                result = false;
-                return;
-            }
-
-            if (sphere.Center.Z < Min.Z)
-                rSqr -= Sqr(sphere.Center.Z - Min.Z);
-            else if (sphere.Center.Z > Max.Z)
-                rSqr -= Sqr(sphere.Center.Z - Max.Z);
-
-            result = rSqr > 0;
+            result = Contains(sphere) != ContainmentType.Disjoint;
         }
         #endregion
 
@@ -574,79 +559,22 @@ namespace SwizzleMyVectors.Geometry
                 return;
             }
 
-            double dmin = 0;
+            float Axis(float sphereCenter, float boxMin, float boxMax)
+            {
+                var e = sphereCenter - boxMin;
+                if (e < 0)
+                    return e * e;
 
-            double e = sphere.Center.X - Min.X;
-            if (e < 0)
-            {
-                if (e < -sphere.Radius)
-                {
-                    result = ContainmentType.Disjoint;
-                    return;
-                }
-                dmin += e * e;
-            }
-            else
-            {
-                e = sphere.Center.X - Max.X;
+                e = sphereCenter - boxMax;
                 if (e > 0)
-                {
-                    if (e > sphere.Radius)
-                    {
-                        result = ContainmentType.Disjoint;
-                        return;
-                    }
-                    dmin += e * e;
-                }
+                    return e * e;
+
+                return 0;
             }
 
-            e = sphere.Center.Y - Min.Y;
-            if (e < 0)
-            {
-                if (e < -sphere.Radius)
-                {
-                    result = ContainmentType.Disjoint;
-                    return;
-                }
-                dmin += e * e;
-            }
-            else
-            {
-                e = sphere.Center.Y - Max.Y;
-                if (e > 0)
-                {
-                    if (e > sphere.Radius)
-                    {
-                        result = ContainmentType.Disjoint;
-                        return;
-                    }
-                    dmin += e * e;
-                }
-            }
-
-            e = sphere.Center.Z - Min.Z;
-            if (e < 0)
-            {
-                if (e < -sphere.Radius)
-                {
-                    result = ContainmentType.Disjoint;
-                    return;
-                }
-                dmin += e * e;
-            }
-            else
-            {
-                e = sphere.Center.Z - Max.Z;
-                if (e > 0)
-                {
-                    if (e > sphere.Radius)
-                    {
-                        result = ContainmentType.Disjoint;
-                        return;
-                    }
-                    dmin += e * e;
-                }
-            }
+            var dmin = Axis(sphere.Center.X, Min.X, Max.X)
+                     + Axis(sphere.Center.Y, Min.Y, Max.Y)
+                     + Axis(sphere.Center.Z, Min.Z, Max.Z);
 
             if (dmin <= sphere.Radius * sphere.Radius)
             {

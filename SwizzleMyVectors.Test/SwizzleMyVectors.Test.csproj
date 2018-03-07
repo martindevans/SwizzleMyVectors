@@ -64,7 +64,9 @@
     <Compile Include="Geometry\BoundingBoxClass\BoundingBoxTest.cs" />
     <Compile Include="Geometry\BoundingBoxClass\IntersectsTests.cs" />
     <Compile Include="Geometry\BoundingRectangleTest.cs" />
-    <Compile Include="Geometry\BoundingSphereTest.cs" />
+    <Compile Include="Geometry\BoundingSphereClass\BoundingSphereTest.cs" />
+    <Compile Include="Geometry\BoundingSphereClass\ContainsTests.cs" />
+    <Compile Include="Geometry\BoundingSphereClass\IntersectsTests.cs" />
     <Compile Include="Geometry\LineSegment3Test.cs" />
     <Compile Include="Geometry\Ray2Test.cs" />
     <Compile Include="Geometry\LineSegment2Test.cs" />
