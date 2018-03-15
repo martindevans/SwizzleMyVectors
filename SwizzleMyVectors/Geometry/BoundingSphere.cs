@@ -192,7 +192,8 @@ namespace SwizzleMyVectors.Geometry
             // Find the distance between the center and one of the corners of the box.
             var radius = Vector3.Distance(center, box.Max);
 
-            result = new BoundingSphere(center, radius);
+            // Add a fudge factor to the radius to ensure the sphere contains the box completely
+            result = new BoundingSphere(center, radius + 0.000001f);
         }
 
         /// <summary>
@@ -307,15 +308,18 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere intersects with a specified BoundingBox.
         /// </summary>
         /// <param name="box">The BoundingBox to check for intersection with the current BoundingSphere.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Intersects(BoundingBox box)
         {
-            return box.Intersects(this);
+            Intersects(ref box, out bool result);
+            return result;
         }
 
         /// <summary>
         /// Checks whether the current BoundingSphere intersects a BoundingBox.
         /// </summary>
         /// <param name="box">The BoundingBox to check for intersection with.</param><param name="result">[OutAttribute] true if the BoundingSphere and BoundingBox intersect; false otherwise.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Intersects(ref BoundingBox box, out bool result)
         {
             result = box.Intersects(this);
@@ -325,6 +329,7 @@ namespace SwizzleMyVectors.Geometry
         /// Checks whether the current BoundingSphere intersects with a specified BoundingFrustum.
         /// </summary>
         /// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Intersects(BoundingFrustum frustum)
         {
             Intersects(ref frustum, out var result);
@@ -336,6 +341,7 @@ namespace SwizzleMyVectors.Geometry
         /// </summary>
         /// <param name="frustum">The BoundingFrustum to check for intersection with the current BoundingSphere.</param>
         /// <param name="result"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Intersects(ref BoundingFrustum frustum, out bool result)
         {
             frustum.Intersects(ref this, out result);

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
-namespace SwizzleMyVectors.Test.Geometry
+namespace SwizzleMyVectors.Test.Geometry.LineSegment2Tests
 {
     [TestClass]
     public class LineSegment2Test

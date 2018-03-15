@@ -3,7 +3,7 @@ using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
-namespace SwizzleMyVectors.Test.Geometry.BoundingSphereClass
+namespace SwizzleMyVectors.Test.Geometry.BoundingSphereTests
 {
     [TestClass]
     public class ContainsTests

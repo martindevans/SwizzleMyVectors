@@ -61,15 +61,18 @@
     <Compile Include="Extensions\Vector4ExtensionsTests.cs" />
     <Compile Include="Extensions\Vector3ExtensionsTests.cs" />
     <Compile Include="Extensions\Vector2ExtensionsTests.cs" />
-    <Compile Include="Geometry\BoundingBoxClass\BoundingBoxTest.cs" />
-    <Compile Include="Geometry\BoundingBoxClass\IntersectsTests.cs" />
+    <Compile Include="Geometry\BoundingBoxTests\BoundingBoxTest.cs" />
+    <Compile Include="Geometry\BoundingBoxTests\EqualityTests.cs" />
+    <Compile Include="Geometry\BoundingBoxTests\IntersectsTests.cs" />
     <Compile Include="Geometry\BoundingRectangleTest.cs" />
-    <Compile Include="Geometry\BoundingSphereClass\BoundingSphereTest.cs" />
-    <Compile Include="Geometry\BoundingSphereClass\ContainsTests.cs" />
-    <Compile Include="Geometry\BoundingSphereClass\IntersectsTests.cs" />
+    <Compile Include="Geometry\BoundingSphereTests\BoundingSphereTest.cs" />
+    <Compile Include="Geometry\BoundingSphereTests\ConstructionTests.cs" />
+    <Compile Include="Geometry\BoundingSphereTests\ContainsTests.cs" />
+    <Compile Include="Geometry\BoundingSphereTests\EqualityTests.cs" />
+    <Compile Include="Geometry\BoundingSphereTests\IntersectsTests.cs" />
     <Compile Include="Geometry\LineSegment3Test.cs" />
     <Compile Include="Geometry\Ray2Test.cs" />
-    <Compile Include="Geometry\LineSegment2Test.cs" />
+    <Compile Include="Geometry\LineSegment2Tests\LineSegment2Test.cs" />
     <Compile Include="Geometry\Ray3Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

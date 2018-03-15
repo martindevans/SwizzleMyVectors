@@ -3,7 +3,7 @@ using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
-namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
+namespace SwizzleMyVectors.Test.Geometry.BoundingBoxTests
 {
     [TestClass]
     public class IntersectsTests
@@ -121,6 +121,7 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         }
         #endregion
 
+        #region box/ray
         [TestMethod]
         public void Intersects_Ray3_Intersects()
         {
@@ -140,6 +141,7 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
             Assert.IsNull(b.Intersects(r));
             Assert.AreEqual(r.Intersects(b), b.Intersects(r));
         }
+        #endregion
 
         [TestMethod]
         public void Intersects_BoundingSphere_Contains()

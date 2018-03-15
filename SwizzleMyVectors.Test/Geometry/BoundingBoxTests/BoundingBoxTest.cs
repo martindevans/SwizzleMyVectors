@@ -4,7 +4,7 @@ using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SwizzleMyVectors.Geometry;
 
-namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
+namespace SwizzleMyVectors.Test.Geometry.BoundingBoxTests
 {
     [TestClass]
     public class BoundingBoxTest
@@ -32,7 +32,7 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         [TestMethod]
         public void AssertThat_Inflate_IncreasesSize()
         {
-            BoundingBox s = new BoundingBox(new Vector3(0), new Vector3(10));
+            var s = new BoundingBox(new Vector3(0), new Vector3(10));
 
             Assert.AreEqual(new Vector3(-5), s.Inflate(10).Min);
             Assert.AreEqual(new Vector3(15), s.Inflate(10).Max);
@@ -41,7 +41,7 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         [TestMethod]
         public void AssertThat_Inflate_ByNegativeValue_DecreasesSize()
         {
-            BoundingBox s = new BoundingBox(new Vector3(0), new Vector3(10));
+            var s = new BoundingBox(new Vector3(0), new Vector3(10));
 
             Assert.AreEqual(new Vector3(3), s.Inflate(-6).Min);
             Assert.AreEqual(new Vector3(7), s.Inflate(-6).Max);
@@ -51,9 +51,10 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         [ExpectedException(typeof(ArgumentOutOfRangeException))]
         public void AssertThat_InflateSphere_ByNegativeValueLargerThanSize_Throws()
         {
-            BoundingBox s = new BoundingBox(Vector3.Zero, new Vector3(10));
+            var s = new BoundingBox(Vector3.Zero, new Vector3(10));
 
-            var result = s.Inflate(-50);
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            s.Inflate(-50);
         }
 
         [TestMethod]
@@ -126,69 +127,6 @@ namespace SwizzleMyVectors.Test.Geometry.BoundingBoxClass
         {
             // ReSharper disable once AssignNullToNotNullAttribute
             BoundingBox.CreateFromPoints(new Vector3[0]);
-        }
-
-        [TestMethod]
-        public void Equals_TrueWithEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.AreEqual(a, b);
-        }
-
-        [TestMethod]
-        public void Equals_FalseWithNotEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(2, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.AreNotEqual(a, b);
-        }
-
-        [TestMethod]
-        public void OpEquals_TrueWithEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.IsTrue(a == b);
-        }
-
-        [TestMethod]
-        public void OpEquals_FalseWithNotEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(2, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.IsFalse(a == b);
-        }
-
-        [TestMethod]
-        public void OpNotEquals_FalseWithEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.IsFalse(a != b);
-        }
-
-        [TestMethod]
-        public void OpNotEquals_TrueWithNotEqual()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(2, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.IsTrue(a != b);
-        }
-
-        [TestMethod]
-        public void GetHashCode_EqualForSame()
-        {
-            var a = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-            var b = new BoundingBox(new Vector3(1, 2, 3), new Vector3(4, 5, 6));
-
-            Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
         }
 
         [TestMethod]

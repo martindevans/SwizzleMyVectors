@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using JetBrains.Annotations;
 
 namespace SwizzleMyVectors.Geometry
 {
@@ -60,7 +59,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="obj">The Object to compare with the current Ray.</param>
         public override bool Equals(object obj)
         {
-            return obj is Ray3 && Equals((Ray3)obj);
+            return obj is Ray3 ray3 && Equals(ray3);
         }
 
         /// <summary>
@@ -94,8 +93,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public Vector3 ClosestPoint(Vector3 point)
         {
-            float t;
-            return ClosestPoint(ref point, out t);
+            return ClosestPoint(ref point, out _);
         }
 
         /// <summary>
@@ -117,8 +115,7 @@ namespace SwizzleMyVectors.Geometry
         /// <returns></returns>
         public float ClosestPointDistanceAlongLine(Vector3 point)
         {
-            float dist;
-            ClosestPointDistanceAlongLine(ref point, out dist);
+            ClosestPointDistanceAlongLine(ref point, out var dist);
             return dist;
         }
 
@@ -186,8 +183,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check for intersection with the Ray.</param>
         public float? Intersects(BoundingBox box)
         {
-            float? result;
-            Intersects(ref box, out result);
+            Intersects(ref box, out var result);
             return result;
         }
 
@@ -197,11 +193,11 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="box">The BoundingBox to check for intersection with.</param><param name="result">[OutAttribute] Distance at which the ray intersects the BoundingBox or null if there is no intersection.</param>
         public void Intersects(ref BoundingBox box, out float? result)
         {
-            const float EPSILON = 1e-6f;
+            const float epsilon = 1e-6f;
 
             float? tMin = null, tMax = null;
 
-            if (Math.Abs(Direction.X) < EPSILON)
+            if (Math.Abs(Direction.X) < epsilon)
             {
                 if (Position.X < box.Min.X || Position.X > box.Max.X)
                 {
@@ -222,7 +218,7 @@ namespace SwizzleMyVectors.Geometry
                 }
             }
 
-            if (Math.Abs(Direction.Y) < EPSILON)
+            if (Math.Abs(Direction.Y) < epsilon)
             {
                 if (Position.Y < box.Min.Y || Position.Y > box.Max.Y)
                 {
@@ -252,7 +248,7 @@ namespace SwizzleMyVectors.Geometry
                 if (!tMax.HasValue || tMaxY < tMax) tMax = tMaxY;
             }
 
-            if (Math.Abs(Direction.Z) < EPSILON)
+            if (Math.Abs(Direction.Z) < epsilon)
             {
                 if (Position.Z < box.Min.Z || Position.Z > box.Max.Z)
                 {
@@ -327,8 +323,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="plane">The Plane with which to calculate this Ray's intersection.</param>
         public float? Intersects(Plane plane)
         {
-            float? result;
-            Intersects(ref plane, out result);
+            Intersects(ref plane, out var result);
             return result;
         }
 
@@ -365,8 +360,7 @@ namespace SwizzleMyVectors.Geometry
         /// <param name="sphere">The BoundingSphere to check for intersection with the Ray.</param>
         public float? Intersects(BoundingSphere sphere)
         {
-            float? result;
-            Intersects(ref sphere, out result);
+            Intersects(ref sphere, out var result);
             return result;
         }
 
