@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PrimitiveSvgBuilder;
@@ -245,6 +246,62 @@ namespace SwizzleMyVectors.Test.Extensions
             Assert.AreEqual(new Vector3(2, 1, 2), new Vector2(1, 2).YXY());
             Assert.AreEqual(new Vector3(2, 2, 1), new Vector2(1, 2).YYX());
             Assert.AreEqual(new Vector3(2, 2, 2), new Vector2(1, 2).YYY());
+        }
+
+        [TestMethod]
+        public void ArrayArea_Convex()
+        {
+            var rect = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(10, 10), new Vector2(10, 0) };
+            Assert.AreEqual(100, rect.Area());
+        }
+
+        [TestMethod]
+        public void ArrayArea_Convex_Anticlockwise()
+        {
+            var rect = new Vector2[] { new Vector2(10, 0), new Vector2(10, 10), new Vector2(0, 10), new Vector2(0, 0) };
+            Assert.AreEqual(-100, rect.Area());
+        }
+
+        [TestMethod]
+        public void ArrayArea_Concave()
+        {
+            var rect = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(5, 10), new Vector2(5, 5), new Vector2(10, 5), new Vector2(10, 0) };
+            Assert.AreEqual(75, rect.Area());
+        }
+
+        [TestMethod]
+        public void ArrayArea_Concave_AntiClockwise()
+        {
+            var rect = new Vector2[] { new Vector2(10, 0), new Vector2(10, 5), new Vector2(5, 5), new Vector2(5, 10), new Vector2(0, 10), new Vector2(0, 0) };
+            Assert.AreEqual(-75, rect.Area());
+        }
+
+        [TestMethod]
+        public void EnumerableArea_Convex()
+        {
+            var rect = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(10, 10), new Vector2(10, 0) };
+            Assert.AreEqual(100, rect.AsEnumerable().Area());
+        }
+
+        [TestMethod]
+        public void EnumerableArea_Convex_Anticlockwise()
+        {
+            var rect = new Vector2[] { new Vector2(10, 0), new Vector2(10, 10), new Vector2(0, 10), new Vector2(0, 0) };
+            Assert.AreEqual(-100, rect.AsEnumerable().Area());
+        }
+
+        [TestMethod]
+        public void EnumerableArea_Concave()
+        {
+            var rect = new Vector2[] { new Vector2(0, 0), new Vector2(0, 10), new Vector2(5, 10), new Vector2(5, 5), new Vector2(10, 5), new Vector2(10, 0) };
+            Assert.AreEqual(75, rect.AsEnumerable().Area());
+        }
+
+        [TestMethod]
+        public void EnumerableArea_Concave_AntiClockwise()
+        {
+            var rect = new Vector2[] { new Vector2(10, 0), new Vector2(10, 5), new Vector2(5, 5), new Vector2(5, 10), new Vector2(0, 10), new Vector2(0, 0) };
+            Assert.AreEqual(-75, rect.AsEnumerable().Area());
         }
     }
 }
