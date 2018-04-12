@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PrimitiveSvgBuilder;
@@ -83,6 +84,52 @@ namespace SwizzleMyVectors.Test.Extensions
             Console.WriteLine(svgBuilder);
 
             Assert.AreEqual(0, shape.Area());
+        }
+
+        [TestMethod]
+        public void AreaEnumerable_IsPositive_WithClockwiseWinding()
+        {
+            var shape = new Vector2[] {
+                new Vector2(0, 0),
+                new Vector2(0, 10),
+                new Vector2(10, 10),
+                new Vector2(10, 0)
+            };
+
+            Assert.AreEqual(100, ((IEnumerable<Vector2>)shape).Area());
+        }
+
+        [TestMethod]
+        public void AreaEnumerable_IsNegative_WithAntiClockwiseWinding()
+        {
+            var shape = new Vector2[] {
+                new Vector2(0, 0),
+                new Vector2(10, 0),
+                new Vector2(10, 10),
+                new Vector2(0, 10)
+            };
+
+            Assert.AreEqual(-100, ((IEnumerable<Vector2>)shape).Area());
+        }
+
+        [TestMethod]
+        public void AreaEnumerable_IsZero_WithSelfIntersection()
+        {
+            //Figure of 8 shape, one half clockwise the other half anticlockwise. Adding up to nothing
+            var shape = new Vector2[] {
+                new Vector2(0, 0),
+                new Vector2(0, 10),
+                new Vector2(20, 10),
+                new Vector2(20, 20),
+                new Vector2(10, 20),
+                new Vector2(10, 0),
+            };
+
+            var svgBuilder = new SvgBuilder(10);
+            svgBuilder.Outline(shape);
+            Console.WriteLine(svgBuilder);
+
+            Assert.AreEqual(0, ((IEnumerable<Vector2>)shape).Area());
         }
 
         [TestMethod]
