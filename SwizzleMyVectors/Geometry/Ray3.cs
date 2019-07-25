@@ -133,6 +133,35 @@ namespace SwizzleMyVectors.Geometry
             distance = Vector3.Dot((point - Position), direction) / lengthSq;
         }
 
+        public void ClosestPoint(in Ray3 other, out float distanceAlongThis, out float distanceAlongOther)
+        {
+            // http://geomalgorithms.com/a07-_distance.html
+            // a = u · u, b = u · v, c = v · v, d = u · w0, and e = v · w0
+
+            var v = Direction;
+            var u = other.Direction;
+            var w0 = other.Position - Position;
+
+            var a = u.LengthSquared();
+            var b = Vector3.Dot(u, v);
+            var c = v.LengthSquared();
+            var d = Vector3.Dot(u, w0);
+            var e = Vector3.Dot(v, w0);
+
+            var denom = a * c - b * b;
+
+            if (Math.Abs(denom) < float.Epsilon)
+            {
+                distanceAlongThis = 0;
+                distanceAlongOther = 0;
+            }
+            else
+            {
+                distanceAlongOther = (b * e - c * d) / denom;
+                distanceAlongThis = (a * e - b * d) / denom;
+            }
+        }
+
         //public float DistanceToPoint(Vector3 point)
         //{
         //}

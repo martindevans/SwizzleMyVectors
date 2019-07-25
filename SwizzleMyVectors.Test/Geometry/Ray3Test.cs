@@ -239,5 +239,49 @@ namespace SwizzleMyVectors.Test.Geometry
 
             Assert.AreEqual(a.GetHashCode(), b.GetHashCode());
         }
+
+        [TestMethod]
+        public void ClosestPoint_ParallelLines()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+
+            a.ClosestPoint(b, out var r1, out var r2);
+            Assert.AreEqual(0, r1);
+            Assert.AreEqual(0, r2);
+        }
+
+        [TestMethod]
+        public void ClosestPoint_AntiParallelLines()
+        {
+            var a = new Ray3(new Vector3(1, 2, 3), Vector3.UnitY);
+            var b = new Ray3(new Vector3(1, 2, 3), -Vector3.UnitY);
+
+            a.ClosestPoint(b, out var r1, out var r2);
+            Assert.AreEqual(0, r1);
+            Assert.AreEqual(0, r2);
+        }
+
+        [TestMethod]
+        public void ClosestPoint_PerpendicularLines()
+        {
+            var a = new Ray3(new Vector3(0, 1, 0), Vector3.UnitZ);
+            var b = new Ray3(new Vector3(0, -1, 0), Vector3.UnitX);
+
+            a.ClosestPoint(b, out var r1, out var r2);
+            Assert.AreEqual(0, r1);
+            Assert.AreEqual(0, r2);
+        }
+
+        [TestMethod]
+        public void ClosestPoint_PerpendicularLines_DifferentOrigins()
+        {
+            var a = new Ray3(new Vector3(0, 1, -3), Vector3.UnitZ);
+            var b = new Ray3(new Vector3(0, -1, 0), Vector3.UnitX);
+
+            a.ClosestPoint(b, out var r1, out var r2);
+            Assert.AreEqual(3, r1);
+            Assert.AreEqual(0, r2);
+        }
     }
 }
